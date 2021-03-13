@@ -30,7 +30,7 @@ public class CreatureBase : ScriptableObject
     //[SerializeField] int expYield;
     //[SerializeField] GrowthRate growthRate;
 
-    //[SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] List<LearnableMove> learnableMoves;
 
 
     //Decided not to use a function like this
@@ -88,14 +88,47 @@ public class CreatureBase : ScriptableObject
     {
         get { return speed; }
     }
+
     //public int ExpYield
     //{
     //    get { return expYield; }
     //}
+
     //public GrowthRate GrowthRate
     //{
     //    get { return growthRate; }
     //}
+
+    public List<LearnableMove> LearnableMoves
+    {
+        get
+        {
+            return learnableMoves;
+        }
+    }
+}
+
+//serilizable so it can be seen in inspector
+[System.Serializable]
+public class LearnableMove
+{
+    [SerializeField] MoveBase moveBase;
+    [SerializeField] int level;
+
+    public MoveBase Base
+    {
+        get
+        {
+            return moveBase;
+        }
+    }
+    public int Level
+    {
+        get
+        {
+            return level;
+        }
+    }
 }
 
 //Types to show up in drop down for type select

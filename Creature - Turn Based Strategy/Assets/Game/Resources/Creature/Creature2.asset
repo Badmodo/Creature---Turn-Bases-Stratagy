@@ -9,19 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: Creature 2
-  m_EditorClassIdentifier: Assembly-CSharp::CretureBase
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
+  m_Script: {fileID: 11500000, guid: cf066a500a816844294d33e7f26d8b0c, type: 3}
+  m_Name: Creature2
+  m_EditorClassIdentifier: 
+  name: Creature2
+  description: Basic Grass type creature
+  frontSprite: {fileID: -2413806693520163455, guid: 6ed0d84a4d02e6e44bb74c75bf8e9b02, type: 3}
+  backSprite: {fileID: -2413806693520163455, guid: 0fc3b44fd02f975409c460f0f7463861, type: 3}
+  type1: 4
   type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  specialAttack: 0
-  specialDefense: 0
-  speed: 0
+  maxHp: 40
+  attack: 40
+  defense: 40
+  specialAttack: 40
+  specialDefense: 40
+  speed: 40
   catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 12cd8926d177f264b895fc6bbee56de1, type: 2}
+    level: 6
