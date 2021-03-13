@@ -113,11 +113,11 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialog("A critical hit!");
         }
-        if(damageDetails.TypeEffectiveness > 1)
+        if(damageDetails.TypeEffectiveness > 1f)
         {
             yield return dialogueBox.TypeDialog("It's super effective!");
         }
-        if (damageDetails.TypeEffectiveness < 1)
+        if (damageDetails.TypeEffectiveness < 1f)
         {
             yield return dialogueBox.TypeDialog("It's not very effective!");
         }
