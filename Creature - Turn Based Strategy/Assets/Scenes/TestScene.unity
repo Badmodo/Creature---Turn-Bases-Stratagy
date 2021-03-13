@@ -3922,7 +3922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf5b993ae4a90d4d831350cdabdcc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
+  _base: {fileID: 11400000, guid: c98f850840cc4df478bc884e2206141c, type: 2}
   level: 7
   isPlayerUnit: 1
 --- !u!1 &955517691
@@ -8467,7 +8467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf5b993ae4a90d4d831350cdabdcc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 0}
+  _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
   level: 7
   isPlayerUnit: 0
 --- !u!1 &8608560183737374680

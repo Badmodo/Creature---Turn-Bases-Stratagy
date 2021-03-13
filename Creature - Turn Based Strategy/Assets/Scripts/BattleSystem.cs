@@ -68,6 +68,11 @@ public class BattleSystem : MonoBehaviour
         var move = playerUnit.Creature.Moves[currentMove];
         yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} used {move.Base.Name}");
 
+        playerUnit.BattleAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        enemyUnit.BattleHitAmination();
+
         var damageDetails = enemyUnit.Creature.TakeDamage(move, playerUnit.Creature);
         yield return enemyHud.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
@@ -76,6 +81,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Fainted)
         {
             yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} fainted");
+            enemyUnit.BattleFaintAnimation();
         }
         else
         {
@@ -83,13 +89,18 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    //This allows for the enemy turn, same formully as the players after the choice. Move is chosen by random
+    //This allows for the enemy turn, same formula as the players after the choice. Move is chosen by random
     IEnumerator EnemyMove()
     {
         state = BattleState.EnemyMove;
 
         var move = enemyUnit.Creature.GetRandomMove();
         yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} used {move.Base.Name}");
+
+        enemyUnit.BattleAttackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        playerUnit.BattleHitAmination();
 
         var damageDetails = playerUnit.Creature.TakeDamage(move, enemyUnit.Creature);
         yield return playerHud.UpdateHP();
@@ -98,6 +109,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Fainted)
         {
             yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} fainted");
+            playerUnit.BattleFaintAnimation();
         }
         else
         {
