@@ -16,8 +16,8 @@ MonoBehaviour:
   description: Basic Fire type creature
   frontSprite: {fileID: -9095717837082945937, guid: a93419e634ff1ea44ada432980cc87a9, type: 3}
   backSprite: {fileID: -9095717837082945937, guid: 0a40f1ed19c9d7d489acb104d3cd3cdb, type: 3}
-  type1: 2
-  type2: 0
+  type1: 4
+  type2: 4
   maxHp: 40
   attack: 40
   defense: 40
@@ -28,5 +28,5 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: 20e909c6b7042af43ad43490708d757f, type: 2}
+  - moveBase: {fileID: 11400000, guid: 12cd8926d177f264b895fc6bbee56de1, type: 2}
     level: 6

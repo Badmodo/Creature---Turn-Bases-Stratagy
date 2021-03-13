@@ -36,6 +36,8 @@ public class BattleDialogueBox : MonoBehaviour
             dialogText.text += letter;
             yield return new WaitForSeconds(1f / LettersPerSecond);
         }
+
+        yield return new WaitForSeconds(1f);
     }
 
     //functions to activate menu items in the Dialogue box

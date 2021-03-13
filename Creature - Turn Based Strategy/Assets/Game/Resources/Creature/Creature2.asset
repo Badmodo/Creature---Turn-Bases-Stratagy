@@ -16,8 +16,8 @@ MonoBehaviour:
   description: Basic Grass type creature
   frontSprite: {fileID: -2413806693520163455, guid: 6ed0d84a4d02e6e44bb74c75bf8e9b02, type: 3}
   backSprite: {fileID: -2413806693520163455, guid: 0fc3b44fd02f975409c460f0f7463861, type: 3}
-  type1: 4
-  type2: 0
+  type1: 2
+  type2: 2
   maxHp: 40
   attack: 40
   defense: 40
@@ -28,5 +28,5 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: 12cd8926d177f264b895fc6bbee56de1, type: 2}
+  - moveBase: {fileID: 11400000, guid: 20e909c6b7042af43ad43490708d757f, type: 2}
     level: 6
