@@ -84,9 +84,9 @@ public class Creature
     {
         //crit hits happen only 6.25 percent of the time
         float critical = 1f;
-        if(Random.value * 100f <= 6.25)
+        if(Random.value * 100f <= 6.25f)
         {
-            critical = 2;
+            critical = 2f;
         }
 
         //uses the type chart to get effectivenss of attacks

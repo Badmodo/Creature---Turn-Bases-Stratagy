@@ -157,7 +157,7 @@ public enum CreatureType
 //this is the totallity of the effectivness in a pokemon game, the order needs to be the same as the CreatureType
 public class TypeChart
 {
-    //2d chart
+    //2d array [][]
     static float[][] chart =
     {
          //                       Nor   Fir   Wat   Ele   Gra   Ice   Fig   Poi   Gro   Fly   Psy   Bug   Roc   Gho   Dra   Dar  Ste    Fai
