@@ -29,7 +29,11 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         FreeroamCam.gameObject.SetActive(false);
 
-        battleSystem.StartBattle();
+        //used to return the player creatures
+        var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+        var wildCreature = FindObjectOfType<ListOfCreaturesInArea>().GetComponent<ListOfCreaturesInArea>().GetRandomWildCreatures();
+
+        battleSystem.StartBattle(playerTeam, wildCreature);
     }
 
 

@@ -2,21 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ System.Serializable]
 public class Creature 
 {
-    //pickup fron the base class
-    public CreatureBase Base { get; set; }
-    public int Level { get; set; }
+    [SerializeField] CreatureBase _base;
+    [SerializeField] int level;
+
+    //pickup fron the base class, now a property
+    public CreatureBase Base 
+    {
+        get
+        { 
+            return _base; 
+        }
+    }
+    public int Level
+    {
+        get
+        {
+            return level;
+        }
+    }
 
     public int HP { get; set; }
 
     //list of moves for the creature
     public List<Move> Moves { get; set; }
 
-    public Creature(CreatureBase pBase, int pLevel)
+    public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
-        Base = pBase;
-        Level = pLevel;
+        //these will noe be called from the constructor not manually set
+        //Base = pBase;
+        //Level = pLevel;
         HP = MaxHp;
 
         //checks level and moves available at that level

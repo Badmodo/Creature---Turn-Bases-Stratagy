@@ -22,17 +22,23 @@ public class BattleSystem : MonoBehaviour
     int currentAction;
     int currentMove;
 
-    public void StartBattle()
+    CreatureTeam playerteam;
+    Creature wildCreature;
+
+    public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
     {
+        //wierd use of the same name just to make it work in script
+        this.playerteam = playerteam;
+        this.wildCreature = wildCreature;
         StartCoroutine(SetUpBattle());
     }
 
     //simp;le set up to show player and enemy set up
     public IEnumerator SetUpBattle()
     {
-        playerUnit.Setup();
+        playerUnit.Setup(playerteam.GetHealthyCreature());
         playerHud.SetData(playerUnit.Creature);
-        enemyUnit.Setup();
+        enemyUnit.Setup(wildCreature);
         enemyHud.SetData(enemyUnit.Creature);
 
         //Passing the creatures moves to the set moves function
