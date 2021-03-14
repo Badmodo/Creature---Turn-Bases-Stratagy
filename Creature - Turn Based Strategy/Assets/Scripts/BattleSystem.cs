@@ -126,7 +126,28 @@ public class BattleSystem : MonoBehaviour
             playerUnit.BattleFaintAnimation();
 
             yield return new WaitForSeconds(2f);
-            BattleOver(false);
+
+            //check to see if the player has more creatures
+            var nextCreature = playerteam.GetHealthyCreature();
+            if (nextCreature != null)
+            {
+                playerUnit.Setup(nextCreature);
+                playerHud.SetData(nextCreature);
+
+                //Passing the next creatures moves to the set moves function over the previous
+                dialogueBox.SetMoveNames(nextCreature.Moves);
+
+                //using string interprilation to bring in game spacific text
+                yield return dialogueBox.TypeDialog($"Go {nextCreature.Base.Name}");
+
+                //load the player state coroutine
+                PlayerAction();
+
+            }
+            else
+            {
+                BattleOver(false);
+            }
         }
         else
         {
