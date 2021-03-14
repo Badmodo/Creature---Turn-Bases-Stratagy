@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,14 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogueBox dialogueBox;
 
+    public event Action<bool> BattleOver;
+
     BattleState state;
 
     int currentAction;
     int currentMove;
 
-    private void Start()
+    public void StartBattle()
     {
         StartCoroutine(SetUpBattle());
     }
@@ -66,6 +69,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
 
         var move = playerUnit.Creature.Moves[currentMove];
+        move.Pp--;
         yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} used {move.Base.Name}");
 
         playerUnit.BattleAttackAnimation();
@@ -77,11 +81,14 @@ public class BattleSystem : MonoBehaviour
         yield return enemyHud.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
 
-
+        //this coroutine plays if the enemy creature lost all hp
         if (damageDetails.Fainted)
         {
             yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} fainted");
             enemyUnit.BattleFaintAnimation();
+
+            yield return new WaitForSeconds(2f);
+            BattleOver(true);
         }
         else
         {
@@ -95,6 +102,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.EnemyMove;
 
         var move = enemyUnit.Creature.GetRandomMove();
+        move.Pp--;
         yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} used {move.Base.Name}");
 
         enemyUnit.BattleAttackAnimation();
@@ -110,6 +118,9 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} fainted");
             playerUnit.BattleFaintAnimation();
+
+            yield return new WaitForSeconds(2f);
+            BattleOver(false);
         }
         else
         {
@@ -136,7 +147,7 @@ public class BattleSystem : MonoBehaviour
     }
 
     //what to do while in the action select screen
-    private void Update()
+    public void HandleUpdate()
     {
         if(state == BattleState.PlayerAction)
         {

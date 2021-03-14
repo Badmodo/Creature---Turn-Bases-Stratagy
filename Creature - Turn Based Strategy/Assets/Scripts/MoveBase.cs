@@ -59,4 +59,20 @@ public class MoveBase : ScriptableObject
             return pp;
         }
     }
+
+    //this designates if a move uses attack or special attack
+    public bool IsSpecial
+    {
+        get
+        {
+            if(type == CreatureType.Fire || type == CreatureType.Water || type == CreatureType.Grass || type == CreatureType.Ice || type == CreatureType.Electric || type == CreatureType.Dragon)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }

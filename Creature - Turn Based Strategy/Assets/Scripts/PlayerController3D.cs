@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class PlayerController3D : MonoBehaviour
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
 
+    public event Action onEncounter;
+
     public bool inGrass;
 
     public GameObject Battle;
@@ -23,7 +26,7 @@ public class PlayerController3D : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-    void Update()
+    public void HandleUpdate()
     {
         if (characterController.isGrounded)
         {
@@ -60,14 +63,16 @@ public class PlayerController3D : MonoBehaviour
         }
 
         //Enemy encounter chance, 1 in 10 every .5 seconds
+        //we will use a technique called observer design pattern so as to not double call this inside the gamecontroller
         IEnumerator EnemyEncounter()
         {
             yield return new WaitForSeconds(.5f);
 
-            if (Random.Range(1, 101) <= 10)
+            //had to specifyy the random because system and unity both have a random function
+            if (UnityEngine.Random.Range(1, 101) <= 10)
             {
                 Debug.Log("EnemyEncountered");
-                Battle.SetActive(true);
+                onEncounter();
             }
             StartCoroutine(EnemyEncounter());
         }

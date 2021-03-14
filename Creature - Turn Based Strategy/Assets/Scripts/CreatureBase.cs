@@ -138,6 +138,7 @@ public enum CreatureType
     Normal,
     Fire,
     Water,
+    Electric,
     Grass,
     Ice,
     Fighting,

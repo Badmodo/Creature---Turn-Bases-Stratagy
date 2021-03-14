@@ -37,6 +37,7 @@ public class BattleUnit : MonoBehaviour
 
         }
 
+        image.color = originalColor;
         BattleEnterAnimation();
     }
 
