@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy}
+public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy, BattleTeamScreen}
 
 public class BattleSystem : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud playerHud;
     [SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogueBox dialogueBox;
+    [SerializeField] BattleTeamScreen battleTeamScreen;
 
     public event Action<bool> BattleOver;
 
@@ -21,6 +22,7 @@ public class BattleSystem : MonoBehaviour
 
     int currentAction;
     int currentMove;
+    int currentMember;
 
     CreatureTeam playerteam;
     Creature wildCreature;
@@ -41,6 +43,8 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.Setup(wildCreature);
         enemyHud.SetData(enemyUnit.Creature);
 
+        battleTeamScreen.Initilised();
+
         //Passing the creatures moves to the set moves function
         dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
 
@@ -56,8 +60,16 @@ public class BattleSystem : MonoBehaviour
     {
         //change state
         state = BattleState.PlayerAction;
-        StartCoroutine(dialogueBox.TypeDialog("Choose an action"));
+        dialogueBox.SetDialog("Choose an action");
         dialogueBox.EnableActionText(true);
+    }
+
+    //funtion that opens the Creature Team Screen
+    void OpenPartyScreen()
+    {
+        state = BattleState.BattleTeamScreen;
+        battleTeamScreen.SetPartyData(playerteam.Creatures);
+        battleTeamScreen.gameObject.SetActive(true);
     }
 
     //what happens to the dialoguebox when they attack
@@ -131,18 +143,7 @@ public class BattleSystem : MonoBehaviour
             var nextCreature = playerteam.GetHealthyCreature();
             if (nextCreature != null)
             {
-                playerUnit.Setup(nextCreature);
-                playerHud.SetData(nextCreature);
-
-                //Passing the next creatures moves to the set moves function over the previous
-                dialogueBox.SetMoveNames(nextCreature.Moves);
-
-                //using string interprilation to bring in game spacific text
-                yield return dialogueBox.TypeDialog($"Go {nextCreature.Base.Name}");
-
-                //load the player state coroutine
-                PlayerAction();
-
+                OpenPartyScreen();
             }
             else
             {
@@ -184,25 +185,48 @@ public class BattleSystem : MonoBehaviour
         {
             HandleMoveSelection();
         }
+        else if (state == BattleState.BattleTeamScreen)
+        {
+            HandleBattleTeamSelection();
+        }
     }
 
-    //working out how to navigate the options
+    //working out how to navigate the action options
     void HandleActionSelection()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if(Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentAction < 1)
-            {
-                ++currentAction;
-            }
+            ++currentAction;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentAction > 0)
-            {
-                --currentAction;
-            }
+            --currentAction;
         }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentAction += 2;
+        }
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            currentAction -= 2;
+        }
+
+        currentAction = Mathf.Clamp(currentAction, 0, 3);
+            
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //{
+        //    if (currentAction < 1)
+        //    {
+        //        ++currentAction;
+        //    }
+        //}
+        //else if (Input.GetKeyDown(KeyCode.UpArrow))
+        //{
+        //    if (currentAction > 0)
+        //    {
+        //        --currentAction;
+        //    }
+        //}
 
         dialogueBox.UpdateActionSelection(currentAction);
 
@@ -216,7 +240,16 @@ public class BattleSystem : MonoBehaviour
             }
             else if (currentAction == 1)
             {
-                //1 = run state
+                //1 = bag state
+            }
+            else if (currentAction == 2)
+            {
+                //2 = creature state
+                OpenPartyScreen();
+            }
+            else if (currentAction == 3)
+            {
+                //3 = run state
             }
         }
     }
@@ -226,32 +259,22 @@ public class BattleSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentMove < playerUnit.Creature.Moves.Count -1)
-            {
-                ++currentMove;
-            }
+            ++currentMove;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentMove > 0)
-            {
-                --currentMove;
-            }
+            --currentMove;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (currentMove < playerUnit.Creature.Moves.Count - 2)
-            {
-                currentMove += 2;
-            }
+            currentMove += 2;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (currentMove > 1)
-            {
-                currentMove -= 2;
-            }
+            currentMove -= 2;
         }
+
+        currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Creature.Moves.Count - 1);
 
         dialogueBox.UpdateMoveSelection(currentMove, playerUnit.Creature.Moves[currentMove]);
 
@@ -262,5 +285,90 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.EnableDialogText(true);
             StartCoroutine(PerformPlayerMove());
         }
+        else if(Input.GetKeyDown(KeyCode.X))
+        {
+            dialogueBox.EnableMoveSelector(false);
+            dialogueBox.EnableDialogText(true);
+            PlayerAction();
+        }
+    }
+
+    //logic of moving around the creature select screen
+    void HandleBattleTeamSelection()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            ++currentMember;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            --currentMember;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentMember += 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            currentMember -= 2;
+        }
+
+        currentMember = Mathf.Clamp(currentMember, 0, playerteam.Creatures.Count - 1);
+
+        battleTeamScreen.UpdateMemeberSelection(currentMember);
+
+        //used to select the current creature
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            var selectedMember = playerteam.Creatures[currentMember];
+            //checks if the selected creature has fainted
+            if(selectedMember.HP <= 0)
+            {
+                battleTeamScreen.SetMessageText("You can't send out a fainted Creature");
+                return;
+            }
+            if(selectedMember == playerUnit.Creature)
+            {
+                battleTeamScreen.SetMessageText("This creature is already out");
+                return;
+            }
+            //disables select screen, sets to busy and start switch
+            battleTeamScreen.gameObject.SetActive(false);
+            state = BattleState.Busy;
+            StartCoroutine(SwitchCreature(selectedMember));
+        }
+        //to back out press x
+        else if(Input.GetKeyDown(KeyCode.X))
+        {
+            battleTeamScreen.gameObject.SetActive(false);
+            PlayerAction();
+        }
+    }
+
+    //used to switch creatures
+    IEnumerator SwitchCreature(Creature newCreature)
+    {
+        if (playerUnit.Creature.HP > 0)
+        {
+            //call out to your creature Return *friend*
+            yield return dialogueBox.TypeDialog($"Return {playerUnit.Creature.Base.Name}");
+            //SAM - replace below faint animation with return animation - SAM
+            playerUnit.BattleFaintAnimation();
+            yield return new WaitForSeconds(2f);
+        }
+
+        //send out new creture
+        playerUnit.Setup(newCreature);
+        playerHud.SetData(newCreature);
+
+        //Passing the next creatures moves to the set moves function over the previous
+        dialogueBox.SetMoveNames(newCreature.Moves);
+
+        //using string interprilation to bring in game spacific text
+        yield return dialogueBox.TypeDialog($"Go {newCreature.Base.Name}");
+
+        //players turn over, enemy turn
+        StartCoroutine(EnemyMove());
     }
 }
+
