@@ -31,6 +31,8 @@ public class Creature
     //public dictionary to store stats! private so it can only be changed in this class
     //dictionary stors a key as well as the value
     public Dictionary<Stat, int> Stats { get; private set; }
+    //Disctionary to store Stat manipulators
+    public Dictionary<Stat, int> StatBoost { get; private set; }
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
@@ -42,19 +44,29 @@ public class Creature
         Moves = new List<Move>();
         foreach (var move in Base.LearnableMoves)
         {
-            if(move.Level <= Level)
+            if (move.Level <= Level)
             {
                 Moves.Add(new Move(move.Base));
             }
 
             //creature can only have 4 moves, this limits that
-            if(Moves.Count >= 4)
+            if (Moves.Count >= 4)
             {
                 break;
             }
         }
         CalculateStats();
         HP = MaxHp;
+
+        //on initilize all stat boosts are set to 0 in the dictionary
+        StatBoost = new Dictionary<Stat, int>()
+        {
+            { Stat.Attack, 0 },
+            { Stat.Defense, 0 },
+            { Stat.SpecialAttack, 0 },
+            { Stat.SpecialDefence, 0 },
+            { Stat.Speed, 0 },
+        };
     }
 
     //calculate the value of all stats and store them in the Dictinary
@@ -75,7 +87,21 @@ public class Creature
     {
         int statVal = Stats[stat];
 
-        //SAM - at this point we can add stat boosts and declines
+        //at this point we can add stat boosts and declines
+        int boost = StatBoost[stat];
+        //these values are the same as calculated in pokemon
+        var boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+
+        if (boost >=0)
+        {
+            //change it to an int 
+            statVal = Mathf.FloorToInt(statVal * boostValues[boost]);
+        }
+        else
+        {
+            //change it to an int 
+            statVal = Mathf.FloorToInt(statVal / boostValues[-boost]);
+        }
 
         return statVal;
     }
@@ -139,8 +165,8 @@ public class Creature
         };
 
         //conditional operator, in place of an if else
-        float attack = (move.Base.IsSpecial) ? attacker.SpecialAttack : attacker.Attack;
-        float defense = (move.Base.IsSpecial) ? SpecialDefense : Defense;
+        float attack = (move.Base.Category == MoveCategory.Special) ? attacker.SpecialAttack : attacker.Attack;
+        float defense = (move.Base.Category == MoveCategory.Special) ? SpecialDefense : Defense;
 
         //modifiers including random range, type bonus and critical bonus
         float modifiers = Random.Range(0.85f, 1f) * type * critical;

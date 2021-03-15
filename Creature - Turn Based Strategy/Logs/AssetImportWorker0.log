@@ -237,3 +237,73 @@ Received Import Request.
 Start importing Assets/Scripts/CreatureBase.cs using Guid(cf066a500a816844294d33e7f26d8b0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9221348bd360232817dfffadcf599b37') in 0.021524 seconds
   Import took 0.027599 seconds .
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003640 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.67 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.259 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.27 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1880 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 88.6 MB.
+System memory in use after: 88.6 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2342.
+Total: 6.688500 ms (FindLiveObjects: 0.712500 ms CreateObjectMapping: 0.307200 ms MarkObjects: 5.272900 ms  DeleteObjects: 0.393100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003330 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 1.26 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.801 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.28 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1880 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 88.7 MB.
+System memory in use after: 88.7 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2345.
+Total: 8.393600 ms (FindLiveObjects: 0.792400 ms CreateObjectMapping: 0.346600 ms MarkObjects: 6.807200 ms  DeleteObjects: 0.443200 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 1813.212497 seconds.
+  path: Assets/Scripts/MoveBase.cs
+  artifactKey: Guid(e0cd00033df50d54a9344db750e22b03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/MoveBase.cs using Guid(e0cd00033df50d54a9344db750e22b03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d859b5c3f46d9018e6b6cc163d9c6bb') in 0.014067 seconds
+  Import took 0.028129 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 34.183895 seconds.
+  path: Assets/Game/Resources/Moves/Growl.asset
+  artifactKey: Guid(db0d49355ad84424ab30ec83b58546cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Game/Resources/Moves/Growl.asset using Guid(db0d49355ad84424ab30ec83b58546cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8aaca6656cb1c5a4de9ca74cd00c181f') in 0.033174 seconds
+  Import took 0.039279 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.034058 seconds.
+  path: Assets/Game/Resources/Moves/Growl.asset
+  artifactKey: Guid(db0d49355ad84424ab30ec83b58546cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Game/Resources/Moves/Growl.asset using Guid(db0d49355ad84424ab30ec83b58546cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8aaca6656cb1c5a4de9ca74cd00c181f') in 0.011258 seconds
+  Import took 0.020307 seconds .
+

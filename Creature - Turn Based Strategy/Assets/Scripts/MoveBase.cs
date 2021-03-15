@@ -15,8 +15,11 @@ public class MoveBase : ScriptableObject
     [SerializeField] int power;
     [SerializeField] int accuracy;
     [SerializeField] int pp;
+    [SerializeField] MoveCategory category;
+    [SerializeField] MoveEffects effects;
+    [SerializeField] MoveTarget target;
 
-    //property to expose all the varibales
+    //properties to expose all the varibales
     public string Name
     {
         get
@@ -59,20 +62,79 @@ public class MoveBase : ScriptableObject
             return pp;
         }
     }
-
-    //this designates if a move uses attack or special attack
-    public bool IsSpecial
+    public MoveCategory Category
     {
         get
         {
-            if(type == CreatureType.Fire || type == CreatureType.Water || type == CreatureType.Grass || type == CreatureType.Ice || type == CreatureType.Electric || type == CreatureType.Dragon)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return category;
         }
     }
+    public MoveEffects Effects
+    {
+        get
+        {
+            return effects;
+        }
+    }
+    public MoveTarget Target
+    {
+        get
+        {
+            return target;
+        }
+    }
+
+    //replaced this with an enum
+    //this designates if a move uses attack or special attack, public bool IsSpecial
+    //{
+    //    get
+    //    {
+    //        if(type == CreatureType.Fire || type == CreatureType.Water || type == CreatureType.Grass || type == CreatureType.Ice || type == CreatureType.Electric || type == CreatureType.Dragon)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //}
+}
+
+//specify the stats that can be boosted by this move
+//tried using a Dictionary my new favourite but you cant serizlie a dictionary
+[System.Serializable]
+public class MoveEffects
+{
+    [SerializeField] List<StatBoost> boosts;
+
+    public List<StatBoost> Boosts
+    {
+        get
+        {
+            return boosts;
+        }
+    }
+}
+
+//only purpose of this class is to be shown as a list in MoveEffects
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+}
+
+//physical touches the enemy, special used special moves to damage and status effects the stats
+public enum MoveCategory
+{
+    Physical,
+    Special,
+    Status
+}
+
+//this dictates if you apply the boost to yourself or your foe
+public enum  MoveTarget
+{
+    foe, self
 }
