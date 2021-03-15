@@ -155,6 +155,15 @@ public enum CreatureType
     Fairy
 }
 
+public enum Stat
+{
+    Attack,
+    Defense,
+    SpecialAttack,
+    SpecialDefence,
+    Speed
+}
+
 //this is the totallity of the effectivness in a pokemon game, the order needs to be the same as the CreatureType
 public class TypeChart
 {

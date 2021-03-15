@@ -28,13 +28,15 @@ public class Creature
 
     //list of moves for the creature
     public List<Move> Moves { get; set; }
+    //public dictionary to store stats! private so it can only be changed in this class
+    //dictionary stors a key as well as the value
+    public Dictionary<Stat, int> Stats { get; private set; }
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
-        //these will noe be called from the constructor not manually set
+        //these will now be called from the constructor not manually set
         //Base = pBase;
         //Level = pLevel;
-        HP = MaxHp;
 
         //checks level and moves available at that level
         Moves = new List<Move>();
@@ -51,50 +53,70 @@ public class Creature
                 break;
             }
         }
+        CalculateStats();
+        HP = MaxHp;
     }
 
+    //calculate the value of all stats and store them in the Dictinary
+    void CalculateStats()
+    {
+        Stats = new Dictionary<Stat, int>();
+        Stats.Add(Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5);
+        Stats.Add(Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5);
+        Stats.Add(Stat.SpecialAttack, Mathf.FloorToInt((Base.SpecialAttack * Level) / 100f) + 5);
+        Stats.Add(Stat.SpecialDefence, Mathf.FloorToInt((Base.SpecialDefense * Level) / 100f) + 5);
+        Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
+
+        MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10;
+    }
+
+    //this function will take a value of the stat and will take a stat enum as a paramater
+    int GetStat(Stat stat)
+    {
+        int statVal = Stats[stat];
+
+        //SAM - at this point we can add stat boosts and declines
+
+        return statVal;
+    }
+
+    //all stats for each creature
     public int Attack
     {
         get 
         { 
-            return Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5; 
+            return GetStat(Stat.Attack); 
         }
     }
     public int Defense
     {
         get
         {
-            return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
+            return GetStat(Stat.Defense);
         }
     }
     public int SpecialAttack
     {
         get
         {
-            return Mathf.FloorToInt((Base.SpecialAttack * Level) / 100f) + 5;
+            return GetStat(Stat.SpecialAttack);
         }
     }
     public int SpecialDefense
     {
         get
         {
-            return Mathf.FloorToInt((Base.SpecialDefense * Level) / 100f) + 5;
+            return GetStat(Stat.SpecialDefence);
         }
     }
     public int Speed
     {
         get
         {
-            return Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
+            return GetStat(Stat.Speed);
         }
     }
-    public int MaxHp
-    {
-        get
-        {
-            return Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10;
-        }
-    }
+    public int MaxHp { get; private set; }
 
     //this calculation is the same as the one preformed in a pokemon game, complicated. Yes.
     public DamageDetails TakeDamage(Move move, Creature attacker)

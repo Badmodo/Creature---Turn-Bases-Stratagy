@@ -10,6 +10,18 @@ public class BattleUnit : MonoBehaviour
     //[SerializeField] CreatureBase _base;
     //[SerializeField] int level;
     [SerializeField] bool isPlayerUnit;
+    [SerializeField] BattleHud hud;
+
+    //property to expose isPlayerUnit
+    public bool IsPlayerUnit
+    {
+        get
+        {
+            return isPlayerUnit;
+        }
+    }
+
+
 
     public Creature Creature { get; set; }
 
@@ -37,6 +49,9 @@ public class BattleUnit : MonoBehaviour
 
         }
 
+        //ssetting up the hud for both creatures
+        hud.SetData(creature);
+
         image.color = originalColor;
         BattleEnterAnimation();
     }
@@ -54,6 +69,14 @@ public class BattleUnit : MonoBehaviour
         }
 
         image.transform.DOLocalMoveX(originalPosition.x, 1f);
+    }
+
+    public BattleHud Hud 
+    {
+        get
+        {
+            return hud;
+        }
     }
 
     //very fast image movement showing attacks

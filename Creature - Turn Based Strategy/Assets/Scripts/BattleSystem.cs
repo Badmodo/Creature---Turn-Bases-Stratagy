@@ -5,14 +5,15 @@ using UnityEngine;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy, BattleTeamScreen}
+public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Busy, BattleTeamScreen, BattleOverKO}
 
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
-    [SerializeField] BattleHud playerHud;
-    [SerializeField] BattleHud enemyHud;
+    //removed to streamline code and run it from the BattleUnit script
+    //[SerializeField] BattleHud playerHud;
+    //[SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] BattleTeamScreen battleTeamScreen;
 
@@ -39,9 +40,10 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetUpBattle()
     {
         playerUnit.Setup(playerteam.GetHealthyCreature());
-        playerHud.SetData(playerUnit.Creature);
         enemyUnit.Setup(wildCreature);
-        enemyHud.SetData(enemyUnit.Creature);
+        //Now being called from BattleUnit
+        //playerHud.SetData(playerUnit.Creature);
+        //enemyHud.SetData(enemyUnit.Creature);
 
         battleTeamScreen.Initilised();
 
@@ -52,14 +54,23 @@ public class BattleSystem : MonoBehaviour
         yield return dialogueBox.TypeDialog($"A wild {enemyUnit.Creature.Base.Name} appeared");
 
         //wait for a second and then allow the player to choose the next action
-        PlayerAction();
+        ActionSelection();
+    }
+
+    //state called when you knock out your enemy
+    void BattleOverKO(bool won)
+    {
+        //battloverKo is the state
+        state = BattleState.BattleOverKO;
+        //event that shows the battle is over
+        BattleOver(won);
     }
 
     //state where you choose what action to do
-    void PlayerAction()
+    void ActionSelection()
     {
         //change state
-        state = BattleState.PlayerAction;
+        state = BattleState.ActionSelection;
         dialogueBox.SetDialog("Choose an action");
         dialogueBox.EnableActionText(true);
     }
@@ -73,42 +84,25 @@ public class BattleSystem : MonoBehaviour
     }
 
     //what happens to the dialoguebox when they attack
-    void PlayerMove()
+    void MoveSelection()
     {
-        state = BattleState.PlayerMove;
+        state = BattleState.MoveSelection;
         dialogueBox.EnableActionText(false);
         dialogueBox.EnableDialogText(false);
         dialogueBox.EnableMoveSelector(true);
     }
 
     //this coroutine selects the currently placed move and returns feedback to the dialogue box
-    IEnumerator PerformPlayerMove()
+    IEnumerator PlayerMove()
     {
-        state = BattleState.Busy;
+        state = BattleState.PerformMove;
 
         var move = playerUnit.Creature.Moves[currentMove];
-        move.Pp--;
-        yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} used {move.Base.Name}");
+        yield return RunMove(playerUnit, enemyUnit, move);
+        //large chunk of code removed and replaced with RunMove()
 
-        playerUnit.BattleAttackAnimation();
-        yield return new WaitForSeconds(1f);
-
-        enemyUnit.BattleHitAmination();
-
-        var damageDetails = enemyUnit.Creature.TakeDamage(move, playerUnit.Creature);
-        yield return enemyHud.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
-
-        //this coroutine plays if the enemy creature lost all hp
-        if (damageDetails.Fainted)
-        {
-            yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} fainted");
-            enemyUnit.BattleFaintAnimation();
-
-            yield return new WaitForSeconds(2f);
-            BattleOver(true);
-        }
-        else
+        //if the battle state was not changed by the RunMove then next step
+        if (state == BattleState.PerformMove)
         {
             StartCoroutine(EnemyMove());
         }
@@ -117,29 +111,50 @@ public class BattleSystem : MonoBehaviour
     //This allows for the enemy turn, same formula as the players after the choice. Move is chosen by random
     IEnumerator EnemyMove()
     {
-        state = BattleState.EnemyMove;
+        state = BattleState.PerformMove;
 
         var move = enemyUnit.Creature.GetRandomMove();
-        move.Pp--;
-        yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} used {move.Base.Name}");
+        yield return RunMove(enemyUnit, playerUnit, move);
 
-        enemyUnit.BattleAttackAnimation();
+        //if the battle state was not changed by the RunMove then next step
+        if (state == BattleState.PerformMove)
+        {
+            ActionSelection();
+        }
+    }
+
+    //function created to condence similar funtionallity of player and enemy creatures
+    //source unit is the one doing the move, the target is recieving it
+    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
+    {
+        move.Pp--;
+        yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} used {move.Base.Name}");
+
+        sourceUnit.BattleAttackAnimation();
         yield return new WaitForSeconds(1f);
 
-        playerUnit.BattleHitAmination();
+        targetUnit.BattleHitAmination();
 
-        var damageDetails = playerUnit.Creature.TakeDamage(move, enemyUnit.Creature);
-        yield return playerHud.UpdateHP();
+        var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
+        yield return targetUnit.Hud.UpdateHP();
         yield return ShowDamageDetails(damageDetails);
 
+        //this coroutine plays if the enemy creature lost all hp
         if (damageDetails.Fainted)
         {
-            yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} fainted");
-            playerUnit.BattleFaintAnimation();
-
+            yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
+            targetUnit.BattleFaintAnimation();
             yield return new WaitForSeconds(2f);
 
-            //check to see if the player has more creatures
+            CheckForBattleOver(targetUnit);
+        }
+    }
+
+    //what happens if the target unit fainted
+    void CheckForBattleOver(BattleUnit faintedUnit)
+    {
+        if(faintedUnit.IsPlayerUnit)
+        {
             var nextCreature = playerteam.GetHealthyCreature();
             if (nextCreature != null)
             {
@@ -147,12 +162,12 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                BattleOver(false);
+                BattleOverKO(false);
             }
         }
         else
         {
-            PlayerAction();
+            BattleOverKO(true);
         }
     }
 
@@ -177,11 +192,11 @@ public class BattleSystem : MonoBehaviour
     //what to do while in the action select screen
     public void HandleUpdate()
     {
-        if(state == BattleState.PlayerAction)
+        if(state == BattleState.ActionSelection)
         {
             HandleActionSelection();
         }
-        else if (state == BattleState.PlayerMove)
+        else if (state == BattleState.MoveSelection)
         {
             HandleMoveSelection();
         }
@@ -236,7 +251,7 @@ public class BattleSystem : MonoBehaviour
             if(currentAction == 0)
             {
                 //0 = fight state
-                PlayerMove();
+                MoveSelection();
             }
             else if (currentAction == 1)
             {
@@ -283,13 +298,13 @@ public class BattleSystem : MonoBehaviour
         {
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogText(true);
-            StartCoroutine(PerformPlayerMove());
+            StartCoroutine(PlayerMove());
         }
         else if(Input.GetKeyDown(KeyCode.X))
         {
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogText(true);
-            PlayerAction();
+            ActionSelection();
         }
     }
 
@@ -341,7 +356,7 @@ public class BattleSystem : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.X))
         {
             battleTeamScreen.gameObject.SetActive(false);
-            PlayerAction();
+            ActionSelection();
         }
     }
 
@@ -359,8 +374,6 @@ public class BattleSystem : MonoBehaviour
 
         //send out new creture
         playerUnit.Setup(newCreature);
-        playerHud.SetData(newCreature);
-
         //Passing the next creatures moves to the set moves function over the previous
         dialogueBox.SetMoveNames(newCreature.Moves);
 
