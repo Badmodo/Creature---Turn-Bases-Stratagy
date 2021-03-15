@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf066a500a816844294d33e7f26d8b0c, type: 3}
   m_Name: NormalType
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
+  name: NormalType
+  description: A normal type creature
+  frontSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  backSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  type1: 1
   type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  specialAttack: 0
-  specialDefense: 0
-  speed: 0
+  maxHp: 50
+  attack: 50
+  defense: 50
+  specialAttack: 50
+  specialDefense: 50
+  speed: 50
   catchRate: 255
-  learnableMoves: []
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 9e9a5054c38bd3a4dbae2b45a663a7f4, type: 2}
+    level: 10
+  - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
+    level: 10

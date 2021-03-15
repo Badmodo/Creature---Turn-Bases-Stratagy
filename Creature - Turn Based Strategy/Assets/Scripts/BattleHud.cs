@@ -29,6 +29,16 @@ public class BattleHud : MonoBehaviour
         levelText.text = "Lvl" + creature.Level;
         hpBar.SetHp((float)creature.HP / creature.MaxHp);
 
+        //setting the status colours in the Hud through disctionary
+        statusColors = new Dictionary<ConditionsID, Color>()
+        {
+            {ConditionsID.psn, psnColor },
+            {ConditionsID.brn, brnColor },
+            {ConditionsID.slp, slpColor },
+            {ConditionsID.par, parColor },
+            {ConditionsID.frz, frzColor },
+        };
+
         SetStatusText();
         //whenever the status is changed this function will be called
         _creature.OnStatusChanged += SetStatusText;
@@ -44,6 +54,7 @@ public class BattleHud : MonoBehaviour
         else
         {
             statusText.text = _creature.Status.Id.ToString().ToUpper();
+            statusText.color = statusColors[_creature.Status.Id];
         }
     }
 

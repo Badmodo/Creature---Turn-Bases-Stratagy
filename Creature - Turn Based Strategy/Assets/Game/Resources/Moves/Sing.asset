@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0cd00033df50d54a9344db750e22b03, type: 3}
   m_Name: Sing
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  type: 0
+  name: Sing
+  description: Puts enemy to sleep
+  type: 1
   power: 0
-  accuracy: 0
-  pp: 0
-  category: 0
+  accuracy: 100
+  pp: 15
+  category: 2
   effects:
     boosts: []
-    status: 0
+    status: 3
   target: 0

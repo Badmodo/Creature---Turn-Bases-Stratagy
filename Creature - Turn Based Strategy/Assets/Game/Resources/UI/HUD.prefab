@@ -249,7 +249,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 952317696333917960}
   levelText: {fileID: 952317695688686964}
+  statusText: {fileID: 952317696288269220}
   hpBar: {fileID: 952317696075776477}
+  psnColor: {r: 0.6749439, g: 0.28958702, b: 0.8207547, a: 1}
+  brnColor: {r: 0.8490566, g: 0.1393734, b: 0.1393734, a: 1}
+  slpColor: {r: 0.509434, g: 0.30468068, b: 0.23741543, a: 1}
+  parColor: {r: 0.764151, g: 0.7519895, b: 0.139854, a: 1}
+  frzColor: {r: 0.14158058, g: 0.3880468, b: 0.7735849, a: 1}
 --- !u!1 &952317696075776479
 GameObject:
   m_ObjectHideFlags: 0

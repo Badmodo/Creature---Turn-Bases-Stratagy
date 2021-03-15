@@ -26,7 +26,7 @@ public class ConditionsDB
             new Condition()
             {
                 Name = "Poison",
-                StartMessage = "has beem poisoned",
+                StartMessage = " has beem poisoned",
                 OnAfterTurn = (Creature creature) =>
                 {
                     //a poisoned creature takes 8% damage per turn 
@@ -40,7 +40,7 @@ public class ConditionsDB
             new Condition()
             {
                 Name = "Burn",
-                StartMessage = "has beem burnt",
+                StartMessage = " has beem burnt",
                 OnAfterTurn = (Creature creature) =>
                 {
                     //a burnt creature takes 16% damage per turn 
@@ -54,7 +54,7 @@ public class ConditionsDB
             new Condition()
             {
                 Name = "Paralyze",
-                StartMessage = "has been paralyzed",
+                StartMessage = " has been paralyzed",
                 OnBeforeMove = (Creature Creature) =>
                 {
                     //1 out of 4 times the creature will not be able to use the move
@@ -73,7 +73,7 @@ public class ConditionsDB
             new Condition()
             {
                 Name = "Freeze",
-                StartMessage = "has been frozen",
+                StartMessage = " has been frozen",
                 OnBeforeMove = (Creature creature) =>
                 {
                     //1 out of 4 times the creature will cure its frozen status
@@ -93,7 +93,7 @@ public class ConditionsDB
             new Condition()
             {
                 Name = "Sleep",
-                StartMessage = "has fallen asleep",
+                StartMessage = " has fallen asleep",
                 OnStart = (Creature creature) =>
                 {
                     //sleep for 1-3 turns
