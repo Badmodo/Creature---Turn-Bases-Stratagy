@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Grass type creature
   frontSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   backSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  type1: 4
+  type1: 5
   type2: 0
   maxHp: 50
   attack: 50

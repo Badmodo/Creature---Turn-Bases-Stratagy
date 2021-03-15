@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Vinewhip
   description: A  grass based attack
-  type: 4
+  type: 5
   power: 45
   accuracy: 100
   pp: 20

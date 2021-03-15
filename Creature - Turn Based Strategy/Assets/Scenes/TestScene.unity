@@ -577,7 +577,7 @@ MonoBehaviour:
   nameText: {fileID: 607748989}
   levelText: {fileID: 1423913855}
   hpBar: {fileID: 1004025369}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &175195245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1173,7 @@ MonoBehaviour:
   nameText: {fileID: 293119826}
   levelText: {fileID: 525085358}
   hpBar: {fileID: 2018887259}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &282814728
 GameObject:
   m_ObjectHideFlags: 0
@@ -3179,7 +3179,7 @@ MonoBehaviour:
   nameText: {fileID: 1995038973}
   levelText: {fileID: 296641050}
   hpBar: {fileID: 505119320}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &807439381
 GameObject:
   m_ObjectHideFlags: 0
@@ -4872,6 +4872,8 @@ MonoBehaviour:
     level: 4
   - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
     level: 12
+  - _base: {fileID: 11400000, guid: 0435af71fa367e54fa0841416936630f, type: 2}
+    level: 8
 --- !u!1 &1081638058
 GameObject:
   m_ObjectHideFlags: 0
@@ -4987,7 +4989,7 @@ MonoBehaviour:
   nameText: {fileID: 1203603340}
   levelText: {fileID: 415512177}
   hpBar: {fileID: 524935487}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &1143162641
 GameObject:
   m_ObjectHideFlags: 0
@@ -6109,7 +6111,7 @@ MonoBehaviour:
   nameText: {fileID: 2073236433}
   levelText: {fileID: 1757159381}
   hpBar: {fileID: 479465530}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &1561885416
 GameObject:
   m_ObjectHideFlags: 0
@@ -7652,7 +7654,7 @@ MonoBehaviour:
   nameText: {fileID: 955517693}
   levelText: {fileID: 67470581}
   hpBar: {fileID: 1561885420}
-  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 0}
+  highlightedColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!1 &2073236431
 GameObject:
   m_ObjectHideFlags: 0
