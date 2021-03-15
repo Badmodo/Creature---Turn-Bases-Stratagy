@@ -33,6 +33,11 @@ public class Creature
     public Dictionary<Stat, int> Stats { get; private set; }
     //Disctionary to store Stat manipulators
     public Dictionary<Stat, int> StatBoost { get; private set; }
+    //set this status on the creature
+    public Condition Status { get; set; }
+    //queue is like a list but you can take things out in the order you put them in, it also needs to be initilsed
+    public Queue<string> StatusChange { get; private set; } = new Queue<string>();
+    public bool HpChanged { get; set; }
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
@@ -58,15 +63,7 @@ public class Creature
         CalculateStats();
         HP = MaxHp;
 
-        //on initilize all stat boosts are set to 0 in the dictionary
-        StatBoost = new Dictionary<Stat, int>()
-        {
-            { Stat.Attack, 0 },
-            { Stat.Defense, 0 },
-            { Stat.SpecialAttack, 0 },
-            { Stat.SpecialDefence, 0 },
-            { Stat.Speed, 0 },
-        };
+        ResetStatBoost();
     }
 
     //calculate the value of all stats and store them in the Dictinary
@@ -80,6 +77,20 @@ public class Creature
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
 
         MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10;
+    }
+
+    //creatures need there stat boosts to be reset after each battle
+    void ResetStatBoost()
+    {
+        //on initilize all stat boosts are set to 0 in the dictionary
+        StatBoost = new Dictionary<Stat, int>()
+        {
+            { Stat.Attack, 0 },
+            { Stat.Defense, 0 },
+            { Stat.SpecialAttack, 0 },
+            { Stat.SpecialDefence, 0 },
+            { Stat.Speed, 0 },
+        };
     }
 
     //this function will take a value of the stat and will take a stat enum as a paramater
@@ -104,6 +115,29 @@ public class Creature
         }
 
         return statVal;
+    }
+
+    //applciation of the boost features
+    public void ApplyBoosts(List<StatBoost> statBoosts)
+    {
+        foreach(var statBoost in statBoosts)
+        {
+            var stat = statBoost.stat;
+            var boost = statBoost.boost;
+
+            //stats cant be boosted or dulled for more than 6 places so clamp
+            StatBoost[stat] = Mathf.Clamp(StatBoost[stat] + boost, -6, 6);
+
+            //shows a stat change in dialogue. Enqueue is to add to a queue
+            if(boost > 0)
+            {
+                StatusChange.Enqueue($"{Base.Name}'s {stat} rose!");
+            }
+            else
+            {
+                StatusChange.Enqueue($"{Base.Name}'s {stat} fell!");
+            }
+        }
     }
 
     //all stats for each creature
@@ -174,13 +208,29 @@ public class Creature
         float d = a * move.Base.Power * ((float)attack / defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
-        HP -= damage;
-        if(HP <= 0)
-        {
-            HP = 0;
-            damageDetails.Fainted = true;
-        }
+        //HP -= damage;
+        //if(HP <= 0)
+        //{
+        //    HP = 0;
+        //    damageDetails.Fainted = true;
+        //}
+        UpdateHP(damage);
+
         return damageDetails;
+    }
+
+    //take the damamge as the paramater, clamp it so it dosnt go beneath 0
+    public void UpdateHP(int damage)
+    {
+        HP = Mathf.Clamp(HP - damage, 0, MaxHp);
+        HpChanged = true;
+    }
+
+    //function to set the status and use dialogue box to show status change
+    public void SetStatus(ConditionsID conditionsID)
+    {
+        Status = ConditionsDB.Conditions[conditionsID];
+        StatusChange.Enqueue($"{Base.Name}{Status.StartMessage}");
     }
 
     //this creates a random move from the enemy creature when its their attack phase
@@ -188,6 +238,19 @@ public class Creature
     {
         int r = Random.Range(0, Moves.Count);
         return Moves[r];
+    }
+
+    //this is going to be used a lot in the future with updates causing a number of status issues for creatures
+    //we will only call this if it is not null ?.invoke
+    public void OnAfterTurn()
+    {
+        Status?.OnAfterTurn?.Invoke(this);
+    }
+
+    //called when the battle is over
+    public void OnBattleOver()
+    {
+        ResetStatBoost();
     }
 }
 

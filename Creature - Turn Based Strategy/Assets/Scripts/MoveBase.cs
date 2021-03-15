@@ -107,12 +107,20 @@ public class MoveBase : ScriptableObject
 public class MoveEffects
 {
     [SerializeField] List<StatBoost> boosts;
+    [SerializeField] ConditionsID status;
 
     public List<StatBoost> Boosts
     {
         get
         {
             return boosts;
+        }
+    }
+    public ConditionsID Status
+    {
+        get
+        {
+            return status;
         }
     }
 }

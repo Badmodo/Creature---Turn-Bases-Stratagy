@@ -24,6 +24,10 @@ public class BattleHud : MonoBehaviour
     //updates the Hp loss with a smooth transition
     public IEnumerator UpdateHP()
     {
-        yield return hpBar.SetHPSmooth((float)_creature.HP / _creature.MaxHp);
+        if (_creature.HpChanged)
+        {
+            yield return hpBar.SetHPSmooth((float)_creature.HP / _creature.MaxHp);
+            _creature.HpChanged = false;
+        }
     }
 }

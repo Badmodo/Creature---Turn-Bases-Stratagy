@@ -54,7 +54,20 @@ public class BattleSystem : MonoBehaviour
         yield return dialogueBox.TypeDialog($"A wild {enemyUnit.Creature.Base.Name} appeared");
 
         //wait for a second and then allow the player to choose the next action
-        ActionSelection();
+        ChooseFirstTurn();
+    }
+
+    //determins based on speed who goes first
+    void ChooseFirstTurn()
+    {
+        if(playerUnit.Creature.Speed >= enemyUnit.Creature.Speed)
+        {
+            ActionSelection();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 
     //state called when you knock out your enemy
@@ -62,6 +75,8 @@ public class BattleSystem : MonoBehaviour
     {
         //battloverKo is the state
         state = BattleState.BattleOverKO;
+       //short way to write a foreach using linq
+        playerteam.Creatures.ForEach(p => p.OnBattleOver());
         //event that shows the battle is over
         BattleOver(won);
     }
@@ -132,21 +147,81 @@ public class BattleSystem : MonoBehaviour
 
         sourceUnit.BattleAttackAnimation();
         yield return new WaitForSeconds(1f);
-
         targetUnit.BattleHitAmination();
 
-        var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
-        yield return targetUnit.Hud.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
+        //check to see if the move was a status move
+        if (move.Base.Category == MoveCategory.Status)
+        {
+            yield return RunMoveEffects(move, sourceUnit.Creature, targetUnit.Creature);
+        }
+        else
+        {
+            var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
+            yield return targetUnit.Hud.UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
+        }
 
-        //this coroutine plays if the enemy creature lost all hp
-        if (damageDetails.Fainted)
+        //this coroutine plays if the creature loses all hp
+        if (targetUnit.Creature.HP <= 0)
         {
             yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
             targetUnit.BattleFaintAnimation();
             yield return new WaitForSeconds(2f);
 
             CheckForBattleOver(targetUnit);
+        }
+
+        //status like poison and burn will hurt the creature after a turn
+        sourceUnit.Creature.OnAfterTurn();
+        yield return ShowSatusCanges(sourceUnit.Creature);
+        yield return sourceUnit.Hud.UpdateHP();
+        if (sourceUnit.Creature.HP <= 0)
+        {
+            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
+            sourceUnit.BattleFaintAnimation();
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(sourceUnit);
+        }
+    }
+
+    //moved this out of Runmove as there will hopefully be a lot of stats changes in here in the future
+    IEnumerator RunMoveEffects(Move move, Creature source, Creature target)
+    {
+        var effects = move.Base.Effects;
+
+        //stat boosting
+        if (effects.Boosts != null)
+        {
+            //see if the move is targeting what creature, self boost or decline on enemy
+            if (move.Base.Target == MoveTarget.self)
+            {
+                source.ApplyBoosts(effects.Boosts);
+            }
+            else
+            {
+                target.ApplyBoosts(effects.Boosts);
+            }
+        }
+
+        //check if this move will cause a status condition
+        if(effects.Status != ConditionsID.none)
+        {
+            target.SetStatus(effects.Status);
+        }
+
+        //now we apply the boost we show the status function to either
+        yield return ShowSatusCanges(source);
+        yield return ShowSatusCanges(target);
+    }
+
+    //to remove a message from a queue you need to use dequeue 
+    IEnumerator ShowSatusCanges(Creature creature)
+    {
+        while(creature.StatusChange.Count > 0)
+        {
+            var message = creature.StatusChange.Dequeue();
+            yield return dialogueBox.TypeDialog(message);
         }
     }
 
@@ -363,8 +438,11 @@ public class BattleSystem : MonoBehaviour
     //used to switch creatures
     IEnumerator SwitchCreature(Creature newCreature)
     {
+        bool currentCreatureFainted = true;
+
         if (playerUnit.Creature.HP > 0)
         {
+            currentCreatureFainted = false;
             //call out to your creature Return *friend*
             yield return dialogueBox.TypeDialog($"Return {playerUnit.Creature.Base.Name}");
             //SAM - replace below faint animation with return animation - SAM
@@ -380,8 +458,15 @@ public class BattleSystem : MonoBehaviour
         //using string interprilation to bring in game spacific text
         yield return dialogueBox.TypeDialog($"Go {newCreature.Base.Name}");
 
-        //players turn over, enemy turn
-        StartCoroutine(EnemyMove());
+        if (currentCreatureFainted)
+        {
+            ChooseFirstTurn();
+        }
+        else
+        {
+            //players turn over, enemy turn
+            StartCoroutine(EnemyMove());
+        }
     }
 }
 
