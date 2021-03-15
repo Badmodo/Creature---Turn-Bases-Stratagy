@@ -142,6 +142,18 @@ public class BattleSystem : MonoBehaviour
     //source unit is the one doing the move, the target is recieving it
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+        //checks to see if the cresture is effected by a modifier that would stop runmove
+        bool canRunMove = sourceUnit.Creature.OnBeforeMove();
+        if(!canRunMove)
+        {
+            //yield break is called to stop the coroutine if a the move is unable to run
+            yield return ShowSatusCanges(sourceUnit.Creature);
+            yield break;
+        }
+        yield return ShowSatusCanges(sourceUnit.Creature);
+
+
+        //none of this logic will be performed if can run move is false
         move.Pp--;
         yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} used {move.Base.Name}");
 

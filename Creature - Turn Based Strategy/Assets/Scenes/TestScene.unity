@@ -4867,6 +4867,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatures:
+  - _base: {fileID: 11400000, guid: 4aac5235d7c5c6d41a0d8971898966e4, type: 2}
+    level: 10
   - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
     level: 6
   - _base: {fileID: 11400000, guid: c98f850840cc4df478bc884e2206141c, type: 2}

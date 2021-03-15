@@ -14,6 +14,11 @@ public class GameController : MonoBehaviour
 
     GameState state;
 
+    private void Awake()
+    {
+        ConditionsDB.Initilize();
+    }
+
     private void Start()
     {
         playerController3D.onEncounter += StartBattle;

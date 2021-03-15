@@ -35,9 +35,13 @@ public class Creature
     public Dictionary<Stat, int> StatBoost { get; private set; }
     //set this status on the creature
     public Condition Status { get; set; }
+    //this measures a set time to allow a status to last(sleep for 4 turns)
+    public int StatusTime { get; set; }
     //queue is like a list but you can take things out in the order you put them in, it also needs to be initilsed
     public Queue<string> StatusChange { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
+    //set status whenever it is changed
+    public event System.Action OnStatusChanged;
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
@@ -76,7 +80,7 @@ public class Creature
         Stats.Add(Stat.SpecialDefence, Mathf.FloorToInt((Base.SpecialDefense * Level) / 100f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
 
-        MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10;
+        MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10 + Level;
     }
 
     //creatures need there stat boosts to be reset after each battle
@@ -226,11 +230,23 @@ public class Creature
         HpChanged = true;
     }
 
-    //function to set the status and use dialogue box to show status change
+    //function to set the status and use dialogue box to show status change, non conditional operator used
     public void SetStatus(ConditionsID conditionsID)
     {
+        //if a status effect is already inplace return
+        if (Status != null) return;
+
         Status = ConditionsDB.Conditions[conditionsID];
+        Status?.OnStart?.Invoke(this);
         StatusChange.Enqueue($"{Base.Name}{Status.StartMessage}");
+        OnStatusChanged?.Invoke();
+    }
+
+    //this function will cure a status such as frozen
+    public void CureStatus()
+    {
+        Status = null;
+        OnStatusChanged?.Invoke();
     }
 
     //this creates a random move from the enemy creature when its their attack phase
@@ -238,6 +254,16 @@ public class Creature
     {
         int r = Random.Range(0, Moves.Count);
         return Moves[r];
+    }
+
+    //will return true or false
+    public bool OnBeforeMove()
+    {
+        if(Status?.OnBeforeMove != null)
+        {
+            return Status.OnBeforeMove(this);
+        }
+        return true;
     }
 
     //this is going to be used a lot in the future with updates causing a number of status issues for creatures
