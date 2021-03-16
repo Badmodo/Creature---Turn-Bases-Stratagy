@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [ System.Serializable]
@@ -25,9 +26,10 @@ public class Creature
     }
 
     public int HP { get; set; }
-
     //list of moves for the creature
     public List<Move> Moves { get; set; }
+    //stores the current move
+    public Move CurrentMove { get; set; }
     //public dictionary to store stats! private so it can only be changed in this class
     //dictionary stors a key as well as the value
     public Dictionary<Stat, int> Stats { get; private set; }
@@ -276,8 +278,10 @@ public class Creature
     //this creates a random move from the enemy creature when its their attack phase
     public Move GetRandomMove()
     {
-        int r = Random.Range(0, Moves.Count);
-        return Moves[r];
+        //check that the random move has PP
+        var movesWithPP = Moves.Where(x => x.Pp > 0).ToList();
+        int r = Random.Range(0, movesWithPP.Count);
+        return movesWithPP[r];
     }
 
     //will return true or false

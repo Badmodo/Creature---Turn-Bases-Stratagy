@@ -5,7 +5,8 @@ using UnityEngine;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Busy, BattleTeamScreen, BattleOverKO}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, BattleOverKO}
+public enum BattleAction { Move, SwitchCreature, UseItem, Run}
 
 public class BattleSystem : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class BattleSystem : MonoBehaviour
     public event Action<bool> BattleOver;
 
     BattleState state;
+    BattleState? priorState;
 
     int currentAction;
     int currentMove;
@@ -54,21 +56,21 @@ public class BattleSystem : MonoBehaviour
         yield return dialogueBox.TypeDialog($"A wild {enemyUnit.Creature.Base.Name} appeared");
 
         //wait for a second and then allow the player to choose the next action
-        ChooseFirstTurn();
+        ActionSelection();
     }
 
-    //determins based on speed who goes first
-    void ChooseFirstTurn()
-    {
-        if(playerUnit.Creature.Speed >= enemyUnit.Creature.Speed)
-        {
-            ActionSelection();
-        }
-        else
-        {
-            StartCoroutine(EnemyMove());
-        }
-    }
+    ////determins based on speed who goes first
+    //void ChooseFirstTurn()
+    //{
+    //    if(playerUnit.Creature.Speed >= enemyUnit.Creature.Speed)
+    //    {
+    //        ActionSelection();
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(EnemyMove());
+    //    }
+    //}
 
     //state called when you knock out your enemy
     void BattleOverKO(bool won)
@@ -107,36 +109,105 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableMoveSelector(true);
     }
 
-    //this coroutine selects the currently placed move and returns feedback to the dialogue box
-    IEnumerator PlayerMove()
+    IEnumerator RunTurns(BattleAction playerAction)
     {
-        state = BattleState.PerformMove;
+        state = BattleState.RunningTurn;
 
-        var move = playerUnit.Creature.Moves[currentMove];
-        yield return RunMove(playerUnit, enemyUnit, move);
-        //large chunk of code removed and replaced with RunMove()
-
-        //if the battle state was not changed by the RunMove then next step
-        if (state == BattleState.PerformMove)
+        if(playerAction == BattleAction.Move)
         {
-            StartCoroutine(EnemyMove());
+            //picks the move from the stored move in creature class
+            playerUnit.Creature.CurrentMove = playerUnit.Creature.Moves[currentMove];
+            enemyUnit.Creature.CurrentMove = enemyUnit.Creature.GetRandomMove();
+
+            //setting creature priority
+            int playerMovePriority = playerUnit.Creature.CurrentMove.Base.Priority;
+            int enemyMovePriority = enemyUnit.Creature.CurrentMove.Base.Priority;
+
+            //Check who gets to go first based on speed and manipulators
+            bool playerGoesFirst = true;
+            if(enemyMovePriority > playerMovePriority)
+            {
+                playerGoesFirst = false;
+            }
+            //if there is no priortiy then speed dictates who goes first
+            else if (enemyMovePriority == playerMovePriority)
+            {
+                playerGoesFirst = playerUnit.Creature.Speed >= enemyUnit.Creature.Speed;
+            }
+
+            var firstUnit = (playerUnit) ? playerUnit : enemyUnit;
+            var secondUnit = (playerUnit) ? enemyUnit : playerUnit;
+
+            //creature of the second unit stored here
+            var secondCreature = secondUnit.Creature;
+
+            //first turn
+            yield return RunMove(firstUnit, secondUnit, firstUnit.Creature.CurrentMove);
+            yield return RunAfterTurn(firstUnit);
+            //end the fight if creature KOd
+            if (state == BattleState.BattleOverKO) yield break;
+
+            //only handle second turn if second creature hasnt fainted
+            if (secondCreature.HP > 0)
+            {
+                //second turn
+                yield return RunMove(secondUnit, firstUnit, secondUnit.Creature.CurrentMove);
+                yield return RunAfterTurn(secondUnit);
+                if (state == BattleState.BattleOverKO) yield break;
+            }
         }
-    }
+        else
+        {
+            //this is how the palyer switches creatures
+            if (playerAction == BattleAction.SwitchCreature)
+            {
+                var selectedCreature = playerteam.Creatures[currentMember];
+                yield return SwitchCreature(selectedCreature);
+            }
+            //Enemy turn
+            var enemyMove = enemyUnit.Creature.GetRandomMove();
+            yield return RunMove(enemyUnit, playerUnit, enemyMove);
+            yield return RunAfterTurn(enemyUnit);
+            if (state == BattleState.BattleOverKO) yield break;
+        }
 
-    //This allows for the enemy turn, same formula as the players after the choice. Move is chosen by random
-    IEnumerator EnemyMove()
-    {
-        state = BattleState.PerformMove;
-
-        var move = enemyUnit.Creature.GetRandomMove();
-        yield return RunMove(enemyUnit, playerUnit, move);
-
-        //if the battle state was not changed by the RunMove then next step
-        if (state == BattleState.PerformMove)
+        if(state != BattleState.BattleOverKO)
         {
             ActionSelection();
         }
     }
+
+    ///made a newer version that allowed for better flow
+    ////this coroutine selects the currently placed move and returns feedback to the dialogue box
+    //IEnumerator PlayerMove()
+    //{
+    //    state = BattleState.RunningTurn;
+
+    //    var move = playerUnit.Creature.Moves[currentMove];
+    //    yield return RunMove(playerUnit, enemyUnit, move);
+    //    //large chunk of code removed and replaced with RunMove()
+
+    //    //if the battle state was not changed by the RunMove then next step
+    //    if (state == BattleState.RunningTurn)
+    //    {
+    //        StartCoroutine(EnemyMove());
+    //    }
+    //}
+
+    //This allows for the enemy turn, same formula as the players after the choice. Move is chosen by random
+    //IEnumerator EnemyMove()
+    //{
+    //    state = BattleState.RunningTurn;
+
+    //    var move = enemyUnit.Creature.GetRandomMove();
+    //    yield return RunMove(enemyUnit, playerUnit, move);
+
+    //    //if the battle state was not changed by the RunMove then next step
+    //    if (state == BattleState.RunningTurn)
+    //    {
+    //        ActionSelection();
+    //    }
+    //}
 
     //function created to condence similar funtionallity of player and enemy creatures
     //source unit is the one doing the move, the target is recieving it
@@ -168,13 +239,25 @@ public class BattleSystem : MonoBehaviour
             //check to see if the move was a status move
             if (move.Base.Category == MoveCategory.Status)
             {
-                yield return RunMoveEffects(move, sourceUnit.Creature, targetUnit.Creature);
+                yield return RunMoveEffects(move.Base.Effects, sourceUnit.Creature, targetUnit.Creature, move.Base.Target);
             }
             else
             {
                 var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
                 yield return targetUnit.Hud.UpdateHP();
                 yield return ShowDamageDetails(damageDetails);
+            }
+
+            if(move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Creature.HP > 0)
+            {
+                foreach(var secondary in move.Base.SecondaryEffects)
+                {
+                    var rnd = UnityEngine.Random.Range(1, 101);
+                    if(rnd <= secondary.Chance)
+                    {
+                        yield return RunMoveEffects(secondary, sourceUnit.Creature, targetUnit.Creature, secondary.Target);
+                    }
+                }
             }
 
             //this coroutine plays if the creature loses all hp
@@ -192,31 +275,18 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name}'s attack missed");
         }
-
-        //status like poison and burn will hurt the creature after a turn
-        sourceUnit.Creature.OnAfterTurn();
-        yield return ShowStatusChanges(sourceUnit.Creature);
-        yield return sourceUnit.Hud.UpdateHP();
-        if (sourceUnit.Creature.HP <= 0)
-        {
-            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
-            sourceUnit.BattleFaintAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(sourceUnit);
-        }
     }
 
     //moved this out of Runmove as there will hopefully be a lot of stats changes in here in the future
-    IEnumerator RunMoveEffects(Move move, Creature source, Creature target)
+    IEnumerator RunMoveEffects(MoveEffects effects, Creature source, Creature target, MoveTarget moveTarget)
     {
-        var effects = move.Base.Effects;
+        //var effects = move.Base.Effects;
 
         //stat boosting
         if (effects.Boosts != null)
         {
             //see if the move is targeting what creature, self boost or decline on enemy
-            if (move.Base.Target == MoveTarget.self)
+            if (moveTarget == MoveTarget.self)
             {
                 source.ApplyBoosts(effects.Boosts);
             }
@@ -241,6 +311,27 @@ public class BattleSystem : MonoBehaviour
         //now we apply the boost we show the status function to either
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
+    }
+
+    IEnumerator RunAfterTurn(BattleUnit sourceUnit)
+    {
+        //end if the battle is over
+        if (state == BattleState.BattleOverKO) yield break;
+        //pass until this condition is true
+        yield return new WaitUntil(() => state == BattleState.RunningTurn);
+
+        //status like poison and burn will hurt the creature after a turn
+        sourceUnit.Creature.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Creature);
+        yield return sourceUnit.Hud.UpdateHP();
+        if (sourceUnit.Creature.HP <= 0)
+        {
+            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
+            sourceUnit.BattleFaintAnimation();
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(sourceUnit);
+        }
     }
 
     //this will determine if a move will hit
@@ -402,6 +493,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 2)
             {
                 //2 = creature state
+                priorState = state;
                 OpenPartyScreen();
             }
             else if (currentAction == 3)
@@ -438,9 +530,14 @@ public class BattleSystem : MonoBehaviour
         //we now select a move. disable the selector. damage eney and change state
         if(Input.GetKeyDown(KeyCode.Z))
         {
+            //store the current move
+            var move = playerUnit.Creature.Moves[currentMove];
+            //if PP is 0 dont use move, return
+            if (move.Pp == 0) return;
+
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogText(true);
-            StartCoroutine(PlayerMove());
+            StartCoroutine(RunTurns(BattleAction.Move));
         }
         else if(Input.GetKeyDown(KeyCode.X))
         {
@@ -491,8 +588,19 @@ public class BattleSystem : MonoBehaviour
             }
             //disables select screen, sets to busy and start switch
             battleTeamScreen.gameObject.SetActive(false);
-            state = BattleState.Busy;
-            StartCoroutine(SwitchCreature(selectedMember));
+
+            //this is called if the plaer chooses to switch creature during their turn
+            if(priorState == BattleState.ActionSelection)
+            {
+                priorState = null;
+                StartCoroutine(RunTurns(BattleAction.SwitchCreature));
+            }
+            else
+            {
+                //this is called if the creature fainted
+                state = BattleState.Busy;
+                StartCoroutine(SwitchCreature(selectedMember));
+            }
         }
         //to back out press x
         else if(Input.GetKeyDown(KeyCode.X))
@@ -505,11 +613,11 @@ public class BattleSystem : MonoBehaviour
     //used to switch creatures
     IEnumerator SwitchCreature(Creature newCreature)
     {
-        bool currentCreatureFainted = true;
+        //bool currentCreatureFainted = true;
 
         if (playerUnit.Creature.HP > 0)
         {
-            currentCreatureFainted = false;
+            //currentCreatureFainted = false;
             //call out to your creature Return *friend*
             yield return dialogueBox.TypeDialog($"Return {playerUnit.Creature.Base.Name}");
             //SAM - replace below faint animation with return animation - SAM
@@ -525,15 +633,17 @@ public class BattleSystem : MonoBehaviour
         //using string interprilation to bring in game spacific text
         yield return dialogueBox.TypeDialog($"Go {newCreature.Base.Name}");
 
-        if (currentCreatureFainted)
-        {
-            ChooseFirstTurn();
-        }
-        else
-        {
-            //players turn over, enemy turn
-            StartCoroutine(EnemyMove());
-        }
+        state = BattleState.RunningTurn;
+
+        //if (currentCreatureFainted)
+        //{
+        //    ChooseFirstTurn();
+        //}
+        //else
+        //{
+        //    //players turn over, enemy turn
+        //    StartCoroutine(EnemyMove());
+        //}
     }
 }
 

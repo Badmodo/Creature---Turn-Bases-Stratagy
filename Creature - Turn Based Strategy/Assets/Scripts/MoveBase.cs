@@ -14,11 +14,13 @@ public class MoveBase : ScriptableObject
     [SerializeField] CreatureType type;
     [SerializeField] int power;
     [SerializeField] int accuracy;
-    [SerializeField] bool cantMiss;
     [SerializeField] int pp;
+    [SerializeField] int priority;
+    [SerializeField] bool cantMiss;
     [SerializeField] MoveCategory category;
-    [SerializeField] MoveEffects effects;
     [SerializeField] MoveTarget target;
+    [SerializeField] MoveEffects effects;    
+    [SerializeField] List<SecondaryEffects> secondaryEffects;
 
     //properties to expose all the varibales
     public string Name
@@ -70,6 +72,13 @@ public class MoveBase : ScriptableObject
             return pp;
         }
     }
+    public int Priority
+    {
+        get
+        {
+            return priority;
+        }
+    }
     public MoveCategory Category
     {
         get
@@ -82,6 +91,13 @@ public class MoveBase : ScriptableObject
         get
         {
             return effects;
+        }
+    }
+    public List<SecondaryEffects> SecondaryEffects
+    {
+        get
+        {
+            return secondaryEffects;
         }
     }
     public MoveTarget Target
@@ -140,6 +156,31 @@ public class MoveEffects
         }
     }
 }
+
+[System.Serializable]
+//inherant from move effects class
+public class SecondaryEffects : MoveEffects
+{
+    [SerializeField] int chance;
+    [SerializeField] MoveTarget target;
+
+    //chance will hold the potentail chance for failure or effect
+    public int Chance
+    {
+        get
+        {
+            return chance;
+        }
+    }
+    public MoveTarget Target
+    {
+        get
+        {
+            return target;
+        }
+    }
+}
+
 
 //only purpose of this class is to be shown as a list in MoveEffects
 [System.Serializable]

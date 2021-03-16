@@ -3353,11 +3353,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wildCreatures:
   - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
-    level: 2
+    level: 7
   - _base: {fileID: 11400000, guid: 0435af71fa367e54fa0841416936630f, type: 2}
-    level: 1
+    level: 15
   - _base: {fileID: 11400000, guid: c98f850840cc4df478bc884e2206141c, type: 2}
-    level: 5
+    level: 7
 --- !u!1 &905955739
 GameObject:
   m_ObjectHideFlags: 0

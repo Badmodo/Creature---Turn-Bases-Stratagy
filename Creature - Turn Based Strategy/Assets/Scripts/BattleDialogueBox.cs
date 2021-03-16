@@ -90,6 +90,15 @@ public class BattleDialogueBox : MonoBehaviour
 
         ppTexts.text = $"pp {move.Pp}/{move.Base.Pp}";
         typeTexts.text = move.Base.Type.ToString();
+
+        //promt the player there is 0PP left of a move
+        if(move.Pp == 0)
+        {
+            ppTexts.color = Color.red;        }
+        else
+        {
+            ppTexts.color = Color.black;
+        }
     }
 
     public void SetMoveNames(List<Move> moves)
