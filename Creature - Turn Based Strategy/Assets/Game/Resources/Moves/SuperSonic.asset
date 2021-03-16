@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0cd00033df50d54a9344db750e22b03, type: 3}
-  m_Name: Sing
+  m_Name: SuperSonic
   m_EditorClassIdentifier: 
-  name: Sing
-  description: Puts enemy to sleep
+  name: SuperSonic
+  description: Confuses the enemy
   type: 1
   power: 0
-  accuracy: 55
-  cantMiss: 0
-  pp: 15
+  accuracy: 100
+  pp: 20
   category: 2
   effects:
     boosts: []
-    status: 3
-    volitileStatus: 0
+    status: 0
+    volitileStatus: 6
   target: 0

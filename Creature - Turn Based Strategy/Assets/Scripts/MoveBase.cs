@@ -14,6 +14,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] CreatureType type;
     [SerializeField] int power;
     [SerializeField] int accuracy;
+    [SerializeField] bool cantMiss;
     [SerializeField] int pp;
     [SerializeField] MoveCategory category;
     [SerializeField] MoveEffects effects;
@@ -53,6 +54,13 @@ public class MoveBase : ScriptableObject
         get
         {
             return accuracy;
+        }
+    }
+    public bool CantMiss
+    {
+        get
+        {
+            return cantMiss;
         }
     }
     public int Pp
@@ -108,6 +116,7 @@ public class MoveEffects
 {
     [SerializeField] List<StatBoost> boosts;
     [SerializeField] ConditionsID status;
+    [SerializeField] ConditionsID volitileStatus;
 
     public List<StatBoost> Boosts
     {
@@ -121,6 +130,13 @@ public class MoveEffects
         get
         {
             return status;
+        }
+    }
+    public ConditionsID VolitileStatus
+    {
+        get
+        {
+            return volitileStatus;
         }
     }
 }

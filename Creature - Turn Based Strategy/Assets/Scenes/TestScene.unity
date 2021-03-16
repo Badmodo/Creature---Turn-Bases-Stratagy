@@ -4273,7 +4273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatures:
-  - _base: {fileID: 11400000, guid: 4aac5235d7c5c6d41a0d8971898966e4, type: 2}
+  - _base: {fileID: 11400000, guid: 0fb7cbbf1523e9043b5b2e28d95d9ec9, type: 2}
     level: 10
   - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
     level: 6

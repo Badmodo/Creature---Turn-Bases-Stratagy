@@ -116,11 +116,50 @@ public class ConditionsDB
                     
                 }
             }
-        }    
+        },    
+        {
+            //Volitile Status Conditions
+            ConditionsID.confusion,
+            new Condition()
+            {
+                Name = "confusion",
+                StartMessage = " has been confused",
+                OnStart = (Creature creature) =>
+                {
+                    //confused for 1-4 turns
+                    creature.VolitileStatusTime = Random.Range(1, 5);
+                    Debug.Log($"Will be confused for {creature.VolitileStatusTime} moves");
+                },
+                OnBeforeMove = (Creature creature) =>
+                {
+                    if(creature.VolitileStatusTime <= 0)
+                    {
+                        creature.CureVolitileStatus();
+                        creature.StatusChange.Enqueue($"{creature.Base.Name} is no longer confused");
+                        return true;
+                    }
+
+                    creature.VolitileStatusTime--;
+                    //50% chance to do a move
+                    if(Random.Range(1, 3) == 1)
+                    {
+                        return true;
+                    }
+                    //Hurt by confusion
+                    creature.StatusChange.Enqueue($"{creature.Base.Name} is confused");
+                    creature.UpdateHP(creature.MaxHp / 8);
+                    creature.StatusChange.Enqueue($"It hurt itself due to confusion");
+                    //move goes off fine
+                    return false;                    
+                }
+            }
+        }  
+        
+
     };
 }
 
 public enum ConditionsID
 {
-    none, psn, brn, slp, par, frz
+    none, psn, brn, slp, par, frz, confusion
 }

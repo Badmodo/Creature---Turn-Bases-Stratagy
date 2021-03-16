@@ -147,45 +147,55 @@ public class BattleSystem : MonoBehaviour
         if(!canRunMove)
         {
             //yield break is called to stop the coroutine if a the move is unable to run
-            yield return ShowSatusCanges(sourceUnit.Creature);
+            yield return ShowStatusChanges(sourceUnit.Creature);
+            //to remove hp from damage if required from a volitle status
+            yield return sourceUnit.Hud.UpdateHP();
             yield break;
         }
-        yield return ShowSatusCanges(sourceUnit.Creature);
+        yield return ShowStatusChanges(sourceUnit.Creature);
 
 
         //none of this logic will be performed if can run move is false
         move.Pp--;
         yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} used {move.Base.Name}");
 
-        sourceUnit.BattleAttackAnimation();
-        yield return new WaitForSeconds(1f);
-        targetUnit.BattleHitAmination();
-
-        //check to see if the move was a status move
-        if (move.Base.Category == MoveCategory.Status)
+        if (CheckIfMoveHits(move, sourceUnit.Creature, targetUnit.Creature))
         {
-            yield return RunMoveEffects(move, sourceUnit.Creature, targetUnit.Creature);
+            sourceUnit.BattleAttackAnimation();
+            yield return new WaitForSeconds(1f);
+            targetUnit.BattleHitAmination();
+
+            //check to see if the move was a status move
+            if (move.Base.Category == MoveCategory.Status)
+            {
+                yield return RunMoveEffects(move, sourceUnit.Creature, targetUnit.Creature);
+            }
+            else
+            {
+                var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
+                yield return targetUnit.Hud.UpdateHP();
+                yield return ShowDamageDetails(damageDetails);
+            }
+
+            //this coroutine plays if the creature loses all hp
+            if (targetUnit.Creature.HP <= 0)
+            {
+                yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
+                targetUnit.BattleFaintAnimation();
+                yield return new WaitForSeconds(2f);
+
+                CheckForBattleOver(targetUnit);
+            }
         }
+        //if the move misses
         else
         {
-            var damageDetails = targetUnit.Creature.TakeDamage(move, sourceUnit.Creature);
-            yield return targetUnit.Hud.UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
-        }
-
-        //this coroutine plays if the creature loses all hp
-        if (targetUnit.Creature.HP <= 0)
-        {
-            yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
-            targetUnit.BattleFaintAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(targetUnit);
+            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name}'s attack missed");
         }
 
         //status like poison and burn will hurt the creature after a turn
         sourceUnit.Creature.OnAfterTurn();
-        yield return ShowSatusCanges(sourceUnit.Creature);
+        yield return ShowStatusChanges(sourceUnit.Creature);
         yield return sourceUnit.Hud.UpdateHP();
         if (sourceUnit.Creature.HP <= 0)
         {
@@ -221,14 +231,59 @@ public class BattleSystem : MonoBehaviour
         {
             target.SetStatus(effects.Status);
         }
+        
+        //check if this move will cause a Volitilestatus condition
+        if(effects.VolitileStatus != ConditionsID.none)
+        {
+            target.SetVolitileStatus(effects.VolitileStatus);
+        }
 
         //now we apply the boost we show the status function to either
-        yield return ShowSatusCanges(source);
-        yield return ShowSatusCanges(target);
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
+    }
+
+    //this will determine if a move will hit
+    bool CheckIfMoveHits(Move move, Creature source, Creature target)
+    {
+        if(move.Base.CantMiss)
+        {
+            return true;
+        }
+        //typical move accuraity is 100
+        float moveAccuracy = move.Base.Accuracy;
+        //boost the move accuracy and evasion stats
+        int accuracy = source.StatBoost[Stat.Accuracy];
+        int evasion = target.StatBoost[Stat.Evasion];
+
+        //Boost values for Accuraicy
+        var boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
+
+        //accuracy adjuster
+        if(accuracy > 0)
+        {
+            moveAccuracy *= boostValues[accuracy];
+        }
+        else
+        {
+            moveAccuracy /= boostValues[-accuracy];
+        }
+
+        //evasion adjuster
+        if(evasion > 0)
+        {
+            moveAccuracy /= boostValues[evasion];
+        }
+        else
+        {
+            moveAccuracy *= boostValues[-evasion];
+        }
+
+        return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 
     //to remove a message from a queue you need to use dequeue 
-    IEnumerator ShowSatusCanges(Creature creature)
+    IEnumerator ShowStatusChanges(Creature creature)
     {
         while(creature.StatusChange.Count > 0)
         {

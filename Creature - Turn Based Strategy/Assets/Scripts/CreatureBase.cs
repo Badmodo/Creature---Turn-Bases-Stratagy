@@ -161,7 +161,10 @@ public enum Stat
     Defense,
     SpecialAttack,
     SpecialDefence,
-    Speed
+    Speed,
+    //below are accuracy stats
+    Accuracy,
+    Evasion
 }
 
 //this is the totallity of the effectivness in a pokemon game, the order needs to be the same as the CreatureType

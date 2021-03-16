@@ -35,6 +35,10 @@ public class Creature
     public Dictionary<Stat, int> StatBoost { get; private set; }
     //set this status on the creature
     public Condition Status { get; set; }
+    //Status that wears off after a battle
+    public Condition VolitileStatus { get; set; }
+    //the length of time before it wears off
+    public int VolitileStatusTime { get; set; }
     //this measures a set time to allow a status to last(sleep for 4 turns)
     public int StatusTime { get; set; }
     //queue is like a list but you can take things out in the order you put them in, it also needs to be initilsed
@@ -42,6 +46,7 @@ public class Creature
     public bool HpChanged { get; set; }
     //set status whenever it is changed
     public event System.Action OnStatusChanged;
+
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
@@ -68,6 +73,8 @@ public class Creature
         HP = MaxHp;
 
         ResetStatBoost();
+        Status = null;
+        VolitileStatus = null;
     }
 
     //calculate the value of all stats and store them in the Dictinary
@@ -94,6 +101,8 @@ public class Creature
             { Stat.SpecialAttack, 0 },
             { Stat.SpecialDefence, 0 },
             { Stat.Speed, 0 },
+            { Stat.Accuracy, 0 },
+            { Stat.Evasion, 0 },
         };
     }
 
@@ -242,11 +251,26 @@ public class Creature
         OnStatusChanged?.Invoke();
     }
 
-    //this function will cure a status such as frozen
+    //function to set the volitle status and use dialogue box to show status change, non conditional operator used
+    public void SetVolitileStatus(ConditionsID conditionsID)
+    {
+        //if a status effect is already inplace return
+        if (VolitileStatus != null) return;
+
+        VolitileStatus = ConditionsDB.Conditions[conditionsID];
+        VolitileStatus?.OnStart?.Invoke(this);
+        StatusChange.Enqueue($"{Base.Name}{VolitileStatus.StartMessage}");
+    }
+
+    //this function will cure a status such as frozen, or a volitle status
     public void CureStatus()
     {
         Status = null;
         OnStatusChanged?.Invoke();
+    }
+        public void CureVolitileStatus()
+    {
+        VolitileStatus = null;
     }
 
     //this creates a random move from the enemy creature when its their attack phase
@@ -259,11 +283,22 @@ public class Creature
     //will return true or false
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if(Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (!Status.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
         }
-        return true;
+        if(VolitileStatus?.OnBeforeMove != null)
+        {
+            if (!VolitileStatus.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
+        }
+        return canPerformMove;
     }
 
     //this is going to be used a lot in the future with updates causing a number of status issues for creatures
@@ -271,11 +306,13 @@ public class Creature
     public void OnAfterTurn()
     {
         Status?.OnAfterTurn?.Invoke(this);
+        VolitileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     //called when the battle is over
     public void OnBattleOver()
     {
+        VolitileStatus = null;
         ResetStatBoost();
     }
 }
