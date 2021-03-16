@@ -106,6 +106,10 @@ public class CreatureBase : ScriptableObject
             return learnableMoves;
         }
     }
+    public int CatchRate
+    {
+        get { return catchRate; }
+    }
 }
 
 //serilizable so it can be seen in inspector

@@ -13,7 +13,7 @@ public class BattleTeamScreen : MonoBehaviour
     public void Initilised()
     {
         //messed up and didnt add in children, I looked for this for an hour. Sam
-        memberSlots = GetComponentsInChildren<BattleTeamUnit>();
+        memberSlots = GetComponentsInChildren<BattleTeamUnit>(true);
     }
 
     //this in a array gathers all components from the battle team units, can have any number up to 6 creatures
@@ -24,6 +24,7 @@ public class BattleTeamScreen : MonoBehaviour
         {
             if (i < creatures.Count)
             {
+                memberSlots[i].gameObject.SetActive(true);
                 memberSlots[i].SetData(creatures[i]);
             }
             else

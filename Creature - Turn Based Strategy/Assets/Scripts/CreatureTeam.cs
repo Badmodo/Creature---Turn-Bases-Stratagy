@@ -29,4 +29,18 @@ public class CreatureTeam : MonoBehaviour
         //origianlly used a for loop to find a creature that had not fainted. Linq used instead
         return creatures.Where(x => x.HP > 0).FirstOrDefault();
     }
+
+    //this functionallity add creature to your party
+    public void AddCreature(Creature newCreature)
+    {
+        if(creatures.Count < 6)
+        {
+            creatures.Add(newCreature);
+        }
+        else
+        {
+            //SAM - we dont dont have a PC yet - SAM
+            //CREATURES ARE LOST IN SPACE
+        }
+    }
 }

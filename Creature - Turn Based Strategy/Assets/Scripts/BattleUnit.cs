@@ -52,6 +52,8 @@ public class BattleUnit : MonoBehaviour
         //ssetting up the hud for both creatures
         hud.SetData(creature);
 
+        //the scale gets really small when we try to catch the creature, reset it here
+        transform.localScale = new Vector3(1, 1, 1);
         image.color = originalColor;
         BattleEnterAnimation();
     }
@@ -111,5 +113,30 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(image.transform.DOLocalMoveY(originalPosition.y - 200f, 0.5f));
         //we use join so they both happen at the same time
         sequence.Join(image.DOFade(0f, 0.5f));
+    }
+
+    //this function will play the capture animation
+    public IEnumerator PlayCaptureAnimaton()
+    {
+        var sequence = DOTween.Sequence();
+        //sprite fades 
+        sequence.Append(image.DOFade(0, 0.5f));
+        //while that happens it moves on the Y axis up
+        sequence.Join(transform.DOLocalMoveY(originalPosition.y + 50f, 0.5f));
+        //also decreases in scale
+        sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
+        yield return sequence.WaitForCompletion();
+    }
+
+    public IEnumerator PlayEscapeAnimaton()
+    {
+        var sequence = DOTween.Sequence();
+        //sprite fades into view again
+        sequence.Append(image.DOFade(1, 0.5f));
+        //while it becomes visable again it moves back to its original position
+        sequence.Join(transform.DOLocalMoveY(originalPosition.y, 0.5f));
+        //also increases in scale back to original size
+        sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
+        yield return sequence.WaitForCompletion();
     }
 }

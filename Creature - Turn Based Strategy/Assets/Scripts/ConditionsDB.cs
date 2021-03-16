@@ -153,10 +153,26 @@ public class ConditionsDB
                     return false;                    
                 }
             }
-        }  
-        
-
+        }      
     };
+
+    //this will check to see if there is a status and give a boost to catch rate if so
+    public static float GetStatusBonus(Condition condition)
+    {
+        if(condition == null)
+        {
+            return 1f;
+        }
+        if (condition.Id == ConditionsID.slp || condition.Id == ConditionsID.frz)
+        {
+            return 2f;
+        }
+        if (condition.Id == ConditionsID.par || condition.Id == ConditionsID.psn || condition.Id == ConditionsID.brn)
+        {
+            return 1.5f;
+        }
+        return 1;
+    }
 }
 
 public enum ConditionsID

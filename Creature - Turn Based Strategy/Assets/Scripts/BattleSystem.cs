@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ public class BattleSystem : MonoBehaviour
     //[SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] BattleTeamScreen battleTeamScreen;
+    [SerializeField] GameObject captureRing;
 
     public event Action<bool> BattleOver;
 
@@ -29,6 +31,8 @@ public class BattleSystem : MonoBehaviour
 
     CreatureTeam playerteam;
     Creature wildCreature;
+
+    int escapeAttempts;
 
     public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
     {
@@ -46,6 +50,9 @@ public class BattleSystem : MonoBehaviour
         //Now being called from BattleUnit
         //playerHud.SetData(playerUnit.Creature);
         //enemyHud.SetData(enemyUnit.Creature);
+
+        //set escape attempts to 0
+        escapeAttempts = 0;
 
         battleTeamScreen.Initilised();
 
@@ -77,7 +84,7 @@ public class BattleSystem : MonoBehaviour
     {
         //battloverKo is the state
         state = BattleState.BattleOverKO;
-       //short way to write a foreach using linq
+        //short way to write a foreach using linq
         playerteam.Creatures.ForEach(p => p.OnBattleOver());
         //event that shows the battle is over
         BattleOver(won);
@@ -113,7 +120,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.RunningTurn;
 
-        if(playerAction == BattleAction.Move)
+        if (playerAction == BattleAction.Move)
         {
             //picks the move from the stored move in creature class
             playerUnit.Creature.CurrentMove = playerUnit.Creature.Moves[currentMove];
@@ -125,7 +132,7 @@ public class BattleSystem : MonoBehaviour
 
             //Check who gets to go first based on speed and manipulators
             bool playerGoesFirst = true;
-            if(enemyMovePriority > playerMovePriority)
+            if (enemyMovePriority > playerMovePriority)
             {
                 playerGoesFirst = false;
             }
@@ -164,6 +171,19 @@ public class BattleSystem : MonoBehaviour
                 var selectedCreature = playerteam.Creatures[currentMember];
                 yield return SwitchCreature(selectedCreature);
             }
+            //attempt to cathch!!!
+            else if(playerAction == BattleAction.UseItem)
+            {
+                dialogueBox.EnableActionText(false);
+                yield return ThrowCaptureRing();
+            }
+            //attempt to run!
+            else if(playerAction == BattleAction.Run)
+            {
+                yield return TryToEscape();
+            }
+
+
             //Enemy turn
             var enemyMove = enemyUnit.Creature.GetRandomMove();
             yield return RunMove(enemyUnit, playerUnit, enemyMove);
@@ -171,7 +191,7 @@ public class BattleSystem : MonoBehaviour
             if (state == BattleState.BattleOverKO) yield break;
         }
 
-        if(state != BattleState.BattleOverKO)
+        if (state != BattleState.BattleOverKO)
         {
             ActionSelection();
         }
@@ -215,7 +235,7 @@ public class BattleSystem : MonoBehaviour
     {
         //checks to see if the cresture is effected by a modifier that would stop runmove
         bool canRunMove = sourceUnit.Creature.OnBeforeMove();
-        if(!canRunMove)
+        if (!canRunMove)
         {
             //yield break is called to stop the coroutine if a the move is unable to run
             yield return ShowStatusChanges(sourceUnit.Creature);
@@ -248,12 +268,12 @@ public class BattleSystem : MonoBehaviour
                 yield return ShowDamageDetails(damageDetails);
             }
 
-            if(move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Creature.HP > 0)
+            if (move.Base.SecondaryEffects != null && move.Base.SecondaryEffects.Count > 0 && targetUnit.Creature.HP > 0)
             {
-                foreach(var secondary in move.Base.SecondaryEffects)
+                foreach (var secondary in move.Base.SecondaryEffects)
                 {
                     var rnd = UnityEngine.Random.Range(1, 101);
-                    if(rnd <= secondary.Chance)
+                    if (rnd <= secondary.Chance)
                     {
                         yield return RunMoveEffects(secondary, sourceUnit.Creature, targetUnit.Creature, secondary.Target);
                     }
@@ -297,13 +317,13 @@ public class BattleSystem : MonoBehaviour
         }
 
         //check if this move will cause a status condition
-        if(effects.Status != ConditionsID.none)
+        if (effects.Status != ConditionsID.none)
         {
             target.SetStatus(effects.Status);
         }
-        
+
         //check if this move will cause a Volitilestatus condition
-        if(effects.VolitileStatus != ConditionsID.none)
+        if (effects.VolitileStatus != ConditionsID.none)
         {
             target.SetVolitileStatus(effects.VolitileStatus);
         }
@@ -337,7 +357,7 @@ public class BattleSystem : MonoBehaviour
     //this will determine if a move will hit
     bool CheckIfMoveHits(Move move, Creature source, Creature target)
     {
-        if(move.Base.CantMiss)
+        if (move.Base.CantMiss)
         {
             return true;
         }
@@ -351,7 +371,7 @@ public class BattleSystem : MonoBehaviour
         var boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
 
         //accuracy adjuster
-        if(accuracy > 0)
+        if (accuracy > 0)
         {
             moveAccuracy *= boostValues[accuracy];
         }
@@ -361,7 +381,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         //evasion adjuster
-        if(evasion > 0)
+        if (evasion > 0)
         {
             moveAccuracy /= boostValues[evasion];
         }
@@ -376,7 +396,7 @@ public class BattleSystem : MonoBehaviour
     //to remove a message from a queue you need to use dequeue 
     IEnumerator ShowStatusChanges(Creature creature)
     {
-        while(creature.StatusChange.Count > 0)
+        while (creature.StatusChange.Count > 0)
         {
             var message = creature.StatusChange.Dequeue();
             yield return dialogueBox.TypeDialog(message);
@@ -386,7 +406,7 @@ public class BattleSystem : MonoBehaviour
     //what happens if the target unit fainted
     void CheckForBattleOver(BattleUnit faintedUnit)
     {
-        if(faintedUnit.IsPlayerUnit)
+        if (faintedUnit.IsPlayerUnit)
         {
             var nextCreature = playerteam.GetHealthyCreature();
             if (nextCreature != null)
@@ -408,11 +428,11 @@ public class BattleSystem : MonoBehaviour
     IEnumerator ShowDamageDetails(DamageDetails damageDetails)
     {
         //if critical hit is over 0 it was call this coroutine, same but also with negative for effectiveness
-        if(damageDetails.Critical > 1f)
+        if (damageDetails.Critical > 1f)
         {
             yield return dialogueBox.TypeDialog("A critical hit!");
         }
-        if(damageDetails.TypeEffectiveness > 1f)
+        if (damageDetails.TypeEffectiveness > 1f)
         {
             yield return dialogueBox.TypeDialog("It's super effective!");
         }
@@ -425,7 +445,7 @@ public class BattleSystem : MonoBehaviour
     //what to do while in the action select screen
     public void HandleUpdate()
     {
-        if(state == BattleState.ActionSelection)
+        if (state == BattleState.ActionSelection)
         {
             HandleActionSelection();
         }
@@ -437,30 +457,31 @@ public class BattleSystem : MonoBehaviour
         {
             HandleBattleTeamSelection();
         }
+
     }
 
     //working out how to navigate the action options
     void HandleActionSelection()
     {
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ++currentAction;
         }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             --currentAction;
         }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentAction += 2;
         }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             currentAction -= 2;
         }
 
         currentAction = Mathf.Clamp(currentAction, 0, 3);
-            
+
         //if (Input.GetKeyDown(KeyCode.DownArrow))
         //{
         //    if (currentAction < 1)
@@ -479,9 +500,9 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.UpdateActionSelection(currentAction);
 
         //change states either move list or run away
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            if(currentAction == 0)
+            if (currentAction == 0)
             {
                 //0 = fight state
                 MoveSelection();
@@ -489,6 +510,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 1)
             {
                 //1 = bag state
+                StartCoroutine(RunTurns(BattleAction.UseItem));
             }
             else if (currentAction == 2)
             {
@@ -499,6 +521,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 3)
             {
                 //3 = run state
+                StartCoroutine(RunTurns(BattleAction.Run));
             }
         }
     }
@@ -528,7 +551,7 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.UpdateMoveSelection(currentMove, playerUnit.Creature.Moves[currentMove]);
 
         //we now select a move. disable the selector. damage eney and change state
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             //store the current move
             var move = playerUnit.Creature.Moves[currentMove];
@@ -539,7 +562,7 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.EnableDialogText(true);
             StartCoroutine(RunTurns(BattleAction.Move));
         }
-        else if(Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.X))
         {
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogText(true);
@@ -572,16 +595,16 @@ public class BattleSystem : MonoBehaviour
         battleTeamScreen.UpdateMemeberSelection(currentMember);
 
         //used to select the current creature
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             var selectedMember = playerteam.Creatures[currentMember];
             //checks if the selected creature has fainted
-            if(selectedMember.HP <= 0)
+            if (selectedMember.HP <= 0)
             {
                 battleTeamScreen.SetMessageText("You can't send out a fainted Creature");
                 return;
             }
-            if(selectedMember == playerUnit.Creature)
+            if (selectedMember == playerUnit.Creature)
             {
                 battleTeamScreen.SetMessageText("This creature is already out");
                 return;
@@ -590,7 +613,7 @@ public class BattleSystem : MonoBehaviour
             battleTeamScreen.gameObject.SetActive(false);
 
             //this is called if the plaer chooses to switch creature during their turn
-            if(priorState == BattleState.ActionSelection)
+            if (priorState == BattleState.ActionSelection)
             {
                 priorState = null;
                 StartCoroutine(RunTurns(BattleAction.SwitchCreature));
@@ -603,7 +626,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
         //to back out press x
-        else if(Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.X))
         {
             battleTeamScreen.gameObject.SetActive(false);
             ActionSelection();
@@ -644,6 +667,147 @@ public class BattleSystem : MonoBehaviour
         //    //players turn over, enemy turn
         //    StartCoroutine(EnemyMove());
         //}
+    }
+
+    IEnumerator ThrowCaptureRing()
+    {
+        state = BattleState.Busy;
+        ////SAM - redo this, if we use trainer battles? - SAM
+        //if(isTrainerBattle)
+        //{
+        //    yield return dialogueBox.TypeDialog($"You can't steal another teams Creatures!");
+        //    state = BattleState.RunningTurn;
+        //    yield break;
+        //}
+
+
+        //SAM - redo this message, figure out how to set up a players name? - SAM
+        yield return dialogueBox.TypeDialog($"Player sent out a Capture Ring");
+
+        //message pops up and we instantiate capture ring in
+        var capturering = Instantiate(captureRing, playerUnit.transform.position - new Vector3(2, 0), Quaternion.identity);
+        var CaptureRing = capturering.GetComponent<SpriteRenderer>();
+
+        //implament the animations to throw the Capture Ring
+        yield return CaptureRing.transform.DOJump(enemyUnit.transform.position + new Vector3(0, 1), 0.5f, 1, 1f).WaitForCompletion();
+        yield return enemyUnit.PlayCaptureAnimaton();
+        //drop Capture ring towards creature
+        yield return CaptureRing.transform.DOMoveY(enemyUnit.transform.position.y - 2.1f, 0.5f).WaitForCompletion();
+
+        //call the mathmatical equasion to determin if the creature is caught
+        int shakeCount = TryToCatchCreature(enemyUnit.Creature);
+
+        //animate the ring shake 3 times
+        for (int i = 0; i < Mathf.Min(shakeCount, 3); ++i)
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return CaptureRing.transform.DOPunchRotation(new Vector3(0, 0, 8f), 0.8f).WaitForCompletion();
+        }
+
+        if(shakeCount == 4)
+        {
+            //creature was caught
+            yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} was caught");
+            yield return CaptureRing.DOFade(0, 1.5f).WaitForCompletion();
+
+            //add creature the player party
+            playerteam.AddCreature(enemyUnit.Creature);
+            yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} has been added to your team");
+
+            //remove capture ring
+            Destroy(CaptureRing);
+            BattleOverKO(true);
+        }
+        else
+        {
+            //creature escaped
+            yield return new WaitForSeconds(0.5f);
+            yield return CaptureRing.DOFade(0, 0.2f);
+            //escape animation played
+            yield return enemyUnit.PlayEscapeAnimaton();
+
+            //two different dialoge box responsces depending on how close you were to catching the creature
+            if(shakeCount < 2)
+            {
+                yield return dialogueBox.TypeDialog($"{enemyUnit.Creature.Base.Name} broke free");
+            }
+            else
+            {
+                yield return dialogueBox.TypeDialog($"Almost caught it");
+            }
+
+            //if the creature escapes the ring is destoryed and the battle continues
+            Destroy(CaptureRing);
+            state = BattleState.RunningTurn;
+        }
+    }
+
+    //used in the age old method of enslaving creatures
+    int TryToCatchCreature(Creature creature)
+    {
+        //the formula used in pokemon to capture using health, status and luck to try catch it
+        float a = (3 * creature.MaxHp - 2 * creature.HP) * creature.Base.CatchRate * ConditionsDB.GetStatusBonus(creature.Status) / (3 * creature.MaxHp);
+        if(a >= 255)
+        {
+            //on return 4 the creature is captured
+            return 4;
+        }
+
+        //if the value is not equal to 255 a new value is required and its below....
+        float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
+
+        int shakeCount = 0;
+        //run loop 4 times
+        while(shakeCount < 4)
+        {
+            if(UnityEngine.Random.Range(0, 65535) >= b)
+            {
+                break;
+            }
+            ++shakeCount;
+        }
+        return shakeCount;
+    }
+
+    IEnumerator TryToEscape()
+    {
+        state = BattleState.Busy;
+        //SAM - set this up if we decide to have trainer battles - SAM
+        //if(isTrainerBattle)
+        //{
+        //    yield return dialogueBox.TypeDialog($"You can't run from a Trainer Battle");
+        //    state = BattleState.RunningTurn;
+        //    yield break;
+        //}
+
+        ++escapeAttempts;
+
+        //check and store player and enemys speed
+        int playerSpeed = playerUnit.Creature.Speed;
+        int enemySpeed = enemyUnit.Creature.Speed;
+
+        if(enemySpeed < playerSpeed)
+        {
+            yield return dialogueBox.TypeDialog($"Ran away safely");
+            BattleOver(true);
+        }
+        else
+        {
+            float f = (playerSpeed * 128) / enemySpeed + 30 * escapeAttempts;
+            f = f % 256;
+
+            if(UnityEngine.Random.Range(0, 256) < f)
+            {
+                yield return dialogueBox.TypeDialog($"Ran away safely");
+                BattleOver(true);
+            }
+            else
+            {
+                yield return dialogueBox.TypeDialog($"Can't escape!");
+                state = BattleState.RunningTurn;
+            }
+        }
+
     }
 }
 

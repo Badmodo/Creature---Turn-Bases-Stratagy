@@ -9,6 +9,13 @@ public class Creature
     [SerializeField] CreatureBase _base;
     [SerializeField] int level;
 
+    public Creature(CreatureBase pBase, int pLevel)
+    {
+        _base = pBase;
+        level = pLevel;
+        Initialisation();
+    }
+
     //pickup fron the base class, now a property
     public CreatureBase Base 
     {
@@ -44,7 +51,7 @@ public class Creature
     //this measures a set time to allow a status to last(sleep for 4 turns)
     public int StatusTime { get; set; }
     //queue is like a list but you can take things out in the order you put them in, it also needs to be initilsed
-    public Queue<string> StatusChange { get; private set; } = new Queue<string>();
+    public Queue<string> StatusChange { get; private set; }
     public bool HpChanged { get; set; }
     //set status whenever it is changed
     public event System.Action OnStatusChanged;
@@ -73,6 +80,8 @@ public class Creature
         }
         CalculateStats();
         HP = MaxHp;
+
+        StatusChange = new Queue<string>();
 
         ResetStatBoost();
         Status = null;

@@ -38,7 +38,9 @@ public class GameController : MonoBehaviour
         var playerTeam = playerController3D.GetComponent<CreatureTeam>();
         var wildCreature = FindObjectOfType<ListOfCreaturesInArea>().GetComponent<ListOfCreaturesInArea>().GetRandomWildCreatures();
 
-        battleSystem.StartBattle(playerTeam, wildCreature);
+        //bug that the captured creature would not show up because it was in your team, in the grass... Odd
+        var wildCreatureCopy = new Creature(wildCreature.Base, wildCreature.Level); 
+        battleSystem.StartBattle(playerTeam, wildCreatureCopy);
     }
 
 
