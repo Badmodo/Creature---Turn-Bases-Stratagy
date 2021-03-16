@@ -32,6 +32,8 @@ public class Creature
         }
     }
 
+    //the experience to gain
+    public int Exp { get; set; }
     public int HP { get; set; }
     //list of moves for the creature
     public List<Move> Moves { get; set; }
@@ -78,6 +80,10 @@ public class Creature
                 break;
             }
         }
+
+        //therer is two different growth rates, they will be determined on the particuler genereated creature
+        Exp = Base.GetExpForLevel(Level);
+
         CalculateStats();
         HP = MaxHp;
 

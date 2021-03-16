@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Grass
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2780438955
+    locked: 0
+  - name: Foreground
+    uniqueID: 1937712157
+    locked: 0
+  - name: Player
+    uniqueID: 687964901
+    locked: 0
+  - name: Battle
+    uniqueID: 1207337363
     locked: 0

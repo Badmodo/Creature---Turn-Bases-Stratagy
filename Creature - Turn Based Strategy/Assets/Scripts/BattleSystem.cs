@@ -183,7 +183,6 @@ public class BattleSystem : MonoBehaviour
                 yield return TryToEscape();
             }
 
-
             //Enemy turn
             var enemyMove = enemyUnit.Creature.GetRandomMove();
             yield return RunMove(enemyUnit, playerUnit, enemyMove);
@@ -283,11 +282,13 @@ public class BattleSystem : MonoBehaviour
             //this coroutine plays if the creature loses all hp
             if (targetUnit.Creature.HP <= 0)
             {
-                yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
-                targetUnit.BattleFaintAnimation();
-                yield return new WaitForSeconds(2f);
+                //replaced logic with
+                yield return HandleCreatureFainted(targetUnit);
+                //yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
+                //targetUnit.BattleFaintAnimation();
+                //yield return new WaitForSeconds(2f);
 
-                CheckForBattleOver(targetUnit);
+                //CheckForBattleOver(targetUnit);
             }
         }
         //if the move misses
@@ -346,11 +347,15 @@ public class BattleSystem : MonoBehaviour
         yield return sourceUnit.Hud.UpdateHP();
         if (sourceUnit.Creature.HP <= 0)
         {
-            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
-            sourceUnit.BattleFaintAnimation();
-            yield return new WaitForSeconds(2f);
+            yield return HandleCreatureFainted(sourceUnit);
+            //yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
+            //sourceUnit.BattleFaintAnimation();
+            //yield return new WaitForSeconds(2f);
 
-            CheckForBattleOver(sourceUnit);
+            //CheckForBattleOver(sourceUnit);
+
+            // SAM - is this neccissary? - SAM
+            yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
 
@@ -401,6 +406,36 @@ public class BattleSystem : MonoBehaviour
             var message = creature.StatusChange.Dequeue();
             yield return dialogueBox.TypeDialog(message);
         }
+    }
+
+    //this will now hold all fainted calculations
+    IEnumerator HandleCreatureFainted(BattleUnit faintedUnit)
+    {
+        yield return dialogueBox.TypeDialog($"{faintedUnit.Creature.Base.Name} fainted");
+        faintedUnit.BattleFaintAnimation();
+        yield return new WaitForSeconds(2f);
+
+        if(!faintedUnit.IsPlayerUnit)
+        {
+            //Experiance gain
+            int expYield = faintedUnit.Creature.Base.ExpYield;
+            int enemyLevel = faintedUnit.Creature.Level;
+            //float trainerBonus = (isTrainerBattle) ? 1.5f : 1f;
+
+            //formula to calculate the experience gain
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel /** trainerBonus*/) / 7);
+            //this is wehre the experience gain is added to our littel boy
+            playerUnit.Creature.Exp += expGain;
+            yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} gained {expGain} exp");
+            yield return playerUnit.Hud.SetExpSmooth();
+
+            //check level up
+
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        CheckForBattleOver(faintedUnit);
     }
 
     //what happens if the target unit fainted

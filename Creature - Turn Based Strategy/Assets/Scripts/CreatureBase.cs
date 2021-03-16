@@ -27,10 +27,24 @@ public class CreatureBase : ScriptableObject
 
     [SerializeField] int catchRate = 255;
 
-    //[SerializeField] int expYield;
-    //[SerializeField] GrowthRate growthRate;
+    [SerializeField] int expYield;
+    [SerializeField] GrowthRate growthRate;
 
     [SerializeField] List<LearnableMove> learnableMoves;
+
+    public int GetExpForLevel(int level)
+    { 
+        if(growthRate == GrowthRate.Fast)
+        {
+            return 4 * (level * level * level) / 5;
+        }
+        else if(growthRate == GrowthRate.MediumFast)
+        {
+            return level * level * level;
+        }
+
+        return -1;
+    }
 
 
     //Decided not to use a function like this
@@ -89,15 +103,15 @@ public class CreatureBase : ScriptableObject
         get { return speed; }
     }
 
-    //public int ExpYield
-    //{
-    //    get { return expYield; }
-    //}
+    public int ExpYield
+    {
+        get { return expYield; }
+    }
 
-    //public GrowthRate GrowthRate
-    //{
-    //    get { return growthRate; }
-    //}
+    public GrowthRate GrowthRate
+    {
+        get { return growthRate; }
+    }
 
     public List<LearnableMove> LearnableMoves
     {
@@ -159,6 +173,10 @@ public enum CreatureType
     Fairy
 }
 
+public enum GrowthRate
+{
+    Fast, MediumFast
+}
 public enum Stat
 {
     Attack,
