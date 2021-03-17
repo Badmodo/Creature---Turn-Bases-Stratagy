@@ -4576,14 +4576,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatures:
-  - _base: {fileID: 11400000, guid: 0fb7cbbf1523e9043b5b2e28d95d9ec9, type: 2}
+  - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
+    level: 14
+  - _base: {fileID: 11400000, guid: 4aac5235d7c5c6d41a0d8971898966e4, type: 2}
     level: 10
   - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
     level: 6
   - _base: {fileID: 11400000, guid: c98f850840cc4df478bc884e2206141c, type: 2}
     level: 4
-  - _base: {fileID: 11400000, guid: bc974b7efac035343b4928cd7d672123, type: 2}
-    level: 12
   - _base: {fileID: 11400000, guid: 0435af71fa367e54fa0841416936630f, type: 2}
     level: 8
 --- !u!1 &1081638058
@@ -5966,6 +5966,7 @@ MonoBehaviour:
   dialogueBox: {fileID: 792757916}
   battleTeamScreen: {fileID: 8608560183737374682}
   captureRing: {fileID: 4712300021548930456, guid: 9292c7fbcade6d748869140d781a19ca, type: 3}
+  moveSelectionUI: {fileID: 3682639766755680581}
 --- !u!1 &1694279093
 GameObject:
   m_ObjectHideFlags: 0
@@ -7809,7 +7810,7 @@ RectTransform:
   m_GameObject: {fileID: 3682639766755680580}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 375.17706}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 3682639766406318277}
   - {fileID: 3682639767155759312}
@@ -7821,7 +7822,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 738, y: -29}
+  m_AnchoredPosition: {x: 738, y: -0.0000076293945}
   m_SizeDelta: {x: 250, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3682639766755680580
@@ -7836,6 +7837,7 @@ GameObject:
   - component: {fileID: 3682639766755680591}
   - component: {fileID: 3682639766755680576}
   - component: {fileID: 3682639766755680578}
+  - component: {fileID: 3682639766755680581}
   m_Layer: 0
   m_Name: MoveSelectionUI
   m_TagString: Untagged
@@ -7843,6 +7845,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &3682639766755680581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682639766755680580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36ac435c5b83bf408343fcafca33c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTexts:
+  - {fileID: 3682639766406318276}
+  - {fileID: 3682639767155759327}
+  - {fileID: 3682639766534448204}
+  - {fileID: 3682639767658718497}
+  - {fileID: 3682639766119556948}
+  highLightColor: {r: 0.14117648, g: 0.19215687, b: 0.69803923, a: 1}
 --- !u!222 &3682639766755680591
 CanvasRenderer:
   m_ObjectHideFlags: 0

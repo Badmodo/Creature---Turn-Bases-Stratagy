@@ -58,6 +58,7 @@ public class Creature
     //set status whenever it is changed
     public event System.Action OnStatusChanged;
 
+    public static int MaxNumberOfMoves { get; set; } = 4;
 
     public void Initialisation() /*public Creature(CreatureBase pBase, int pLevel)*/
     {
@@ -75,7 +76,7 @@ public class Creature
             }
 
             //creature can only have 4 moves, this limits that
-            if (Moves.Count >= 4)
+            if (Moves.Count >= MaxNumberOfMoves)
             {
                 break;
             }
@@ -168,6 +169,35 @@ public class Creature
                 StatusChange.Enqueue($"{Base.Name}'s {stat} fell!");
             }
         }
+    }
+
+
+    //this function checks if the exp is greater than amount required to level up
+    public bool CheckForLevelUp()
+    {
+        if(Exp > Base.GetExpForLevel(Level +1))
+        {
+            ++level;
+            return true;
+        }
+        return false;
+    }
+
+    //check if a move is learnable at when called
+    public LearnableMove GetLearnableMoveAtCurrLevel()
+    {
+        return Base.LearnableMoves.Where(x => x.Level == level).FirstOrDefault();        
+    }
+
+    //learn a new move
+    public void LearnMove(LearnableMove moveToLearn)
+    {
+        //safety measure for now, max 4 moves
+        if(Moves.Count > MaxNumberOfMoves)
+        {
+            return;
+        }
+        Moves.Add(new Move(moveToLearn.Base));
     }
 
     //all stats for each creature

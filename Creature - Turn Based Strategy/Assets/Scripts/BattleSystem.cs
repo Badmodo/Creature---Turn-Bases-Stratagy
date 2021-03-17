@@ -2,11 +2,12 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, BattleOverKO}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, MoveToForget, BattleOverKO}
 public enum BattleAction { Move, SwitchCreature, UseItem, Run}
 
 public class BattleSystem : MonoBehaviour
@@ -19,6 +20,13 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] BattleTeamScreen battleTeamScreen;
     [SerializeField] GameObject captureRing;
+    //will be used when trianer is used
+    //[SerializeField] Image playerImage;
+    //[SerializeField] Image trainerImage;
+    [SerializeField] MoveSelectionUI moveSelectionUI;
+
+    //if required
+    //[SerializeField] bool isTrainerBattle;
 
     public event Action<bool> BattleOver;
 
@@ -33,6 +41,7 @@ public class BattleSystem : MonoBehaviour
     Creature wildCreature;
 
     int escapeAttempts;
+    MoveBase moveToLearn;
 
     public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
     {
@@ -40,6 +49,8 @@ public class BattleSystem : MonoBehaviour
         this.playerteam = playerteam;
         this.wildCreature = wildCreature;
         StartCoroutine(SetUpBattle());
+        ////for trainer battle, bug fix to false
+        //isTrainerBattle = false;
     }
 
     //simp;le set up to show player and enemy set up
@@ -114,6 +125,20 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableActionText(false);
         dialogueBox.EnableDialogText(false);
         dialogueBox.EnableMoveSelector(true);
+    }
+
+    //this is the action of choosing what move to forget
+    IEnumerator ChooseMoveToForget(Creature creature, MoveBase newMove)
+    {
+        state = BattleState.Busy;
+        yield return dialogueBox.TypeDialog($"Choose a move you want to forget");
+        moveSelectionUI.gameObject.SetActive(true);
+        //will set all the names in the move selection UI and
+        //convert a list of move class to a list of moveBase class
+        moveSelectionUI.SetMoveData(creature.Moves.Select(x => x.Base).ToList(), newMove);
+        moveToLearn = newMove;
+
+        state = BattleState.MoveToForget;
     }
 
     IEnumerator RunTurns(BattleAction playerAction)
@@ -429,8 +454,38 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} gained {expGain} exp");
             yield return playerUnit.Hud.SetExpSmooth();
 
-            //check level up
+            //check level up, while incase multiple levels exp is gained at once
+            while(playerUnit.Creature.CheckForLevelUp())
+            {
+                playerUnit.Hud.SetLevel();
+                yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} grew to level {playerUnit.Creature.Level}");
 
+                //try to learn new move
+                var newMove = playerUnit.Creature.GetLearnableMoveAtCurrLevel();
+                if(newMove != null)
+                {
+                    if(playerUnit.Creature.Moves.Count < Creature.MaxNumberOfMoves)
+                    {
+                        // learn the new move
+                        playerUnit.Creature.LearnMove(newMove);
+                        yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} learned {newMove.Base.Name}");
+                        dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
+                    }
+                    else
+                    {
+                        yield return dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} is trying to learn {newMove.Base.Name}");
+                        yield return dialogueBox.TypeDialog($"but it cannot learn more than {Creature.MaxNumberOfMoves} moves!");
+                        //creature forgets a move and adds new move
+                        yield return ChooseMoveToForget(playerUnit.Creature, newMove.Base);
+                        yield return new WaitUntil(() => state != BattleState.MoveToForget);
+                        yield return new WaitForSeconds(2f);
+
+                    }
+                }
+                //creature may have gained more xp to just level up
+                yield return playerUnit.Hud.SetExpSmooth(true);
+
+            }
 
             yield return new WaitForSeconds(1f);
         }
@@ -492,7 +547,32 @@ public class BattleSystem : MonoBehaviour
         {
             HandleBattleTeamSelection();
         }
+        else if (state == BattleState.MoveToForget)
+        {
+            Action<int> onMoveSelection = (moveIndex) =>
+            {
+                moveSelectionUI.gameObject.SetActive(false);
+                if(moveIndex == Creature.MaxNumberOfMoves)
+                {
+                    //dont learn new move
+                    StartCoroutine(dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} did not learn {moveToLearn}"));
+                }
+                else
+                {
+                    //reference to old move
+                    var selectedMove = playerUnit.Creature.Moves[moveIndex].Base;
+                    //dialogue stating you will forget a move and learn...
+                    StartCoroutine(dialogueBox.TypeDialog($"{playerUnit.Creature.Base.Name} forgot {selectedMove.Name} and learned {moveToLearn.Name}"));
 
+                    //forgot old move
+                    playerUnit.Creature.Moves[moveIndex] = new Move(moveToLearn);
+                }
+
+                moveToLearn = null;
+                state = BattleState.RunningTurn;
+            };
+            moveSelectionUI.HandleMoveSelection(onMoveSelection);
+        }
     }
 
     //working out how to navigate the action options
@@ -842,7 +922,6 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.RunningTurn;
             }
         }
-
     }
 }
 

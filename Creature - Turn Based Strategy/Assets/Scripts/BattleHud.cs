@@ -28,7 +28,7 @@ public class BattleHud : MonoBehaviour
         _creature = creature;
 
         nameText.text = creature.Base.Name;
-        levelText.text = "Lvl" + creature.Level;
+        SetLevel();
         hpBar.SetHp((float)creature.HP / creature.MaxHp);
         SetExp();
 
@@ -60,6 +60,13 @@ public class BattleHud : MonoBehaviour
             statusText.color = statusColors[_creature.Status.Id];
         }
     }
+
+    //this will set the level in the Hud
+    public void SetLevel()
+    {
+        levelText.text = "Lvl" + _creature.Level;
+    }
+
     //sets the value on the xp bar
     public void SetExp()
     {
@@ -71,10 +78,15 @@ public class BattleHud : MonoBehaviour
     }
     
     //set exp smoothly into ExpBar
-    public IEnumerator SetExpSmooth()
+    public IEnumerator SetExpSmooth(bool reset = false)
     {
         //only the player bar will have an XP Bar
         if (expBar == null) yield break;
+
+        if(reset)
+        {
+            expBar.transform.localScale = new Vector3(0, 1, 1);
+        }
 
         float normalisedExp = GetNormalisedXP();
         yield return expBar.transform.DOScaleX(normalisedExp, 1.5f).WaitForCompletion();
