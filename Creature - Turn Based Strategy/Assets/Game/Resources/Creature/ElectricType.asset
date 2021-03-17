@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ElectricType
   m_EditorClassIdentifier: 
   name: ElectricType
-  description: An Electrictype creature
+  description: An Electric type creature
   frontSprite: {fileID: 21300000, guid: 6f610b5528ac96740bf6cb0105d63380, type: 3}
   backSprite: {fileID: 21300000, guid: 6f610b5528ac96740bf6cb0105d63380, type: 3}
   type1: 4
