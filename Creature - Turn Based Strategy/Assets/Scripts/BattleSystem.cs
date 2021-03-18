@@ -7,7 +7,7 @@ using UnityEngine;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, MoveToForget, BattleOverKO}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, MoveToForget, BattleOverKO, NotInBattle}
 public enum BattleAction { Move, SwitchCreature, UseItem, Run}
 
 public class BattleSystem : MonoBehaviour
@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
     MoveBase moveToLearn;
 
     public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
-    {
+    {        
         //wierd use of the same name just to make it work in script
         this.playerteam = playerteam;
         this.wildCreature = wildCreature;

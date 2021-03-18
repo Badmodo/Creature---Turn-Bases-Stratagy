@@ -10,6 +10,8 @@ public class FirstPersonController : MonoBehaviour {
 	public float walkSpeed = 6;
 	public float jumpForce = 220;
 	public LayerMask groundedMask;
+
+	private Animator animator;
 	
 	// System vars
 	bool grounded;
@@ -25,6 +27,7 @@ public class FirstPersonController : MonoBehaviour {
 		Cursor.visible = false;
 		cameraTransform = Camera.main.transform;
 		rigidbody = GetComponent<Rigidbody> ();
+		animator = GetComponent<Animator>();
 	}
 	
 	void Update() {
@@ -34,15 +37,10 @@ public class FirstPersonController : MonoBehaviour {
 		verticalLookRotation += Input.GetAxis("Mouse Y") * mouseSensitivityY;
 		verticalLookRotation = Mathf.Clamp(verticalLookRotation,-60,60);
 		cameraTransform.localEulerAngles = Vector3.left * verticalLookRotation;
-		
-		// Calculate movement:
-		float inputX = Input.GetAxisRaw("Horizontal");
-		float inputY = Input.GetAxisRaw("Vertical");
-		
-		Vector3 moveDir = new Vector3(inputX,0, inputY).normalized;
-		Vector3 targetMoveAmount = moveDir * walkSpeed;
-		moveAmount = Vector3.SmoothDamp(moveAmount,targetMoveAmount,ref smoothMoveVelocity,.15f);
-		
+
+		//Controls Movement
+		Move();
+
 		// Jump
 		if (Input.GetButtonDown("Jump")) {
 			if (grounded) {
@@ -61,6 +59,27 @@ public class FirstPersonController : MonoBehaviour {
 			grounded = false;
 		}
 		
+	}
+
+	private void Move()
+    {
+		float inputX = Input.GetAxisRaw("Horizontal");
+		float inputY = Input.GetAxisRaw("Vertical");
+
+		Vector3 moveDir = new Vector3(inputX, 0, inputY).normalized;
+		Vector3 targetMoveAmount = moveDir * walkSpeed;
+		moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothMoveVelocity, .15f);
+		//Animation
+		if(inputX != 0 || inputY != 0)
+        {
+			animator.SetBool("IsRunning", true);
+			animator.SetBool("IsIdle", false);
+        }
+		else
+        {
+			animator.SetBool("IsRunning", false);
+			animator.SetBool("IsIdle", true);
+		}
 	}
 	
 	void FixedUpdate() {
