@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GravityAttractor : MonoBehaviour {
+public class PlanetGravity : MonoBehaviour {
 	
 	public float gravity = -9.8f;
 	

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (GravityBody))]
-public class FirstPersonController : MonoBehaviour {
+[RequireComponent (typeof (PlayerGravity))]
+public class PlayerController360 : MonoBehaviour {
 	
 	// public vars
 	public float mouseSensitivityX = 1;
@@ -69,6 +69,7 @@ public class FirstPersonController : MonoBehaviour {
 		Vector3 moveDir = new Vector3(inputX, 0, inputY).normalized;
 		Vector3 targetMoveAmount = moveDir * walkSpeed;
 		moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothMoveVelocity, .15f);
+		
 		//Animation
 		if(inputX != 0 || inputY != 0)
         {

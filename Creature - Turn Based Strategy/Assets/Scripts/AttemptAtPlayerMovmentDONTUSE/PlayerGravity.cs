@@ -2,13 +2,13 @@
 using System.Collections;
 
 [RequireComponent (typeof (Rigidbody))]
-public class GravityBody : MonoBehaviour {
+public class PlayerGravity : MonoBehaviour {
 	
-	GravityAttractor planet;
+	PlanetGravity planet;
 	Rigidbody rigidbody;
 	
 	void Awake () {
-		planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAttractor>();
+		planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 		rigidbody = GetComponent<Rigidbody> ();
 
 		// Disable rigidbody gravity and rotation as this is simulated in GravityAttractor script

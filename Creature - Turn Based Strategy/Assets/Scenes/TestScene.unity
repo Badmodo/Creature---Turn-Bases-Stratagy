@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 51e8b76a4a868204dbbbe935ab50be89, type: 2}
 --- !u!1 &2719865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1655,10 +1655,10 @@ GameObject:
   - component: {fileID: 456701596}
   m_Layer: 6
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &456701596
 MeshCollider:
@@ -8030,6 +8030,67 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1001 &4665959995286349037
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.908166
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6912694
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 11.999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947340, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947382, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1075535948}
+    - target: {fileID: 4665959994630947383, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_Name
+      value: EnemyAI
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
 --- !u!222 &6807099599425785492
 CanvasRenderer:
   m_ObjectHideFlags: 0
