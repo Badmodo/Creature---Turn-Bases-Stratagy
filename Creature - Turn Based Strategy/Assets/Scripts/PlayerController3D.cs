@@ -15,6 +15,8 @@ public class PlayerController3D : MonoBehaviour
     public event Action onEncounter;
 
     public bool inGrass;
+    public bool inDialogue;
+    public bool duringDialogue;
 
     public GameObject Battle;
 
@@ -40,6 +42,12 @@ public class PlayerController3D : MonoBehaviour
             {
                 moveDirection.y = jumpSpeed;
             }
+
+            ////how to interact with with colliders of interatable objects
+            //if(Input.GetKeyDown(KeyCode.Z) && inDialogue)
+            //{
+            //    Interact();
+            //}
         }
 
         // Apply gravity
@@ -71,10 +79,23 @@ public class PlayerController3D : MonoBehaviour
             //had to specifyy the random because system and unity both have a random function
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                Debug.Log("EnemyEncountered");
+                //Debug.Log("EnemyEncountered");
                 onEncounter();
             }
             StartCoroutine(EnemyEncounter());
+        }
+
+        //Dialogue Collider enter
+        if (collider.tag == "Dialogue")
+        {
+            inDialogue = true;
+        }
+
+        //on collision i am trying to run this. It should clear the dialogue
+        if (collider.gameObject.GetComponent<DialogueNPC>() && duringDialogue == false)
+        {
+            duringDialogue = true;
+            collider.GetComponent<Interactable>()?.Interact();
         }
     }
 
@@ -93,5 +114,19 @@ public class PlayerController3D : MonoBehaviour
         {
             StopAllCoroutines();
         }
+
+
+        //Dialogue Collider exit
+        if (collider.tag == "Dialogue")
+        {
+            inDialogue = false;
+        }
     }
+
+    //void Interact()
+    //{
+        
+    //////test
+    ////Debug.Log("it worked");
+    //}
 }

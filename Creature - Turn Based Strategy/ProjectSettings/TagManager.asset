@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Grass
   - Planet
+  - Dialogue
   layers:
   - Default
   - TransparentFX
