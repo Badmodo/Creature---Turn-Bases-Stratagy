@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField] GameObject Player;
 
-    GameState state;
+    static GameState state;
+
+    public static GameState State => state;
 
     private void Awake()
     {
@@ -41,19 +43,22 @@ public class GameController : MonoBehaviour
     //start battle state
     void StartBattle()
     {
-        Player.SetActive(false);
+        if (state != GameState.Battle) //Preventing from entering a battle when already in one. 
+        {
+            Player.SetActive(false);
 
-        state = GameState.Battle;
-        battleSystem.gameObject.SetActive(true);
-        FreeroamCam.gameObject.SetActive(false);
+            state = GameState.Battle;
+            battleSystem.gameObject.SetActive(true);
+            FreeroamCam.gameObject.SetActive(false);
 
-        //used to return the player creatures
-        var playerTeam = playerController3D.GetComponent<CreatureTeam>();
-        var wildCreature = FindObjectOfType<ListOfCreaturesInArea>().GetComponent<ListOfCreaturesInArea>().GetRandomWildCreatures();
+            //used to return the player creatures
+            var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            var wildCreature = FindObjectOfType<ListOfCreaturesInArea>().GetComponent<ListOfCreaturesInArea>().GetRandomWildCreatures();
 
-        //bug that the captured creature would not show up because it was in your team, in the grass... Odd
-        var wildCreatureCopy = new Creature(wildCreature.Base, wildCreature.Level); 
-        battleSystem.StartBattle(playerTeam, wildCreatureCopy);
+            //bug that the captured creature would not show up because it was in your team, in the grass... Odd
+            var wildCreatureCopy = new Creature(wildCreature.Base, wildCreature.Level);
+            battleSystem.StartBattle(playerTeam, wildCreatureCopy);
+        }
     }
 
 

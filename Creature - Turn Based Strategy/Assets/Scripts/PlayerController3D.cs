@@ -73,16 +73,22 @@ public class PlayerController3D : MonoBehaviour
         //Enemy encounter chance, 1 in 10 every .5 seconds
         //we will use a technique called observer design pattern so as to not double call this inside the gamecontroller
         IEnumerator EnemyEncounter()
-        {            
-            yield return new WaitForSeconds(.5f);
-
-            //had to specifyy the random because system and unity both have a random function
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+        {      
+            while (inGrass)
             {
-                //Debug.Log("EnemyEncountered");
-                onEncounter();
+                yield return new WaitForSeconds(.5f);
+
+                if (GameController.State == GameState.Freeroam)
+                {
+                    //had to specifyy the random because system and unity both have a random function
+                    if (UnityEngine.Random.Range(1, 101) <= 10)
+                    {
+                        //Debug.Log("EnemyEncountered");
+                        onEncounter();
+                    }
+                    //StartCoroutine(EnemyEncounter());
+                }
             }
-            StartCoroutine(EnemyEncounter());
         }
 
         //Dialogue Collider enter
@@ -92,12 +98,13 @@ public class PlayerController3D : MonoBehaviour
         }
 
         //on collision i am trying to run this. It should clear the dialogue
-        if (collider.gameObject.GetComponent<DialogueNPC>() && duringDialogue == false)
+        if (GameController.State == GameState.Freeroam && collider.gameObject.GetComponent<DialogueNPC>())
         {
-            duringDialogue = true;
+            //duringDialogue = true;
             collider.GetComponent<Interactable>()?.Interact();
         }
     }
+
 
     //Player no longer in long grass
     void OnTriggerExit(Collider collider)
