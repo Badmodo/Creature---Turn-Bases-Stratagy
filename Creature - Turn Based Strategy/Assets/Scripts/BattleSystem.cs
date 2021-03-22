@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 //this creates the states in which the battle can be in
@@ -21,12 +22,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleTeamScreen battleTeamScreen;
     [SerializeField] GameObject captureRing;
     //will be used when trianer is used
-    //[SerializeField] Image playerImage;
-    //[SerializeField] Image trainerImage;
+    [SerializeField] Image playerImage;
+    [SerializeField] Image trainerImage;
     [SerializeField] MoveSelectionUI moveSelectionUI;
 
     //if required
-    //[SerializeField] bool isTrainerBattle;
+    [SerializeField] bool isTrainerBattle = false;
 
     public event Action<bool> BattleOver;
 
@@ -38,10 +39,13 @@ public class BattleSystem : MonoBehaviour
     int currentMember;
 
     CreatureTeam playerteam;
+    CreatureTeam trainerteam;
     Creature wildCreature;
 
     int escapeAttempts;
     MoveBase moveToLearn;
+    PlayerController3D player;
+    TrainerController trainer;
 
     public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
     {        
@@ -49,15 +53,49 @@ public class BattleSystem : MonoBehaviour
         this.playerteam = playerteam;
         this.wildCreature = wildCreature;
         StartCoroutine(SetUpBattle());
+    }
+    
+    public void StartTrainerBattle(CreatureTeam playerteam, CreatureTeam trainerTeam)
+    {        
+        //wierd use of the same name just to make it work in script
+        this.playerteam = playerteam;
+        this.trainerteam = trainerTeam;
         ////for trainer battle, bug fix to false
-        //isTrainerBattle = false;
+        isTrainerBattle = false;
+
+        player = playerteam.GetComponent<PlayerController3D>();
+        trainer = trainerteam.GetComponent<TrainerController>();
+
+        StartCoroutine(SetUpBattle());
     }
 
     //simp;le set up to show player and enemy set up
     public IEnumerator SetUpBattle()
     {
-        playerUnit.Setup(playerteam.GetHealthyCreature());
-        enemyUnit.Setup(wildCreature);
+        if (!isTrainerBattle)
+        {
+            //wild creature battle
+            playerUnit.Setup(playerteam.GetHealthyCreature());
+            enemyUnit.Setup(wildCreature);
+            //using string interprilation to bring in game spacific text
+            yield return dialogueBox.TypeDialog($"A wild {enemyUnit.Creature.Base.Name} appeared");
+
+        }
+        else
+        {
+            //trainer battle
+            //set inactive creature sprites and activae trainer sprites
+            playerUnit.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(false);
+
+            playerImage.gameObject.SetActive(true);
+            trainerImage.gameObject.SetActive(true);
+            playerImage.sprite = player.Sprite;
+            trainerImage.sprite = trainer.Sprite;
+
+            yield return dialogueBox.TypeDialog($"{trainer.Name} want to fight");
+        }
+
         //Now being called from BattleUnit
         //playerHud.SetData(playerUnit.Creature);
         //enemyHud.SetData(enemyUnit.Creature);
@@ -69,9 +107,6 @@ public class BattleSystem : MonoBehaviour
 
         //Passing the creatures moves to the set moves function
         dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
-
-        //using string interprilation to bring in game spacific text
-        yield return dialogueBox.TypeDialog($"A wild {enemyUnit.Creature.Base.Name} appeared");
 
         //wait for a second and then allow the player to choose the next action
         ActionSelection();

@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController3D : MonoBehaviour
-{
+{    
     CharacterController characterController;
+
+    [SerializeField] Sprite sprite;
+    [SerializeField] string name;
 
     public GameObject Player;
     public float speed = 6.0f;
@@ -103,10 +106,20 @@ public class PlayerController3D : MonoBehaviour
             //duringDialogue = true;
             collider.GetComponent<Interactable>()?.Interact();
         }
+
+        //on collision i am trying to run this. It should clear the dialogue
+        if (GameController.State == GameState.Freeroam && collider.gameObject.GetComponent<TrainerController>())
+        {
+            var trainer = collider.GetComponent<TrainerController>();
+            if (trainer != null)
+            {
+                StartCoroutine(trainer.TriggerTrainerBattle());
+            }
+        }
     }
 
 
-    //Player no longer in long grass
+    //Player no longer in long grass or dialogue
     void OnTriggerExit(Collider collider)
     {
         if (collider.tag == "Grass" && inGrass)
@@ -132,8 +145,14 @@ public class PlayerController3D : MonoBehaviour
 
     //void Interact()
     //{
-        
+
     //////test
     ////Debug.Log("it worked");
     //}
+
+    public string Name
+    { get => name; }
+
+    public Sprite Sprite
+    { get => sprite; }
 }

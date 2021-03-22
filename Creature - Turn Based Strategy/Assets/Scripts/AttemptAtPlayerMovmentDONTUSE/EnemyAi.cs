@@ -8,6 +8,7 @@ public class EnemyAi : MonoBehaviour
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask whatIdGround, whatIsPlayer;
+    [SerializeField] TrainerController trainer;
 
     public static float health;
 
@@ -48,7 +49,6 @@ public class EnemyAi : MonoBehaviour
         if (!playerInSightRange && !playerInAttackRange) Patroling();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInSightRange && playerInAttackRange) AttackPlayer();
-
     }
 
     private void Patroling()
@@ -85,6 +85,8 @@ public class EnemyAi : MonoBehaviour
 
     private void ChasePlayer()
     {
+        trainer.TriggerTrainerBattle();
+
         agent.SetDestination(player.position);
     }
     
@@ -99,15 +101,17 @@ public class EnemyAi : MonoBehaviour
         if(!alreadyAttacked)
         {
             //attack code here
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            GameController.Instance.StartTrainerBattle(trainer);
+
+            //Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
 
 
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            //rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            //rb.AddForce(transform.up * 8f, ForceMode.Impulse);
             
             //has the enemy attacked
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            //Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
 

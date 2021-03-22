@@ -13,11 +13,12 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject Player;
 
     static GameState state;
-
+    public static GameController Instance;
     public static GameState State => state;
 
     private void Awake()
     {
+        Instance = this;
         ConditionsDB.Initilize();
     }
 
@@ -61,12 +62,30 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void StartTrainerBattle(TrainerController trainer)
+    {
+        if (state != GameState.Battle) //Preventing from entering a battle when already in one. 
+        {
+            //Player.SetActive(false);
+
+            state = GameState.Battle;
+            battleSystem.gameObject.SetActive(true);
+            FreeroamCam.gameObject.SetActive(false);
+
+            //used to return the player creatures
+            var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            var trainerTeam = trainer.GetComponent<CreatureTeam>();
+
+            battleSystem.StartTrainerBattle(playerTeam, trainerTeam);
+        }
+    }
+
 
     //start freeroam state
     void EndBattle(bool won)
     {
 
-        Player.SetActive(true);
+        //Player.SetActive(true);
 
         state = GameState.Freeroam;
         battleSystem.gameObject.SetActive(false);
