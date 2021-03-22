@@ -61,7 +61,7 @@ public class BattleSystem : MonoBehaviour
         this.playerteam = playerteam;
         this.trainerteam = trainerTeam;
         ////for trainer battle, bug fix to false
-        isTrainerBattle = false;
+        isTrainerBattle = true;
 
         player = playerteam.GetComponent<PlayerController3D>();
         trainer = trainerteam.GetComponent<TrainerController>();
@@ -85,6 +85,9 @@ public class BattleSystem : MonoBehaviour
         {
             //trainer battle
             //set inactive creature sprites and activae trainer sprites
+            playerUnit.Setup(playerteam.GetHealthyCreature());
+            enemyUnit.Setup(trainerteam.GetHealthyCreature());
+
             playerUnit.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(false);
 
@@ -106,6 +109,8 @@ public class BattleSystem : MonoBehaviour
         battleTeamScreen.Initilised();
 
         //Passing the creatures moves to the set moves function
+        Debug.Log("(playerUnit.Creature is null: " + (playerUnit.Creature == null));
+        Debug.Log("(playerUnit.Creature.Moves: " + (playerUnit.Creature.Moves));
         dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
 
         //wait for a second and then allow the player to choose the next action
