@@ -15,7 +15,7 @@ public class TrainerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         SeePlayer.SetActive(false);
 
-        //if I need dialogue
+        ////if I need dialogue
         //StartCoroutine(DialogueManager.Instance.ShowDialog(dialogue, () =>
         //{
         //    Debug.Log("start trainer battle");

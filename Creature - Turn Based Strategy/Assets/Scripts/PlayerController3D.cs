@@ -8,7 +8,7 @@ public class PlayerController3D : MonoBehaviour
     CharacterController characterController;
 
     [SerializeField] Sprite sprite;
-    [SerializeField] string name;
+    [SerializeField] string _name;
 
     public GameObject Player;
     public float speed = 6.0f;
@@ -37,7 +37,6 @@ public class PlayerController3D : MonoBehaviour
         {
             // We are grounded, so recalculate
             // move direction directly from axes
-
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
             moveDirection *= speed;
 
@@ -45,12 +44,6 @@ public class PlayerController3D : MonoBehaviour
             {
                 moveDirection.y = jumpSpeed;
             }
-
-            ////how to interact with with colliders of interatable objects
-            //if(Input.GetKeyDown(KeyCode.Z) && inDialogue)
-            //{
-            //    Interact();
-            //}
         }
 
         // Apply gravity
@@ -143,15 +136,8 @@ public class PlayerController3D : MonoBehaviour
         }
     }
 
-    //void Interact()
-    //{
-
-    //////test
-    ////Debug.Log("it worked");
-    //}
-
     public string Name
-    { get => name; }
+    { get => _name; }
 
     public Sprite Sprite
     { get => sprite; }

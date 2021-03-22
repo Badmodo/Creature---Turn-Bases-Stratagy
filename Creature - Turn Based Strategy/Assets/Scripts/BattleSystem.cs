@@ -8,26 +8,23 @@ using UnityEngine.UI;
 
 
 //this creates the states in which the battle can be in
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, MoveToForget, BattleOverKO, NotInBattle}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, BattleTeamScreen, AboutToUse, MoveToForget, BattleOverKO, NotInBattle}
 public enum BattleAction { Move, SwitchCreature, UseItem, Run}
 
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
-    //removed to streamline code and run it from the BattleUnit script
-    //[SerializeField] BattleHud playerHud;
-    //[SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogueBox dialogueBox;
     [SerializeField] BattleTeamScreen battleTeamScreen;
     [SerializeField] GameObject captureRing;
-    //will be used when trianer is used
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
     [SerializeField] MoveSelectionUI moveSelectionUI;
 
-    //if required
     [SerializeField] bool isTrainerBattle = false;
+
+    bool aboutToUseChoice = true;
 
     public event Action<bool> BattleOver;
 
@@ -72,6 +69,10 @@ public class BattleSystem : MonoBehaviour
     //simp;le set up to show player and enemy set up
     public IEnumerator SetUpBattle()
     {
+
+        playerUnit.Clear();
+        enemyUnit.Clear();
+
         if (!isTrainerBattle)
         {
             //wild creature battle
@@ -85,8 +86,10 @@ public class BattleSystem : MonoBehaviour
         {
             //trainer battle
             //set inactive creature sprites and activae trainer sprites
-            playerUnit.Setup(playerteam.GetHealthyCreature());
-            enemyUnit.Setup(trainerteam.GetHealthyCreature());
+            //enemyUnit.Setup(trainerteam.GetHealthyCreature());
+            //playerUnit.Setup(playerteam.GetHealthyCreature());
+
+
 
             playerUnit.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(false);
@@ -97,11 +100,24 @@ public class BattleSystem : MonoBehaviour
             trainerImage.sprite = trainer.Sprite;
 
             yield return dialogueBox.TypeDialog($"{trainer.Name} want to fight");
-        }
 
-        //Now being called from BattleUnit
-        //playerHud.SetData(playerUnit.Creature);
-        //enemyHud.SetData(enemyUnit.Creature);
+            //send out trainer creature
+            trainerImage.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(true);
+            var enemyCreature = trainerteam.GetHealthyCreature();
+            enemyUnit.Setup(enemyCreature);
+            yield return dialogueBox.TypeDialog($"{trainer.Name} send out {enemyCreature.Base.Name}");
+
+
+            //send out player creature
+            playerImage.gameObject.SetActive(false);
+            playerUnit.gameObject.SetActive(true);
+            var playerCreature = playerteam.GetHealthyCreature();
+            playerUnit.Setup(playerCreature);
+            yield return dialogueBox.TypeDialog($"Go {playerCreature.Base.Name}");
+            dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
+
+        }
 
         //set escape attempts to 0
         escapeAttempts = 0;
@@ -116,19 +132,6 @@ public class BattleSystem : MonoBehaviour
         //wait for a second and then allow the player to choose the next action
         ActionSelection();
     }
-
-    ////determins based on speed who goes first
-    //void ChooseFirstTurn()
-    //{
-    //    if(playerUnit.Creature.Speed >= enemyUnit.Creature.Speed)
-    //    {
-    //        ActionSelection();
-    //    }
-    //    else
-    //    {
-    //        StartCoroutine(EnemyMove());
-    //    }
-    //}
 
     //state called when you knock out your enemy
     void BattleOverKO(bool won)
@@ -165,6 +168,16 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.EnableActionText(false);
         dialogueBox.EnableDialogText(false);
         dialogueBox.EnableMoveSelector(true);
+    }
+
+    //what happens when a trainer creatues dies
+    IEnumerator AboutToUse(Creature newCreature)
+    {
+        state = BattleState.Busy;
+        yield return dialogueBox.TypeDialog($"{trainer.Name} is about to send out {newCreature.Base.Name}. Do you want to swap Creatures?");
+        
+        state = BattleState.AboutToUse;
+        dialogueBox.EnableChoiceText(true);
     }
 
     //this is the action of choosing what move to forget
@@ -413,13 +426,10 @@ public class BattleSystem : MonoBehaviour
         if (sourceUnit.Creature.HP <= 0)
         {
             yield return HandleCreatureFainted(sourceUnit);
-            //yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
-            //sourceUnit.BattleFaintAnimation();
-            //yield return new WaitForSeconds(2f);
-
-            //CheckForBattleOver(sourceUnit);
+            yield return dialogueBox.TypeDialog($"{sourceUnit.Creature.Base.Name} fainted");
 
             // SAM - is this neccissary? - SAM
+            CheckForBattleOver(sourceUnit);
             yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
@@ -550,7 +560,24 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            BattleOverKO(true);
+            if (!isTrainerBattle)
+            {
+                BattleOverKO(true);
+            }
+            else
+            {
+                var nextCreature = trainerteam.GetHealthyCreature();
+                if(nextCreature != null)
+                {
+                    //send out next creature
+                    //StartCoroutine(SendNextTrainerCreature(nextCreature));
+                    StartCoroutine(AboutToUse(nextCreature));
+                }
+                else
+                {
+                    BattleOver(true);
+                }
+            }
         }
     }
 
@@ -586,6 +613,10 @@ public class BattleSystem : MonoBehaviour
         else if (state == BattleState.BattleTeamScreen)
         {
             HandleBattleTeamSelection();
+        }
+        else if (state == BattleState.AboutToUse)
+        {
+            HandleAboutToUse();
         }
         else if (state == BattleState.MoveToForget)
         {
@@ -636,21 +667,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         currentAction = Mathf.Clamp(currentAction, 0, 3);
-
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //{
-        //    if (currentAction < 1)
-        //    {
-        //        ++currentAction;
-        //    }
-        //}
-        //else if (Input.GetKeyDown(KeyCode.UpArrow))
-        //{
-        //    if (currentAction > 0)
-        //    {
-        //        --currentAction;
-        //    }
-        //}
 
         dialogueBox.UpdateActionSelection(currentAction);
 
@@ -783,8 +799,57 @@ public class BattleSystem : MonoBehaviour
         //to back out press x
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            //if players creatuers faints they need to select the next
+            if(playerUnit.Creature.HP <= 0)
+            {
+                battleTeamScreen.SetMessageText("you have to choose a Creature to continue");
+                return;
+            }
+
             battleTeamScreen.gameObject.SetActive(false);
-            ActionSelection();
+
+            if (priorState == BattleState.AboutToUse)
+            {
+                priorState = null;
+                StartCoroutine(SendNextTrainerCreature());
+            }
+            else
+            {
+                ActionSelection();
+            }
+        }
+    }
+
+    //this function allows us to update our selection
+    void HandleAboutToUse()
+    {
+        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            aboutToUseChoice = !aboutToUseChoice;
+        }
+
+        //update text in the UI
+        dialogueBox.UpdateChoiceBoxSelection(aboutToUseChoice);
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            dialogueBox.EnableChoiceText(false);
+            if(aboutToUseChoice == true)
+            {
+                //Yes
+                priorState = BattleState.AboutToUse;
+                OpenPartyScreen();
+            }
+            else
+            {
+                //No
+                StartCoroutine(SendNextTrainerCreature());
+            }
+        }
+        else if(Input.GetKeyDown(KeyCode.X))
+        {
+            dialogueBox.EnableChoiceText(false);
+            StartCoroutine(SendNextTrainerCreature());
         }
     }
 
@@ -811,29 +876,28 @@ public class BattleSystem : MonoBehaviour
         //using string interprilation to bring in game spacific text
         yield return dialogueBox.TypeDialog($"Go {newCreature.Base.Name}");
 
-        state = BattleState.RunningTurn;
-
-        //if (currentCreatureFainted)
-        //{
-        //    ChooseFirstTurn();
-        //}
-        //else
-        //{
-        //    //players turn over, enemy turn
-        //    StartCoroutine(EnemyMove());
-        //}
+        //if ennemy creature fainted dont allow them a free hit if you swapped creatures
+        if (priorState == null)
+        {
+            state = BattleState.RunningTurn;
+        }
+        else if(priorState == BattleState.AboutToUse)
+        {
+            priorState = null;
+            StartCoroutine(SendNextTrainerCreature());
+        }
     }
 
     IEnumerator ThrowCaptureRing()
     {
         state = BattleState.Busy;
-        ////SAM - redo this, if we use trainer battles? - SAM
-        //if(isTrainerBattle)
-        //{
-        //    yield return dialogueBox.TypeDialog($"You can't steal another teams Creatures!");
-        //    state = BattleState.RunningTurn;
-        //    yield break;
-        //}
+        //SAM - redo this, if we use trainer battles? - SAM
+        if (isTrainerBattle)
+        {
+            yield return dialogueBox.TypeDialog($"You can't steal another teams Creatures!");
+            state = BattleState.RunningTurn;
+            yield break;
+        }
 
 
         //SAM - redo this message, figure out how to set up a players name? - SAM
@@ -928,12 +992,12 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.Busy;
         //SAM - set this up if we decide to have trainer battles - SAM
-        //if(isTrainerBattle)
-        //{
-        //    yield return dialogueBox.TypeDialog($"You can't run from a Trainer Battle");
-        //    state = BattleState.RunningTurn;
-        //    yield break;
-        //}
+        if (isTrainerBattle)
+        {
+            yield return dialogueBox.TypeDialog($"You can't run from a Trainer Battle");
+            state = BattleState.RunningTurn;
+            yield break;
+        }
 
         ++escapeAttempts;
 
@@ -962,6 +1026,21 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.RunningTurn;
             }
         }
+    }
+
+    IEnumerator SendNextTrainerCreature()
+    {
+        //set state so player cant do anything
+        state = BattleState.Busy;
+
+        //in order to get next creature
+        var nextCreature = trainerteam.GetHealthyCreature();
+        //set next creature to for trainer to send out
+        enemyUnit.Setup(nextCreature);
+        yield return dialogueBox.TypeDialog($"{trainer.Name} sent out {nextCreature.Base.Name}");
+
+        state = BattleState.RunningTurn;
+
     }
 }
 

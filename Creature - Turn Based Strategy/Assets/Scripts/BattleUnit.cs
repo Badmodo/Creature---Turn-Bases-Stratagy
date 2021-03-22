@@ -49,6 +49,9 @@ public class BattleUnit : MonoBehaviour
 
         }
 
+        //enable hud that was diabled during Clear (for trainers)
+        hud.gameObject.SetActive(true);
+
         //ssetting up the hud for both creatures
         hud.SetData(creature);
 
@@ -56,6 +59,12 @@ public class BattleUnit : MonoBehaviour
         transform.localScale = new Vector3(1, 1, 1);
         image.color = originalColor;
         BattleEnterAnimation();
+    }
+
+    //opposite of setup
+    public void Clear()
+    {
+        hud.gameObject.SetActive(false);
     }
 
     //on battle start animation where creatures enter from the sides

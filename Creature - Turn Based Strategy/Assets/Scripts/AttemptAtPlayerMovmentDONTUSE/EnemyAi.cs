@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyAi : MonoBehaviour
 {
+    [SerializeField] GameObject SeePlayer;
+
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask whatIdGround, whatIsPlayer;
@@ -71,6 +73,8 @@ public class EnemyAi : MonoBehaviour
 
     private void SearchWalkPoint()
     {
+        SeePlayer.SetActive(false);
+
         //calculate a random point range
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
@@ -87,9 +91,11 @@ public class EnemyAi : MonoBehaviour
     {
         trainer.TriggerTrainerBattle();
 
+        SeePlayer.SetActive(true);
+
         agent.SetDestination(player.position);
     }
-    
+
     private void AttackPlayer()
     {
         //make sure the enemy dosnt move on attack
@@ -102,34 +108,13 @@ public class EnemyAi : MonoBehaviour
         {
             //attack code here
             GameController.Instance.StartTrainerBattle(trainer);
-
-            //Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-
-
-            //rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            //rb.AddForce(transform.up * 8f, ForceMode.Impulse);
             
             //has the enemy attacked
             alreadyAttacked = true;
-            //Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-    }
-
-    //ready attack
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-
-    }
-
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-
-        if(health <= 0)
+        else
         {
-            Invoke(nameof(DestroyEnemy), 0.5f);
+            DestroyEnemy();
         }
     }
 

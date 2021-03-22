@@ -10,6 +10,7 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
     [SerializeField] GameObject moveDetails;
+    [SerializeField] GameObject choiceBox;
 
     [SerializeField] int LettersPerSecond;
     [SerializeField] Color highlightedColor;
@@ -19,6 +20,8 @@ public class BattleDialogueBox : MonoBehaviour
 
     [SerializeField] Text ppTexts;
     [SerializeField] Text typeTexts;
+    [SerializeField] Text yesTexts;
+    [SerializeField] Text noTexts;
 
 
 
@@ -55,6 +58,11 @@ public class BattleDialogueBox : MonoBehaviour
     {
         moveSelector.SetActive(enabled);
         moveDetails.SetActive(enabled);
+    }
+
+    public void EnableChoiceText(bool enabled)
+    {
+        choiceBox.SetActive(enabled);
     }
 
     //loop thorugh and change colour of the selected action
@@ -115,4 +123,20 @@ public class BattleDialogueBox : MonoBehaviour
             }
         }
     }
+
+    //this allows for a selection of yes or no to change creatures
+    public void UpdateChoiceBoxSelection(bool yesSeleceted)
+    {
+        if(yesSeleceted)
+        {
+            yesTexts.color = highlightedColor;
+            noTexts.color = Color.black;
+        }
+        else
+        {
+            yesTexts.color = Color.black;
+            noTexts.color = highlightedColor;
+        }
+    }
+
 }

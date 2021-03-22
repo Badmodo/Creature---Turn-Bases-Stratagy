@@ -81,7 +81,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4665959994630947340
 Transform:
   m_ObjectHideFlags: 0
@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4797179152206949846a755ff2e5514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SeePlayer: {fileID: 0}
   agent: {fileID: 4665959994630947376}
   player: {fileID: 0}
   whatIdGround:
@@ -217,11 +218,12 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 128
+  trainer: {fileID: 0}
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 10.62
   timeBetweenAttacks: 3
   projectile: {fileID: 5657591347208930352, guid: eb72b7a1d753cb14281e2d798dea3e5f, type: 3}
-  sightRange: 16.02
-  attackRange: 7.41
+  sightRange: 10
+  attackRange: 1
   playerInSightRange: 0
   playerInAttackRange: 0
