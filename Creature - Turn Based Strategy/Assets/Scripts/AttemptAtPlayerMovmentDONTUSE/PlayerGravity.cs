@@ -2,12 +2,14 @@
 using System.Collections;
 
 [RequireComponent (typeof (Rigidbody))]
-public class PlayerGravity : MonoBehaviour {
+public class PlayerGravity : MonoBehaviour 
+{
 	
 	PlanetGravity planet;
 	Rigidbody rigidbody;
 	
-	void Awake () {
+	void Awake () 
+	{
 		planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 		rigidbody = GetComponent<Rigidbody> ();
 
@@ -16,7 +18,8 @@ public class PlayerGravity : MonoBehaviour {
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 	
-	void FixedUpdate () {
+	void FixedUpdate () 
+	{
 		// Allow this body to be influenced by planet's gravity
 		planet.Attract(rigidbody);
 	}
