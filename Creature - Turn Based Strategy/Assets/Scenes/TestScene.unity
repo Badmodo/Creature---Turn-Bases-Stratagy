@@ -4853,7 +4853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  _name: 
+  name: 
   Player: {fileID: 1075535943}
   speed: 5.5
   jumpSpeed: 6
@@ -8294,7 +8294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SeePlayer: {fileID: 1488908898}
   sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  name: Evil Barry
+  name: Big Tom
 --- !u!114 &336375544124381819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9134,6 +9134,10 @@ PrefabInstance:
     - target: {fileID: 4665959994630947383, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
       propertyPath: m_Name
       value: DialogueAI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665959994630947383, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcdf69028189a5e41a2c08792ee1a9a4, type: 3}
