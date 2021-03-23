@@ -89,8 +89,6 @@ public class BattleSystem : MonoBehaviour
             //enemyUnit.Setup(trainerteam.GetHealthyCreature());
             //playerUnit.Setup(playerteam.GetHealthyCreature());
 
-
-
             playerUnit.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(false);
 
@@ -99,7 +97,7 @@ public class BattleSystem : MonoBehaviour
             playerImage.sprite = player.Sprite;
             trainerImage.sprite = trainer.Sprite;
 
-            yield return dialogueBox.TypeDialog($"{trainer.Name} want to fight");
+            yield return dialogueBox.TypeDialog($"{trainer.Name} wants to fight");
 
             //send out trainer creature
             trainerImage.gameObject.SetActive(false);
@@ -108,7 +106,6 @@ public class BattleSystem : MonoBehaviour
             enemyUnit.Setup(enemyCreature);
             yield return dialogueBox.TypeDialog($"{trainer.Name} send out {enemyCreature.Base.Name}");
 
-
             //send out player creature
             playerImage.gameObject.SetActive(false);
             playerUnit.gameObject.SetActive(true);
@@ -116,7 +113,6 @@ public class BattleSystem : MonoBehaviour
             playerUnit.Setup(playerCreature);
             yield return dialogueBox.TypeDialog($"Go {playerCreature.Base.Name}");
             dialogueBox.SetMoveNames(playerUnit.Creature.Moves);
-
         }
 
         //set escape attempts to 0
@@ -274,38 +270,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    ///made a newer version that allowed for better flow
-    ////this coroutine selects the currently placed move and returns feedback to the dialogue box
-    //IEnumerator PlayerMove()
-    //{
-    //    state = BattleState.RunningTurn;
-
-    //    var move = playerUnit.Creature.Moves[currentMove];
-    //    yield return RunMove(playerUnit, enemyUnit, move);
-    //    //large chunk of code removed and replaced with RunMove()
-
-    //    //if the battle state was not changed by the RunMove then next step
-    //    if (state == BattleState.RunningTurn)
-    //    {
-    //        StartCoroutine(EnemyMove());
-    //    }
-    //}
-
-    //This allows for the enemy turn, same formula as the players after the choice. Move is chosen by random
-    //IEnumerator EnemyMove()
-    //{
-    //    state = BattleState.RunningTurn;
-
-    //    var move = enemyUnit.Creature.GetRandomMove();
-    //    yield return RunMove(enemyUnit, playerUnit, move);
-
-    //    //if the battle state was not changed by the RunMove then next step
-    //    if (state == BattleState.RunningTurn)
-    //    {
-    //        ActionSelection();
-    //    }
-    //}
-
     //function created to condence similar funtionallity of player and enemy creatures
     //source unit is the one doing the move, the target is recieving it
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
@@ -360,13 +324,7 @@ public class BattleSystem : MonoBehaviour
             //this coroutine plays if the creature loses all hp
             if (targetUnit.Creature.HP <= 0)
             {
-                //replaced logic with
                 yield return HandleCreatureFainted(targetUnit);
-                //yield return dialogueBox.TypeDialog($"{targetUnit.Creature.Base.Name} fainted");
-                //targetUnit.BattleFaintAnimation();
-                //yield return new WaitForSeconds(2f);
-
-                //CheckForBattleOver(targetUnit);
             }
         }
         //if the move misses
@@ -898,7 +856,6 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.RunningTurn;
             yield break;
         }
-
 
         //SAM - redo this message, figure out how to set up a players name? - SAM
         yield return dialogueBox.TypeDialog($"Player sent out a Capture Ring");

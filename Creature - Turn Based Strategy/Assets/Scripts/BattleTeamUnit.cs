@@ -11,11 +11,11 @@ public class BattleTeamUnit : MonoBehaviour
 
     [SerializeField] Color highlightedColor;
 
-    Creature _creature;
+    Creature creature;
 
     public void SetData(Creature creature)
     {
-        _creature = creature;
+        this.creature = creature;
 
         nameText.text = creature.Base.Name;
         levelText.text = "Lvl" + creature.Level;

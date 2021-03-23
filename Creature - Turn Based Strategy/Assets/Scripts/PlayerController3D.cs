@@ -8,7 +8,7 @@ public class PlayerController3D : MonoBehaviour
     CharacterController characterController;
 
     [SerializeField] Sprite sprite;
-    [SerializeField] string _name;
+    [SerializeField] string name;
 
     public GameObject Player;
     public float speed = 6.0f;
@@ -137,7 +137,7 @@ public class PlayerController3D : MonoBehaviour
     }
 
     public string Name
-    { get => _name; }
+    { get => name; }
 
     public Sprite Sprite
     { get => sprite; }

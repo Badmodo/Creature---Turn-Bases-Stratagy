@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Creature", menuName = "Creature/Create new Creature")]
 public class CreatureBase : ScriptableObject
 {
-    [SerializeField] string _name;
+    [SerializeField] string name;
 
     [TextArea]
     [SerializeField] string description;
@@ -49,7 +49,7 @@ public class CreatureBase : ScriptableObject
     //using property instead, these allow me to pick up these variables in other scripts
     public string Name
     {
-        get { return _name; }
+        get { return name; }
     }
     public string Description
     {

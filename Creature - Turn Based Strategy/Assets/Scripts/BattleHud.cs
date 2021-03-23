@@ -19,13 +19,13 @@ public class BattleHud : MonoBehaviour
     [SerializeField] Color parColor;
     [SerializeField] Color frzColor;
 
-    Creature _creature;
+    Creature creature;
 
     Dictionary<ConditionsID, Color> statusColors; 
 
     public void SetData(Creature creature)
     {
-        _creature = creature;
+        this.creature = creature;
 
         nameText.text = creature.Base.Name;
         SetLevel();
@@ -44,27 +44,27 @@ public class BattleHud : MonoBehaviour
 
         SetStatusText();
         //whenever the status is changed this function will be called
-        _creature.OnStatusChanged += SetStatusText;
+        this.creature.OnStatusChanged += SetStatusText;
     }
 
     //this allows the status to be visualised in the HUD
     void SetStatusText()
     {
-        if(_creature.Status == null)
+        if(creature.Status == null)
         {
             statusText.text = "";
         }
         else
         {
-            statusText.text = _creature.Status.Id.ToString().ToUpper();
-            statusText.color = statusColors[_creature.Status.Id];
+            statusText.text = creature.Status.Id.ToString().ToUpper();
+            statusText.color = statusColors[creature.Status.Id];
         }
     }
 
     //this will set the level in the Hud
     public void SetLevel()
     {
-        levelText.text = "Lvl" + _creature.Level;
+        levelText.text = "Lvl" + creature.Level;
     }
 
     //sets the value on the xp bar
@@ -95,10 +95,10 @@ public class BattleHud : MonoBehaviour
     //to normalise the exp we need the xp required for that level
     float GetNormalisedXP()
     {
-        int currentLevelExp = _creature.Base.GetExpForLevel(_creature.Level);
-        int nextLevelExp = _creature.Base.GetExpForLevel(_creature.Level + 1);
+        int currentLevelExp = creature.Base.GetExpForLevel(creature.Level);
+        int nextLevelExp = creature.Base.GetExpForLevel(creature.Level + 1);
 
-        float normalizesXP = (float)(_creature.Exp - currentLevelExp) / (nextLevelExp - currentLevelExp);
+        float normalizesXP = (float)(creature.Exp - currentLevelExp) / (nextLevelExp - currentLevelExp);
         return Mathf.Clamp01(normalizesXP);
     }
 
@@ -106,10 +106,10 @@ public class BattleHud : MonoBehaviour
     //updates the Hp loss with a smooth transition
     public IEnumerator UpdateHP()
     {
-        if (_creature.HpChanged)
+        if (creature.HpChanged)
         {
-            yield return hpBar.SetHPSmooth((float)_creature.HP / _creature.MaxHp);
-            _creature.HpChanged = false;
+            yield return hpBar.SetHPSmooth((float)creature.HP / creature.MaxHp);
+            creature.HpChanged = false;
         }
     }
 }
