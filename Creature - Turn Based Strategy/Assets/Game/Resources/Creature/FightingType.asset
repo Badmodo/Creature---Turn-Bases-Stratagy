@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf066a500a816844294d33e7f26d8b0c, type: 3}
-  m_Name: ElectricType
+  m_Name: FightingType
   m_EditorClassIdentifier: 
-  name: ElectricType
-  description: An Electric type creature
-  frontSprite: {fileID: 21300000, guid: 3d882a09327358c4f8d7afa6e51229c1, type: 3}
-  backSprite: {fileID: 21300000, guid: 47b08ff51b2b20947bc6a8160a6ce95e, type: 3}
-  type1: 4
+  name: Fighting Type
+  description: FightingType
+  frontSprite: {fileID: 21300000, guid: 42d21e088f4cb4f4a976aed24dfc4f0a, type: 3}
+  backSprite: {fileID: 21300000, guid: f1a6492045981d543bf38fd4346a9155, type: 3}
+  type1: 7
   type2: 0
   maxHp: 50
   attack: 50
@@ -28,7 +28,9 @@ MonoBehaviour:
   expYield: 60
   growthRate: 1
   learnableMoves:
-  - moveBase: {fileID: 11400000, guid: 648d5dc2db78985489ce8da5cf7cda44, type: 2}
-    level: 8
   - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
     level: 1
+  - moveBase: {fileID: 11400000, guid: 9246bb0373f80764d884522278ea0011, type: 2}
+    level: 7
+  - moveBase: {fileID: 11400000, guid: db0d49355ad84424ab30ec83b58546cc, type: 2}
+    level: 5

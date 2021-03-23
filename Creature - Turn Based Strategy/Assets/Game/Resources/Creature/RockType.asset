@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf066a500a816844294d33e7f26d8b0c, type: 3}
-  m_Name: ElectricType
+  m_Name: RockType
   m_EditorClassIdentifier: 
-  name: ElectricType
-  description: An Electric type creature
-  frontSprite: {fileID: 21300000, guid: 3d882a09327358c4f8d7afa6e51229c1, type: 3}
-  backSprite: {fileID: 21300000, guid: 47b08ff51b2b20947bc6a8160a6ce95e, type: 3}
-  type1: 4
+  name: Rock Type
+  description: Rock Type
+  frontSprite: {fileID: 21300000, guid: becb0c57add9ed24a8024b13b5d5576a, type: 3}
+  backSprite: {fileID: 21300000, guid: 3f4ff92968931684fbddd4624bb5f43c, type: 3}
+  type1: 13
   type2: 0
   maxHp: 50
   attack: 50
@@ -26,9 +26,11 @@ MonoBehaviour:
   speed: 50
   catchRate: 255
   expYield: 60
-  growthRate: 1
+  growthRate: 0
   learnableMoves:
-  - moveBase: {fileID: 11400000, guid: 648d5dc2db78985489ce8da5cf7cda44, type: 2}
-    level: 8
   - moveBase: {fileID: 11400000, guid: 44552df90c8e1634eabe15dd539d45eb, type: 2}
     level: 1
+  - moveBase: {fileID: 11400000, guid: 0c3798ad4f8e1f248bbe20531d645a5a, type: 2}
+    level: 5
+  - moveBase: {fileID: 11400000, guid: db0d49355ad84424ab30ec83b58546cc, type: 2}
+    level: 9

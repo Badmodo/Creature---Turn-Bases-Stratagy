@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: NormalType
   description: A normal type creature
-  frontSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  backSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  frontSprite: {fileID: 21300000, guid: 2d25c640b531600418541db011205542, type: 3}
+  backSprite: {fileID: 21300000, guid: 71c6765643e66844695ea91d2944d507, type: 3}
   type1: 1
   type2: 0
   maxHp: 50

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: WaterType
   description: Water type creature
-  frontSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  backSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  frontSprite: {fileID: 21300000, guid: 226c0f850b9fae3409285203dae852dc, type: 3}
+  backSprite: {fileID: 21300000, guid: 7ffd1e05a684d3c4d93c29c185361c8e, type: 3}
   type1: 3
   type2: 0
   maxHp: 50
