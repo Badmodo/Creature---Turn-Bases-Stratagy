@@ -84,8 +84,7 @@ public class GameController : MonoBehaviour
     //start freeroam state
     void EndBattle(bool won)
     {
-
-        //Player.SetActive(true);
+        Player.SetActive(true);
 
         state = GameState.Freeroam;
         battleSystem.gameObject.SetActive(false);

@@ -49,6 +49,7 @@ public class BattleSystem : MonoBehaviour
         //wierd use of the same name just to make it work in script
         this.playerteam = playerteam;
         this.wildCreature = wildCreature;
+        isTrainerBattle = false;
         StartCoroutine(SetUpBattle());
     }
     
