@@ -19,18 +19,22 @@ public class PlayerController360 : MonoBehaviour {
 	Vector3 smoothMoveVelocity;
 	float verticalLookRotation;
 	Transform cameraTransform;
-	Rigidbody rigidbody;
+	Rigidbody rb;
+	PlanetGravity planetGravity;
 	
 	
-	void Awake() {
+	void Awake() 
+	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		cameraTransform = Camera.main.transform;
-		rigidbody = GetComponent<Rigidbody> ();
+		rb = GetComponent<Rigidbody> ();
 		animator = GetComponent<Animator>();
+		planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 	}
 	
-	void Update() {
+	void Update() 
+	{
 		
 		// Look rotation:
 		transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivityX);
@@ -44,7 +48,7 @@ public class PlayerController360 : MonoBehaviour {
 		// Jump
 		if (Input.GetButtonDown("Jump")) {
 			if (grounded) {
-				rigidbody.AddForce(transform.up * jumpForce);
+				rb.AddForce(transform.up * jumpForce);
 			}
 		}
 		
@@ -83,9 +87,20 @@ public class PlayerController360 : MonoBehaviour {
 		}
 	}
 	
-	void FixedUpdate() {
+	void FixedUpdate() 
+	{
 		// Apply movement to rigidbody
 		Vector3 localMove = transform.TransformDirection(moveAmount) * Time.fixedDeltaTime;
-		rigidbody.MovePosition(rigidbody.position + localMove);
+		Vector3 futurePos = rb.position + localMove;
+		float difference = Vector3.Distance(futurePos, planetGravity.getPosition());
+
+		if (difference > 50)
+			rb.MovePosition(rb.position);
+		else
+			rb.MovePosition(futurePos);
+
+		//Debug.Log(difference);
+		//rb.MovePosition(futurePos);
+		
 	}
 }

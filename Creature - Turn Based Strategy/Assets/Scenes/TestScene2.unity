@@ -3473,10 +3473,10 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492534978}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 6e71488b17714744fbfee03f0de7e37c, type: 3}
 --- !u!114 &492534983
@@ -6231,6 +6231,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4627206483237966, guid: 4304a767f3895364f84e1e67473e420a, type: 3}
   m_PrefabInstance: {fileID: 226127238}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &846790064 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1418525287436006, guid: 6ca91e462ef968f44bf82a1768465777, type: 3}
+  m_PrefabInstance: {fileID: 534420139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &846790065
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846790064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 385e49cd155c8d947ae5eaec63d7f50d, type: 3}
 --- !u!1001 &871299467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16903,7 +16922,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787096814807852539}
   m_LocalRotation: {x: -0, y: -0.98353916, z: -0, w: 0.18069501}
-  m_LocalPosition: {x: 28.500683, y: 52.160736, z: 142.48314}
+  m_LocalPosition: {x: 28.500683, y: 52.98, z: 142.48314}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4415416442836016528}
@@ -17816,6 +17835,7 @@ GameObject:
   - component: {fileID: 1787096814807852541}
   - component: {fileID: 1787096814807852540}
   - component: {fileID: 1787096814807852545}
+  - component: {fileID: 1787096814807852547}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -17903,10 +17923,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!95 &1787096814807852545
 Animator:
   serializedVersion: 3
@@ -18196,6 +18216,20 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000000013969839, y: -0.000512426, z: 0.019070022}
     m_Extent: {x: 0.012942314, y: 0.007870871, z: 0.019}
   m_DirtyAABB: 0
+--- !u!136 &1787096814807852547
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787096814807852539}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.2942315
+  m_Height: 4.146202
+  m_Direction: 1
+  m_Center: {x: -0.00000011870968, y: 1.9372787, z: 0.051242348}
 --- !u!1 &1788898085273877016
 GameObject:
   m_ObjectHideFlags: 0
