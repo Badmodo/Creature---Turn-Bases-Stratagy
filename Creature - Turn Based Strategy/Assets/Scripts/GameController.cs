@@ -6,7 +6,8 @@ using UnityEngine;
 public enum GameState { Freeroam, Battle, Dialogue }
 public class GameController : MonoBehaviour
 {
-    [SerializeField] PlayerController3D playerController3D;
+    //[SerializeField] PlayerController3D playerController3D;
+    [SerializeField] PlayerController360 playerController360;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera FreeroamCam;
 
@@ -24,7 +25,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        playerController3D.onEncounter += StartBattle;
+        //playerController3D.onEncounter += StartBattle;
+        playerController360.onEncounter += StartBattle;
         battleSystem.BattleOver += EndBattle;
 
         DialogueManager.Instance.OnShowDialogue += () =>
@@ -53,7 +55,8 @@ public class GameController : MonoBehaviour
             FreeroamCam.gameObject.SetActive(false);
 
             //used to return the player creatures
-            var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            //var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            var playerTeam = playerController360.GetComponent<CreatureTeam>();
             var wildCreature = FindObjectOfType<ListOfCreaturesInArea>().GetComponent<ListOfCreaturesInArea>().GetRandomWildCreatures();
 
             //bug that the captured creature would not show up because it was in your team, in the grass... Odd
@@ -73,7 +76,8 @@ public class GameController : MonoBehaviour
             FreeroamCam.gameObject.SetActive(false);
 
             //used to return the player creatures
-            var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            //var playerTeam = playerController3D.GetComponent<CreatureTeam>();
+            var playerTeam = playerController360.GetComponent<CreatureTeam>();
             var trainerTeam = trainer.GetComponent<CreatureTeam>();
 
             battleSystem.StartTrainerBattle(playerTeam, trainerTeam);
@@ -96,7 +100,8 @@ public class GameController : MonoBehaviour
     {
         if( state == GameState.Freeroam)
         {
-            playerController3D.HandleUpdate();
+            //playerController3D.HandleUpdate();
+            playerController360.Update();
         }
         else if( state == GameState.Battle)
         {

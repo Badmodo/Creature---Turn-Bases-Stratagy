@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrainerController : MonoBehaviour
 {
     //[SerializeField] Dialogue dialogue;
-    [SerializeField] GameObject SeePlayer;
+    [SerializeField] GameObject SeePlayer; 
     [SerializeField] Sprite sprite;
     [SerializeField] string name;
 

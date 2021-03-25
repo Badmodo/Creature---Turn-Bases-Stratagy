@@ -12,6 +12,8 @@ public class EnemyAi : MonoBehaviour
     public LayerMask whatIdGround, whatIsPlayer;
     [SerializeField] TrainerController trainer;
 
+  
+
     public static float health;
 
     public float Health

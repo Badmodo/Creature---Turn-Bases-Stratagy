@@ -41,7 +41,8 @@ public class BattleSystem : MonoBehaviour
 
     int escapeAttempts;
     MoveBase moveToLearn;
-    PlayerController3D player;
+    //PlayerController3D player;
+    PlayerController360 player;
     TrainerController trainer;
 
     public void StartBattle(CreatureTeam playerteam, Creature wildCreature)
@@ -61,7 +62,8 @@ public class BattleSystem : MonoBehaviour
         ////for trainer battle, bug fix to false
         isTrainerBattle = true;
 
-        player = playerteam.GetComponent<PlayerController3D>();
+        //player = playerteam.GetComponent<PlayerController3D>();
+        player = playerteam.GetComponent<PlayerController360>();
         trainer = trainerteam.GetComponent<TrainerController>();
 
         StartCoroutine(SetUpBattle());

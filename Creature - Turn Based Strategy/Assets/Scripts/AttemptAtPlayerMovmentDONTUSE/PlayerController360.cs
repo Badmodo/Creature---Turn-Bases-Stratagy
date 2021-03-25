@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent (typeof (PlayerGravity))]
 public class PlayerController360 : MonoBehaviour {
@@ -32,9 +34,9 @@ public class PlayerController360 : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 	}
-	
-	void Update() 
-	{
+    
+    public void Update()
+    {
 		
 		// Look rotation:
 		transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivityX);
@@ -103,4 +105,113 @@ public class PlayerController360 : MonoBehaviour {
 		//rb.MovePosition(futurePos);
 		
 	}
+
+    CharacterController characterController;
+
+    [SerializeField] Sprite sprite;
+    [SerializeField] string name;
+
+    public event Action onEncounter;
+
+    public bool inGrass;
+    public bool inDialogue;
+    public bool duringDialogue;
+
+    public GameObject Battle;
+
+    void Start()
+    {
+        //Find attached character controllers on player
+        characterController = GetComponent<CharacterController>();
+    }
+
+    //See if the player is in long grass(where enemys hide)
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Grass" && !inGrass)
+        {
+            inGrass = true;
+        }
+
+        if (inGrass == true)
+        {
+            StartCoroutine(EnemyEncounter());
+        }
+
+        //Enemy encounter chance, 1 in 10 every .5 seconds
+        //we will use a technique called observer design pattern so as to not double call this inside the gamecontroller
+        IEnumerator EnemyEncounter()
+        {
+            while (inGrass)
+            {
+                yield return new WaitForSeconds(.5f);
+
+                if (GameController.State == GameState.Freeroam)
+                {
+                    //had to specifyy the random because system and unity both have a random function
+                    if (UnityEngine.Random.Range(1, 101) <= 10)
+                    {
+                        //Debug.Log("EnemyEncountered");
+                        onEncounter();
+                    }
+                    //StartCoroutine(EnemyEncounter());
+                }
+            }
+        }
+
+        //Dialogue Collider enter
+        if (collider.tag == "Dialogue")
+        {
+            inDialogue = true;
+        }
+
+        //on collision i am trying to run this. It should clear the dialogue
+        if (GameController.State == GameState.Freeroam && collider.gameObject.GetComponent<DialogueNPC>())
+        {
+            //duringDialogue = true;
+            collider.GetComponent<Interactable>()?.Interact();
+        }
+
+        //on collision i am trying to run this. It should clear the dialogue
+        if (GameController.State == GameState.Freeroam && collider.gameObject.GetComponent<TrainerController>())
+        {
+            var trainer = collider.GetComponent<TrainerController>();
+            if (trainer != null)
+            {
+                StartCoroutine(trainer.TriggerTrainerBattle());
+            }
+        }
+    }
+
+
+    //Player no longer in long grass or dialogue
+    void OnTriggerExit(Collider collider)
+    {
+        if (collider.tag == "Grass" && inGrass)
+        {
+            inGrass = false;
+        }
+
+
+        //SAM - this stops all coroutines, see if it effects launching the fight sequences
+        //if not in grass stop runnings into 
+        if (inGrass == false)
+        {
+            StopAllCoroutines();
+        }
+
+
+        //Dialogue Collider exit
+        if (collider.tag == "Dialogue")
+        {
+            inDialogue = false;
+        }
+    }
+
+    public string Name
+    { get => name; }
+
+    public Sprite Sprite
+    { get => sprite; }
+
 }
