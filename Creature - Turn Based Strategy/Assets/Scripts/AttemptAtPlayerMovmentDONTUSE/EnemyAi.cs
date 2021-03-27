@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyAi : MonoBehaviour
 {
     [SerializeField] GameObject SeePlayer;
+    [SerializeField] GameObject TeleportActivation;
 
     public NavMeshAgent agent;
     public Transform player;
@@ -122,6 +123,7 @@ public class EnemyAi : MonoBehaviour
 
     private void DestroyEnemy()
     {
+        TeleportActivation.SetActive(true);
         Destroy(gameObject);
     }
 

@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 2459407834146604139}
   - component: {fileID: 2373456884658612475}
   - component: {fileID: 2374766976786525199}
+  - component: {fileID: 6550495039347673377}
+  - component: {fileID: 244083388965507175}
   m_Layer: 0
   m_Name: SandStorm
-  m_TagString: Untagged
+  m_TagString: Grass
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4825,3 +4827,47 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!135 &6550495039347673377
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2464895124448604887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.8
+  m_Center: {x: -0.09769535, y: 2.57, z: 0.16847615}
+--- !u!114 &244083388965507175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2464895124448604887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d52c9ac0c27214aa4a87e2d3eb196e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wildCreatures:
+  - _base: {fileID: 11400000, guid: f9d46a5a9d5bb134ebd78721f1c07518, type: 2}
+    level: 14
+  - _base: {fileID: 11400000, guid: f9d46a5a9d5bb134ebd78721f1c07518, type: 2}
+    level: 16
+  - _base: {fileID: 11400000, guid: f9d46a5a9d5bb134ebd78721f1c07518, type: 2}
+    level: 18
+  - _base: {fileID: 11400000, guid: 5ce378e23d73e9349bdc2a29128ad67a, type: 2}
+    level: 14
+  - _base: {fileID: 11400000, guid: 5ce378e23d73e9349bdc2a29128ad67a, type: 2}
+    level: 16
+  - _base: {fileID: 11400000, guid: 5ce378e23d73e9349bdc2a29128ad67a, type: 2}
+    level: 18
+  - _base: {fileID: 11400000, guid: 3df09dd43e46abb43984496a91f7597c, type: 2}
+    level: 14
+  - _base: {fileID: 11400000, guid: 3df09dd43e46abb43984496a91f7597c, type: 2}
+    level: 16
+  - _base: {fileID: 11400000, guid: 3df09dd43e46abb43984496a91f7597c, type: 2}
+    level: 18
