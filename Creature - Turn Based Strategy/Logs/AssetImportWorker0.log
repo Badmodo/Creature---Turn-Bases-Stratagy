@@ -1035,3 +1035,455 @@ System memory in use after: 120.4 MB.
 Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2792.
 Total: 7.860800 ms (FindLiveObjects: 0.813200 ms CreateObjectMapping: 0.415500 ms MarkObjects: 5.976900 ms  DeleteObjects: 0.651600 ms)
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001895 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.44 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.856 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.58 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2136 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 120.3 MB.
+System memory in use after: 120.4 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2795.
+Total: 4.050000 ms (FindLiveObjects: 0.391800 ms CreateObjectMapping: 0.128000 ms MarkObjects: 3.256900 ms  DeleteObjects: 0.271600 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003549 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.45 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.911 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.48 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2142 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.1 MB.
+System memory in use after: 120.9 MB.
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 2799.
+Total: 2.719600 ms (FindLiveObjects: 0.297100 ms CreateObjectMapping: 0.192600 ms MarkObjects: 1.861500 ms  DeleteObjects: 0.367300 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 10660.413784 seconds.
+  path: Assets/Lava_Flowing_Shader/Scenes
+  artifactKey: Guid(d1e873dc890a11a40a82a8a7d8b2cf15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Scenes using Guid(d1e873dc890a11a40a82a8a7d8b2cf15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7064d7e80e17b6cebdc3d12df8f07ce5') in 0.019388 seconds
+  Import took 0.022925 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001917 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.80 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.851 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.47 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2142 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.1 MB.
+System memory in use after: 120.9 MB.
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 2802.
+Total: 2.991000 ms (FindLiveObjects: 0.373300 ms CreateObjectMapping: 0.152800 ms MarkObjects: 2.058800 ms  DeleteObjects: 0.405000 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 89.278333 seconds.
+  path: Assets/Lava_Flowing_Shader/Prefabs
+  artifactKey: Guid(98de54e952a28364c84cbacefd011abb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Prefabs using Guid(98de54e952a28364c84cbacefd011abb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '188ae954c261cdb49d92ed30cf58cff0') in 0.010247 seconds
+  Import took 0.013998 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.032384 seconds.
+  path: Assets/Lava_Flowing_Shader/Prefabs/Lava_diffuse.prefab
+  artifactKey: Guid(86672f35e84daff4699b96a3c82ee675) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Prefabs/Lava_diffuse.prefab using Guid(86672f35e84daff4699b96a3c82ee675) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e2d021121e7fc8a98a37c5fa93a4c2ff') in 0.080443 seconds
+  Import took 0.084057 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000231 seconds.
+  path: Assets/Lava_Flowing_Shader/Prefabs/Lava_distort.prefab
+  artifactKey: Guid(7c9fb993626aaf8488be64eb9feadbbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Prefabs/Lava_distort.prefab using Guid(7c9fb993626aaf8488be64eb9feadbbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5c8e3922025b8f20ab81325d660fc5b9') in 0.024184 seconds
+  Import took 0.027250 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000209 seconds.
+  path: Assets/Lava_Flowing_Shader/Prefabs/Lava_simple.prefab
+  artifactKey: Guid(d2debcb3c417b07419457484a835eb7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Prefabs/Lava_simple.prefab using Guid(d2debcb3c417b07419457484a835eb7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd4f4af628439ee8906296fb32c20ee2c') in 0.029001 seconds
+  Import took 0.032976 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000254 seconds.
+  path: Assets/Lava_Flowing_Shader/Prefabs/Lava_transparent.prefab
+  artifactKey: Guid(39639071f8fd3cd4da6c9e24297512a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Prefabs/Lava_transparent.prefab using Guid(39639071f8fd3cd4da6c9e24297512a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2785beeb4b228aaa2c5db0bae3b4578') in 0.024401 seconds
+  Import took 0.029781 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3801.238305 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat
+  artifactKey: Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat using Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '48c960c62d774c2126923c2ac633e264') in 0.053902 seconds
+  Import took 0.068318 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000257 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort.mat
+  artifactKey: Guid(787cb25de3401c44b939f2599cda764c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort.mat using Guid(787cb25de3401c44b939f2599cda764c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '57fa773ca5c132d8b59524217575fb2e') in 0.020836 seconds
+  Import took 0.024180 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000209 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat
+  artifactKey: Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat using Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '48c960c62d774c2126923c2ac633e264') in 0.017055 seconds
+  Import took 0.020880 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000238 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort.mat
+  artifactKey: Guid(787cb25de3401c44b939f2599cda764c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort.mat using Guid(787cb25de3401c44b939f2599cda764c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '57fa773ca5c132d8b59524217575fb2e') in 0.015897 seconds
+  Import took 0.019110 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000229 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort_transparent.mat
+  artifactKey: Guid(4c11e54477bc94744a2fa3433d9fa306) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_distort_transparent.mat using Guid(4c11e54477bc94744a2fa3433d9fa306) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a08656b40df1e3fdda7eb117d32d35fe') in 0.021095 seconds
+  Import took 0.024417 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000301 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_simple.mat
+  artifactKey: Guid(6042eaad9823b6f488f160b2bce47ac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_simple.mat using Guid(6042eaad9823b6f488f160b2bce47ac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '030555498f12d23b50a052a5e4af18ea') in 0.020230 seconds
+  Import took 0.023643 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001845 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.46 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.897 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.47 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2141 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.1 MB.
+System memory in use after: 121.2 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2811.
+Total: 2.471200 ms (FindLiveObjects: 0.218200 ms CreateObjectMapping: 0.098600 ms MarkObjects: 1.982900 ms  DeleteObjects: 0.170600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 554.929237 seconds.
+  path: Assets/Materials/WaterPlanet.mat
+  artifactKey: Guid(5c89778ec36b4cf4e8a1df3b78ac8854) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Materials/WaterPlanet.mat using Guid(5c89778ec36b4cf4e8a1df3b78ac8854) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca2e67bd5821fe8521262620a574490e') in 0.114271 seconds
+  Import took 0.121149 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002730 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.73 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.672 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.84 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 120.8 MB.
+System memory in use after: 120.9 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2815.
+Total: 4.069800 ms (FindLiveObjects: 0.415800 ms CreateObjectMapping: 0.269500 ms MarkObjects: 3.106900 ms  DeleteObjects: 0.275300 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 20.510882 seconds.
+  path: Assets/Lava_Flowing_Shader/Textures/lava1.png
+  artifactKey: Guid(93a726948508cc14eab67fb1abe2daa8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Textures/lava1.png using Guid(93a726948508cc14eab67fb1abe2daa8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df9acf42de3f9cda615bb10fed0f0be5') in 0.091528 seconds
+  Import took 0.097278 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000325 seconds.
+  path: Assets/Lava_Flowing_Shader/Textures/lava2.png
+  artifactKey: Guid(348fa4d278c53ad4dacd07df1e63a248) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Textures/lava2.png using Guid(348fa4d278c53ad4dacd07df1e63a248) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '58bb974300b669e6d4fee6c5983a8310') in 0.027764 seconds
+  Import took 0.032199 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000330 seconds.
+  path: Assets/Lava_Flowing_Shader/Textures/lava1.png
+  artifactKey: Guid(93a726948508cc14eab67fb1abe2daa8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Textures/lava1.png using Guid(93a726948508cc14eab67fb1abe2daa8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df9acf42de3f9cda615bb10fed0f0be5') in 0.021343 seconds
+  Import took 0.026333 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000318 seconds.
+  path: Assets/Lava_Flowing_Shader/Textures/lava1_transparent.png
+  artifactKey: Guid(aed369d136cf0174e8e04dfb34567e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Textures/lava1_transparent.png using Guid(aed369d136cf0174e8e04dfb34567e6a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '655bd184c73f247666ed974274cd2678') in 0.028391 seconds
+  Import took 0.032733 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000324 seconds.
+  path: Assets/Lava_Flowing_Shader/Textures/lava3.png
+  artifactKey: Guid(0ebfaeff4eb7328498165095f9cfc32f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Textures/lava3.png using Guid(0ebfaeff4eb7328498165095f9cfc32f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b57ea09bc749e0b42b8ea73f031f74c') in 0.043430 seconds
+  Import took 0.048282 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 307.367140 seconds.
+  path: Assets/Prefabs/FirePlanet.prefab
+  artifactKey: Guid(34f2cfecc98672f46b49c5c665403dc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/FirePlanet.prefab using Guid(34f2cfecc98672f46b49c5c665403dc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d505124561979078ebef9c3deb48ab2') in 0.109824 seconds
+  Import took 0.114567 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 293.866915 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat
+  artifactKey: Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_diffuse.mat using Guid(c5b6432eb5c5ecd41a1c5065d2686911) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dcc3079869071e90842681d5fec7bf08') in 0.035946 seconds
+  Import took 0.040013 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000230 seconds.
+  path: Assets/Lava_Flowing_Shader/Materials/mtl_lava_simple.mat
+  artifactKey: Guid(6042eaad9823b6f488f160b2bce47ac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Lava_Flowing_Shader/Materials/mtl_lava_simple.mat using Guid(6042eaad9823b6f488f160b2bce47ac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f0e2d5e7a53271e27b7d4c447a1cbc1') in 0.017966 seconds
+  Import took 0.021426 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002579 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.55 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.924 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.48 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2823.
+Total: 2.350300 ms (FindLiveObjects: 0.297200 ms CreateObjectMapping: 0.119300 ms MarkObjects: 1.751600 ms  DeleteObjects: 0.180500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002021 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.48 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.954 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.52 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2826.
+Total: 3.026400 ms (FindLiveObjects: 0.306400 ms CreateObjectMapping: 0.139400 ms MarkObjects: 2.365700 ms  DeleteObjects: 0.213400 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002185 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.50 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.018 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.51 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2829.
+Total: 2.712300 ms (FindLiveObjects: 0.275100 ms CreateObjectMapping: 0.128000 ms MarkObjects: 2.098600 ms  DeleteObjects: 0.209600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 202.828274 seconds.
+  path: Packages/com.unity.polybrush/Tests/Templates/PolyEditorUtilityTests/customcube.asset
+  artifactKey: Guid(4b95e8791f5e47346bb1a7196fa24cf6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.unity.polybrush/Tests/Templates/PolyEditorUtilityTests/customcube.asset using Guid(4b95e8791f5e47346bb1a7196fa24cf6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c7d09cd5e7f982c58bbf703ca4b7c58') in 0.073570 seconds
+  Import took 0.078434 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002111 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.49 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.894 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.46 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2833.
+Total: 2.726500 ms (FindLiveObjects: 0.320300 ms CreateObjectMapping: 0.145400 ms MarkObjects: 2.085000 ms  DeleteObjects: 0.174700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001829 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.50 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.916 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.48 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2836.
+Total: 2.873000 ms (FindLiveObjects: 0.272500 ms CreateObjectMapping: 0.147500 ms MarkObjects: 2.235800 ms  DeleteObjects: 0.216200 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001867 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.47 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.908 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.49 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2839.
+Total: 2.470400 ms (FindLiveObjects: 0.295700 ms CreateObjectMapping: 0.118600 ms MarkObjects: 1.861200 ms  DeleteObjects: 0.193800 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001962 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.44 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.876 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.44 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2137 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 121.0 MB.
+System memory in use after: 121.1 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2842.
+Total: 2.458500 ms (FindLiveObjects: 0.286600 ms CreateObjectMapping: 0.155900 ms MarkObjects: 1.836600 ms  DeleteObjects: 0.177600 ms)
+

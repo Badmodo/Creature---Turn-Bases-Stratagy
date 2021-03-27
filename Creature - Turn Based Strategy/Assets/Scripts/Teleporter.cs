@@ -21,7 +21,6 @@ public class Teleporter : MonoBehaviour
     //    }
     //}
 
-
     //public void Teleport()
     //{
     //    player.transform.position = teleportTarget.position;
