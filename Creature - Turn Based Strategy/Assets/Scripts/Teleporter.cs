@@ -20,6 +20,8 @@ public class Teleporter : MonoBehaviour
     public GameObject SandBackground;
     public GameObject FireBackground;
 
+    public int planetSelector;
+
     int currentAction;
 
     [SerializeField] BattleDialogueBox dialogueBox;
@@ -38,51 +40,64 @@ public class Teleporter : MonoBehaviour
     //    player.transform.position = teleportTarget.position;
     //}
 
+
     private void Update()
     {
-        if(GrassBits == true)
+        int planet = planetSelector;
+        switch (planet)
         {
-            GrassBackground.SetActive(true);
-            WaterBackground.SetActive(false);
-            SandBackground.SetActive(false);
-            FireBackground.SetActive(false);
+            case 1:
+                {
+                    GrassBackground.SetActive(true);
+                    WaterBackground.SetActive(false);
+                    SandBackground.SetActive(false);
+                    FireBackground.SetActive(false);
 
-            WaterBits.SetActive(false);
-            SandBits.SetActive(false);
-            FireBits.SetActive(false);
-        }
-        else if(WaterBits == true)
-        {
-            GrassBackground.SetActive(false);
-            WaterBackground.SetActive(true);
-            SandBackground.SetActive(false);
-            FireBackground.SetActive(false);
+                    GrassBits.SetActive(true);
+                    WaterBits.SetActive(false);
+                    SandBits.SetActive(false);
+                    FireBits.SetActive(false);
+                    break;
+                }
+            case 2:
+                {
+                    GrassBackground.SetActive(false);
+                    WaterBackground.SetActive(true);
+                    SandBackground.SetActive(false);
+                    FireBackground.SetActive(false);
 
-            GrassBits.SetActive(false);
-            SandBits.SetActive(false);
-            FireBits.SetActive(false);
-        }
-        else if(SandBits == true)
-        {
-            GrassBackground.SetActive(false);
-            WaterBackground.SetActive(false);
-            SandBackground.SetActive(true);
-            FireBackground.SetActive(false);
+                    GrassBits.SetActive(false);
+                    WaterBits.SetActive(true);
+                    SandBits.SetActive(false);
+                    FireBits.SetActive(false);
+                    break;
+                }
+            case 3:
+                {
+                    GrassBackground.SetActive(false);
+                    WaterBackground.SetActive(false);
+                    SandBackground.SetActive(true);
+                    FireBackground.SetActive(false);
 
-            GrassBits.SetActive(false);
-            WaterBits.SetActive(false);
-            FireBits.SetActive(false);
-        }
-        else if(FireBits == true)
-        {
-            GrassBackground.SetActive(false);
-            WaterBackground.SetActive(false);
-            SandBackground.SetActive(false);
-            FireBackground.SetActive(true);
+                    GrassBits.SetActive(false);
+                    WaterBits.SetActive(false);
+                    SandBits.SetActive(true);
+                    FireBits.SetActive(false);
+                    break;
+                }
+            default:
+                {
+                    GrassBackground.SetActive(false);
+                    WaterBackground.SetActive(false);
+                    SandBackground.SetActive(false);
+                    FireBackground.SetActive(true);
 
-            GrassBits.SetActive(false);
-            SandBits.SetActive(false);
-            WaterBits.SetActive(false);
+                    GrassBits.SetActive(false);
+                    SandBits.SetActive(false);
+                    WaterBits.SetActive(false);
+                    FireBits.SetActive(true);
+                    break;
+                }
         }
     }
 
@@ -115,25 +130,25 @@ public class Teleporter : MonoBehaviour
             if (currentAction == 0)
             {
                 //0 = Teleport to this tower
-                GrassBits.SetActive(true);
+                planetSelector = 1;
                 player.transform.position = GrassTarget.position;
             }
             else if (currentAction == 1)
             {
                 //1 = Teleport to this tower
-                WaterBits.SetActive(true);
+                planetSelector = 2;
                 player.transform.position = WaterTarget.position;
             }
             else if (currentAction == 2)
             {
                 //2 = Teleport to this tower
-                SandBits.SetActive(true);
+                planetSelector = 3;
                 player.transform.position = SandTarget.position;
             }
             else if (currentAction == 3)
             {
                 //3 = Teleport to this tower
-                FireBits.SetActive(true);
+                planetSelector = 4;
                 player.transform.position = FireTarget.position;
             }
         }
