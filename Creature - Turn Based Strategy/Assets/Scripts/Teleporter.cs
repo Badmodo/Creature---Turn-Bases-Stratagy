@@ -8,7 +8,13 @@ public class Teleporter : MonoBehaviour
     public Transform WaterTarget;
     public Transform SandTarget;
     public Transform FireTarget;
+    
     public Rigidbody player;
+
+    public GameObject GrassPlanet;
+    public GameObject WaterPlanet;
+    public GameObject SandPlanet;
+    public GameObject FirePlanet;
 
     public GameObject GrassBits;
     public GameObject WaterBits;
@@ -57,6 +63,12 @@ public class Teleporter : MonoBehaviour
                     WaterBits.SetActive(false);
                     SandBits.SetActive(false);
                     FireBits.SetActive(false);
+
+                    GrassPlanet.gameObject.tag = "Planet";
+                    WaterPlanet.gameObject.tag = "Untagged";
+                    SandPlanet.gameObject.tag = "Untagged";
+                    FirePlanet.gameObject.tag = "Untagged";
+
                     break;
                 }
             case 2:
@@ -70,6 +82,11 @@ public class Teleporter : MonoBehaviour
                     WaterBits.SetActive(true);
                     SandBits.SetActive(false);
                     FireBits.SetActive(false);
+
+                    GrassPlanet.gameObject.tag = "Untagged";
+                    WaterPlanet.gameObject.tag = "Planet";
+                    SandPlanet.gameObject.tag = "Untagged";
+                    FirePlanet.gameObject.tag = "Untagged";
                     break;
                 }
             case 3:
