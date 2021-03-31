@@ -14,7 +14,5 @@ public class TeleporterActivator : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         canTeleport = false;
-    }
-
-   
+    }   
 }

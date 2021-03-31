@@ -47,8 +47,6 @@ public class Teleporter : MonoBehaviour
 
     int currentAction;
 
-    private PlanetGravity planetGravity;
-
     [SerializeField] BattleDialogueBox dialogueBox;
 
 
@@ -208,7 +206,7 @@ public class Teleporter : MonoBehaviour
                 //yield return new WaitForSeconds(0.5f);
 
                 PlayerGravity.UpdatePlanetGravity();
-                planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
+                PlayerController360.planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 
                 player.GetComponent<Rigidbody>().velocity = player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 player.transform.position = WaterPlayerSpawnPosition;
@@ -234,7 +232,7 @@ public class Teleporter : MonoBehaviour
                 //yield return new WaitForSeconds(0.5f);
 
                 PlayerGravity.UpdatePlanetGravity();
-                planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
+                PlayerController360.planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 
                 player.GetComponent<Rigidbody>().velocity = player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 player.transform.position = DesertPlayerSpawnPosition;
@@ -260,7 +258,7 @@ public class Teleporter : MonoBehaviour
                 //yield return new WaitForSeconds(0.5f);
 
                 PlayerGravity.UpdatePlanetGravity();
-                planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
+                PlayerController360.planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 
                 player.GetComponent<Rigidbody>().velocity = player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 player.transform.position = FirePlayerSpawnPosition;
