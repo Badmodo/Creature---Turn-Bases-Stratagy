@@ -4,11 +4,15 @@ using System.Collections;
 
 public class PlayerGravity : MonoBehaviour 
 {	
-	PlanetGravity planet;
+    PlanetGravity planet;
 	Rigidbody rb;
+
+	private static PlayerGravity instance;
 	
 	void Awake () 
 	{
+		instance = this;
+
 		planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 		rb = GetComponent<Rigidbody> ();
 
@@ -20,6 +24,12 @@ public class PlayerGravity : MonoBehaviour
 	void FixedUpdate () 
 	{
 		// Allow this body to be influenced by planet's gravity
-		planet.Attract(rb);
+		if (planet != null)
+			planet.Attract(rb);
+	}
+
+	public static void UpdatePlanetGravity()
+    {
+		instance.planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
 	}
 }

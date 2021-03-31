@@ -125,6 +125,9 @@ public class EnemyAi : MonoBehaviour
     {
         TeleportActivation.SetActive(true);
         Destroy(gameObject);
+
+        string planetName = GameObject.FindGameObjectWithTag("Planet").name;
+        PlayerController360.AddAccessiblePlanet(planetName);
     }
 
     private void OnDrawGizmosSelected()

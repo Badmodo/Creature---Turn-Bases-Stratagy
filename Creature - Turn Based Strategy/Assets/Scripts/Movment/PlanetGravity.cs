@@ -3,8 +3,7 @@ using System.Collections;
 
 public class PlanetGravity : MonoBehaviour {
 	
-	public float gravity = -9.8f;
-	
+	public float gravity = -9.8f;	
 	
 	public void Attract(Rigidbody body) 
 	{

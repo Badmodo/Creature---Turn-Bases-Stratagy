@@ -22,24 +22,46 @@ public class PlayerController360 : MonoBehaviour {
 	float verticalLookRotation;
 	Transform cameraTransform;
 	Rigidbody rb;
-	PlanetGravity planetGravity;
 	
-	
-	void Awake() 
+    private List<string> accessiblePlanets;
+
+    public GameObject GrassPlanet;
+    public GameObject WaterPlanet;
+    public GameObject DesertPlanet;
+    public GameObject FirePlanet;
+
+    public GameObject TeleportScreen;
+
+    public static PlayerController360 instance;
+    public static PlanetGravity planetGravity;
+
+
+    void Awake() 
 	{
-		Cursor.lockState = CursorLockMode.Locked;
+        instance = this;
+
+        accessiblePlanets = new List<string>();
+        Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		cameraTransform = Camera.main.transform;
 		rb = GetComponent<Rigidbody> ();
 		animator = GetComponent<Animator>();
 		planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
+        accessiblePlanets.Add(planetGravity.name);
+        TeleportScreen.SetActive(false);
 	}
     
     public void Update()
     {
 		if (Input.GetKeyDown(KeyCode.Z) && TeleporterActivator.canTeleport)
         {
-            // TELEPORT!!
+            // Open the Teleport Menu
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            TeleportScreen.SetActive(true);
+
+            //StartCoroutine(Teleport());
         }
 
 
@@ -71,6 +93,23 @@ public class PlayerController360 : MonoBehaviour {
 		}
 		
 	}
+
+    public IEnumerator Teleport()
+    {
+        GrassPlanet.gameObject.tag = "Untagged";
+        WaterPlanet.gameObject.tag = "Planet";
+        DesertPlanet.gameObject.tag = "Untagged";
+        FirePlanet.gameObject.tag = "Untagged";
+
+        yield return new WaitForSeconds(0.5f);
+
+        PlayerGravity.UpdatePlanetGravity();
+        planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
+
+        rb.velocity = rb.angularVelocity = Vector3.zero;
+        transform.position = Teleporter.WaterPlayerSpawnPosition;
+        transform.eulerAngles = Teleporter.WaterPlayerSpawnEulerAngles;
+    }
 
 	private void Move()
     {
@@ -211,6 +250,11 @@ public class PlayerController360 : MonoBehaviour {
         {
             inDialogue = false;
         }
+    }
+
+    public static void AddAccessiblePlanet(string _planetName)
+    {
+        instance.accessiblePlanets.Add(_planetName);
     }
 
     public string Name
