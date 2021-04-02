@@ -24,6 +24,11 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] bool isTrainerBattle = false;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClipMenuChangeSelection;
+    [SerializeField] AudioClip audioClipMenuConfirm;
+    [SerializeField] AudioClip audioClipMenuBack;
+
     bool aboutToUseChoice = true;
 
     public event Action<bool> BattleOver;
@@ -613,18 +618,22 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ++currentAction;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             --currentAction;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentAction += 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             currentAction -= 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
 
         currentAction = Mathf.Clamp(currentAction, 0, 3);
@@ -634,6 +643,8 @@ public class BattleSystem : MonoBehaviour
         //change states either move list or run away
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            audioSource.PlayOneShot(audioClipMenuConfirm);
+
             if (currentAction == 0)
             {
                 //0 = fight state
@@ -664,18 +675,22 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ++currentMove;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             --currentMove;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentMove += 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             currentMove -= 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
 
         currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Creature.Moves.Count - 1);
@@ -685,6 +700,8 @@ public class BattleSystem : MonoBehaviour
         //we now select a move. disable the selector. damage eney and change state
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            audioSource.PlayOneShot(audioClipMenuConfirm);
+
             //store the current move
             var move = playerUnit.Creature.Moves[currentMove];
             //if PP is 0 dont use move, return
@@ -696,6 +713,8 @@ public class BattleSystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            audioSource.PlayOneShot(audioClipMenuBack);
+
             dialogueBox.EnableMoveSelector(false);
             dialogueBox.EnableDialogText(true);
             ActionSelection();
@@ -708,18 +727,22 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ++currentMember;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             --currentMember;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentMember += 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             currentMember -= 2;
+            audioSource.PlayOneShot(audioClipMenuChangeSelection);
         }
 
         currentMember = Mathf.Clamp(currentMember, 0, playerteam.Creatures.Count - 1);
@@ -729,6 +752,8 @@ public class BattleSystem : MonoBehaviour
         //used to select the current creature
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            audioSource.PlayOneShot(audioClipMenuConfirm);
+
             var selectedMember = playerteam.Creatures[currentMember];
             //checks if the selected creature has fainted
             if (selectedMember.HP <= 0)
@@ -760,8 +785,10 @@ public class BattleSystem : MonoBehaviour
         //to back out press x
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            audioSource.PlayOneShot(audioClipMenuBack);
+
             //if players creatuers faints they need to select the next
-            if(playerUnit.Creature.HP <= 0)
+            if (playerUnit.Creature.HP <= 0)
             {
                 battleTeamScreen.SetMessageText("you have to choose a Creature to continue");
                 return;
