@@ -102,7 +102,7 @@ public class BattleSystem : MonoBehaviour
 
             playerImage.gameObject.SetActive(true);
             trainerImage.gameObject.SetActive(true);
-            playerImage.sprite = player.Sprite;
+            playerImage.sprite = player.PlayerSprite;
             trainerImage.sprite = trainer.Sprite;
 
             yield return dialogueBox.TypeDialog($"{trainer.Name} wants to fight");

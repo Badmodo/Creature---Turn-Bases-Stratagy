@@ -4,19 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (PlayerGravity))]
-public class PlayerController360 : MonoBehaviour {
-	
-	// public vars
-	public float mouseSensitivityX = 1;
+public class PlayerController360 : MonoBehaviour
+{
+    [SerializeField] Sprite playerSprite;
+    [SerializeField] string playerName;
+
+    public string PlayerName { get => playerName; }
+    public Sprite PlayerSprite { get => playerSprite; }
+
+    // public vars
+    public float mouseSensitivityX = 1;
 	public float mouseSensitivityY = 1;
 	public float walkSpeed = 6;
-	public float jumpForce = 220;
+	public float jumpForce = 200;
 	public LayerMask groundedMask;
 
 	private Animator animator;
 	
 	// System vars
 	bool grounded;
+    bool isJumping;
 	Vector3 moveAmount;
 	Vector3 smoothMoveVelocity;
 	float verticalLookRotation;
@@ -31,9 +38,25 @@ public class PlayerController360 : MonoBehaviour {
     public GameObject FirePlanet;
 
     public GameObject TeleportScreen;
+    public GameObject pressZToTeleport;
 
     public static PlayerController360 instance;
     public static PlanetGravity planetGravity;
+
+    public event Action onEncounter;
+
+    public bool inGrass;
+    public bool inDialogue;
+    public bool duringDialogue;
+
+    public GameObject Battle;
+    private CharacterController characterController;
+
+    void Start()
+    {
+        //Find attached character controllers on player
+        characterController = GetComponent<CharacterController>();
+    }
 
 
     void Awake() 
@@ -59,6 +82,7 @@ public class PlayerController360 : MonoBehaviour {
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            pressZToTeleport.SetActive(false);
             TeleportScreen.SetActive(true);
 
             //StartCoroutine(Teleport());
@@ -75,9 +99,13 @@ public class PlayerController360 : MonoBehaviour {
 		Move();
 
 		// Jump
-		if (Input.GetButtonDown("Jump")) {
-			if (grounded) {
-				rb.AddForce(transform.up * jumpForce);
+		if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+			if (grounded) 
+            {
+                isJumping = true;
+				rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+                StartCoroutine(SetJumpingFalse());
 			}
 		}
 		
@@ -85,14 +113,23 @@ public class PlayerController360 : MonoBehaviour {
 		Ray ray = new Ray(transform.position, -transform.up);
 		RaycastHit hit;
 		
-		if (Physics.Raycast(ray, out hit, 1 + .1f, groundedMask)) {
+		if (Physics.Raycast(ray, out hit, 1 + .1f, groundedMask)) 
+        {
 			grounded = true;
-		}
-		else {
+        }
+		else 
+        {
 			grounded = false;
-		}
+        }
+
 		
 	}
+
+    public IEnumerator SetJumpingFalse()
+    {
+        yield return new WaitForSeconds(1.5f);
+        isJumping = false;
+    }
 
     public IEnumerator Teleport()
     {
@@ -140,34 +177,14 @@ public class PlayerController360 : MonoBehaviour {
 		Vector3 futurePos = rb.position + localMove;
 		float difference = Vector3.Distance(futurePos, planetGravity.getPosition());
 
-		if (difference > 50)
+        float maxDifference = isJumping ? 60f : 50f;
+
+		if (difference > maxDifference)
 			rb.MovePosition(rb.position);
 		else
 			rb.MovePosition(futurePos);
-
-		//Debug.Log(difference);
-		//rb.MovePosition(futurePos);
 		
 	}
-
-    CharacterController characterController;
-
-    [SerializeField] Sprite sprite;
-    [SerializeField] string name;
-
-    public event Action onEncounter;
-
-    public bool inGrass;
-    public bool inDialogue;
-    public bool duringDialogue;
-
-    public GameObject Battle;
-
-    void Start()
-    {
-        //Find attached character controllers on player
-        characterController = GetComponent<CharacterController>();
-    }
 
     //See if the player is in long grass(where enemys hide)
     void OnTriggerEnter(Collider collider)
@@ -256,11 +273,5 @@ public class PlayerController360 : MonoBehaviour {
     {
         instance.accessiblePlanets.Add(_planetName);
     }
-
-    public string Name
-    { get => name; }
-
-    public Sprite Sprite
-    { get => sprite; }
 
 }

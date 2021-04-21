@@ -11,6 +11,7 @@ public class Teleporter : MonoBehaviour
     
     public GameObject player;
     public GameObject TeleportScreen;
+    public GameObject pressZToTeleport;
 
     public GameObject GrassPlanet;
     public GameObject WaterPlanet;
@@ -52,86 +53,21 @@ public class Teleporter : MonoBehaviour
 
     private void Start()
     {
-
+        pressZToTeleport.SetActive(false);
     }
 
 
     private void Update()
     {
 
-        //switch (planetSelector)
-        //{
-        //    case PlanetSelector.Grass:
-        //        {
-        //            GrassBackground.SetActive(true);
-        //            WaterBackground.SetActive(false);
-        //            SandBackground.SetActive(false);
-        //            FireBackground.SetActive(false);
+    }
 
-        //            GrassBits.SetActive(true);
-        //            WaterBits.SetActive(false);
-        //            SandBits.SetActive(false);
-        //            FireBits.SetActive(false);
-
-        //            GrassPlanet.gameObject.tag = "Planet";
-        //            WaterPlanet.gameObject.tag = "Untagged";
-        //            SandPlanet.gameObject.tag = "Untagged";
-        //            FirePlanet.gameObject.tag = "Untagged";
-
-        //            break;
-        //        }
-        //    case PlanetSelector.Water:
-        //        {
-        //            GrassBackground.SetActive(false);
-        //            WaterBackground.SetActive(true);
-        //            SandBackground.SetActive(false);
-        //            FireBackground.SetActive(false);
-
-        //            GrassBits.SetActive(false);
-        //            WaterBits.SetActive(true);
-        //            SandBits.SetActive(false);
-        //            FireBits.SetActive(false);
-
-        //            GrassPlanet.gameObject.tag = "Untagged";
-        //            WaterPlanet.gameObject.tag = "Planet";
-        //            SandPlanet.gameObject.tag = "Untagged";
-        //            FirePlanet.gameObject.tag = "Untagged";
-        //            break;
-        //        }
-        //    case PlanetSelector.Desert:
-        //        {
-        //            GrassBackground.SetActive(false);
-        //            WaterBackground.SetActive(false);
-        //            SandBackground.SetActive(true);
-        //            FireBackground.SetActive(false);
-
-        //            GrassBits.SetActive(false);
-        //            WaterBits.SetActive(false);
-        //            SandBits.SetActive(true);
-        //            FireBits.SetActive(false);
-        //            break;
-        //        }
-        //    case PlanetSelector.Fire:
-        //        {
-        //            GrassBackground.SetActive(false);
-        //            WaterBackground.SetActive(false);
-        //            SandBackground.SetActive(false);
-        //            FireBackground.SetActive(true);
-
-        //            GrassBits.SetActive(false);
-        //            SandBits.SetActive(false);
-        //            WaterBits.SetActive(false);
-        //            FireBits.SetActive(true);
-        //            break;
-        //        }
-        //    default:
-        //        {
-
-        //            break;
-        //        }
-
-        }
-
+    public void CancelTeleport()
+    {
+        TeleportScreen.SetActive(false);
+        pressZToTeleport.SetActive(true);
+        Time.timeScale = 1f;
+    }
 
     public void TeleportToGrassPlanet()
     {
@@ -271,7 +207,6 @@ public class Teleporter : MonoBehaviour
     }
 
 
-
     void HandleTeleportAction()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -294,34 +229,5 @@ public class Teleporter : MonoBehaviour
         currentAction = Mathf.Clamp(currentAction, 0, 3);
 
         dialogueBox.UpdateActionSelection(currentAction);
-
-        //change states either move list or run away
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    if (currentAction == 0)
-        //    {
-        //        //0 = Teleport to this tower
-        //        planetSelector = 1;
-        //        player.transform.position = GrassTarget.position;
-        //    }
-        //    else if (currentAction == 1)
-        //    {
-        //        //1 = Teleport to this tower
-        //        planetSelector = 2;
-        //        player.transform.position = WaterTarget.position;
-        //    }
-        //    else if (currentAction == 2)
-        //    {
-        //        //2 = Teleport to this tower
-        //        planetSelector = 3;
-        //        player.transform.position = SandTarget.position;
-        //    }
-        //    else if (currentAction == 3)
-        //    {
-        //        //3 = Teleport to this tower
-        //        planetSelector = 4;
-        //        player.transform.position = FireTarget.position;
-        //    }
-        //}
     }
 }
