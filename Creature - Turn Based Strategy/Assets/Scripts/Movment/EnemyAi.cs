@@ -13,8 +13,6 @@ public class EnemyAi : MonoBehaviour
     public LayerMask whatIdGround, whatIsPlayer;
     [SerializeField] TrainerController trainer;
 
-  
-
     public static float health;
 
     public float Health
@@ -63,6 +61,7 @@ public class EnemyAi : MonoBehaviour
         if(walkPointSet)
         {
             agent.SetDestination(walkPoint);
+            agent.updateRotation = true;
         }
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
@@ -97,12 +96,14 @@ public class EnemyAi : MonoBehaviour
         SeePlayer.SetActive(true);
 
         agent.SetDestination(player.position);
+        agent.updateRotation = true;
     }
 
     private void AttackPlayer()
     {
         //make sure the enemy dosnt move on attack
         agent.SetDestination(transform.position);
+        agent.updateRotation = true;
 
         //look at player
         transform.LookAt(player);
@@ -126,8 +127,13 @@ public class EnemyAi : MonoBehaviour
         TeleportActivation.SetActive(true);
         Destroy(gameObject);
 
-        string planetName = GameObject.FindGameObjectWithTag("Planet").name;
-        PlayerController360.AddAccessiblePlanet(planetName);
+        switch (gameObject.name)
+        {
+            case "GrassTrainerAI": PlayerController360.ChangeClearanceLevel("Water"); break;
+            case "WaterTrainerAI": PlayerController360.ChangeClearanceLevel("Desert"); break;
+            case "DesertTrainerAI": PlayerController360.ChangeClearanceLevel("Fire"); break;
+            case "FireTrainerAI": PlayerController360.ChangeClearanceLevel("WIN");  Debug.Log("YOU WIN!!!!"); break;
+        }
     }
 
     private void OnDrawGizmosSelected()

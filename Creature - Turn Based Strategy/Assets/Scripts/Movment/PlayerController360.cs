@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [RequireComponent (typeof (PlayerGravity))]
 public class PlayerController360 : MonoBehaviour
@@ -30,7 +33,7 @@ public class PlayerController360 : MonoBehaviour
 	Transform cameraTransform;
 	Rigidbody rb;
 	
-    private List<string> accessiblePlanets;
+    private string clearanceLevel = "Grass";
 
     public GameObject GrassPlanet;
     public GameObject WaterPlanet;
@@ -63,14 +66,12 @@ public class PlayerController360 : MonoBehaviour
 	{
         instance = this;
 
-        accessiblePlanets = new List<string>();
         Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		cameraTransform = Camera.main.transform;
 		rb = GetComponent<Rigidbody> ();
 		animator = GetComponent<Animator>();
 		planetGravity = GameObject.FindGameObjectWithTag("Planet").GetComponent<PlanetGravity>();
-        accessiblePlanets.Add(planetGravity.name);
         TeleportScreen.SetActive(false);
 	}
     
@@ -84,8 +85,7 @@ public class PlayerController360 : MonoBehaviour
             Cursor.visible = true;
             pressZToTeleport.SetActive(false);
             TeleportScreen.SetActive(true);
-
-            //StartCoroutine(Teleport());
+            CheckAccessiblePlanetsUI();
         }
 
 
@@ -124,6 +124,78 @@ public class PlayerController360 : MonoBehaviour
 
 		
 	}
+
+    public void CheckAccessiblePlanetsUI()
+    {
+        List<Button> teleportUIButtonList = TeleportScreen.GetComponentsInChildren<Button>().ToList();
+        Button grassButton = teleportUIButtonList.FirstOrDefault(x => x.name == "GrassButton");
+        Button waterButton = teleportUIButtonList.FirstOrDefault(x => x.name == "WaterButton");
+        Button desertButton = teleportUIButtonList.FirstOrDefault(x => x.name == "DesertButton");
+        Button fireButton = teleportUIButtonList.FirstOrDefault(x => x.name == "FireButton");
+
+        switch (clearanceLevel)
+        {
+            case "Grass":
+                grassButton.enabled = true;
+                grassButton.GetComponentInChildren<Text>().color = Color.black;
+                grassButton.GetComponent<EventTrigger>().enabled = true;
+                waterButton.enabled = false;
+                waterButton.GetComponentInChildren<Text>().color = Color.grey;
+                waterButton.GetComponent<EventTrigger>().enabled = false;
+                desertButton.enabled = false;
+                desertButton.GetComponentInChildren<Text>().color = Color.grey;
+                desertButton.GetComponent<EventTrigger>().enabled = false;
+                fireButton.enabled = false;
+                fireButton.GetComponentInChildren<Text>().color = Color.grey;
+                fireButton.GetComponent<EventTrigger>().enabled = false;
+                break;
+
+            case "Water":
+                grassButton.enabled = true;
+                grassButton.GetComponentInChildren<Text>().color = Color.black;
+                grassButton.GetComponent<EventTrigger>().enabled = true;
+                waterButton.enabled = true;
+                waterButton.GetComponentInChildren<Text>().color = Color.black;
+                waterButton.GetComponent<EventTrigger>().enabled = true;
+                desertButton.enabled = false;
+                desertButton.GetComponentInChildren<Text>().color = Color.grey;
+                desertButton.GetComponent<EventTrigger>().enabled = false;
+                fireButton.enabled = false;
+                fireButton.GetComponentInChildren<Text>().color = Color.grey;
+                fireButton.GetComponent<EventTrigger>().enabled = false;
+                break;
+
+            case "Desert":
+                grassButton.enabled = true;
+                grassButton.GetComponentInChildren<Text>().color = Color.black;
+                grassButton.GetComponent<EventTrigger>().enabled = true;
+                waterButton.enabled = true;
+                waterButton.GetComponentInChildren<Text>().color = Color.black;
+                waterButton.GetComponent<EventTrigger>().enabled = true;
+                desertButton.enabled = true;
+                desertButton.GetComponentInChildren<Text>().color = Color.black;
+                desertButton.GetComponent<EventTrigger>().enabled = true;
+                fireButton.enabled = false;
+                fireButton.GetComponentInChildren<Text>().color = Color.grey;
+                fireButton.GetComponent<EventTrigger>().enabled = false;
+                break;
+
+            case "Fire":
+                grassButton.enabled = true;
+                grassButton.GetComponentInChildren<Text>().color = Color.black;
+                grassButton.GetComponent<EventTrigger>().enabled = true;
+                waterButton.enabled = true;
+                waterButton.GetComponentInChildren<Text>().color = Color.black;
+                waterButton.GetComponent<EventTrigger>().enabled = true;
+                desertButton.enabled = true;
+                desertButton.GetComponentInChildren<Text>().color = Color.black;
+                desertButton.GetComponent<EventTrigger>().enabled = true;
+                fireButton.enabled = true;
+                fireButton.GetComponentInChildren<Text>().color = Color.black;
+                fireButton.GetComponent<EventTrigger>().enabled = true;
+                break;
+        }
+    }
 
     public IEnumerator SetJumpingFalse()
     {
@@ -269,9 +341,9 @@ public class PlayerController360 : MonoBehaviour
         }
     }
 
-    public static void AddAccessiblePlanet(string _planetName)
+    public static void ChangeClearanceLevel(string _clearanceLevel)
     {
-        instance.accessiblePlanets.Add(_planetName);
+        instance.clearanceLevel = _clearanceLevel;
     }
 
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Creature", menuName = "Creature/Create new Creature")]
 public class CreatureBase : ScriptableObject
 {
-    [SerializeField] string name;
+    [SerializeField] new string name;
 
     [TextArea]
     [SerializeField] string description;

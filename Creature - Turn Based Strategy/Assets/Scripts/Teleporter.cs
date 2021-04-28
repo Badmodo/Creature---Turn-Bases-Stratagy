@@ -205,29 +205,4 @@ public class Teleporter : MonoBehaviour
         }
 
     }
-
-
-    void HandleTeleportAction()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            ++currentAction;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            --currentAction;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            currentAction += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            currentAction -= 2;
-        }
-
-        currentAction = Mathf.Clamp(currentAction, 0, 3);
-
-        dialogueBox.UpdateActionSelection(currentAction);
-    }
 }

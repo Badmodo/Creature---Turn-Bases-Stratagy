@@ -15,6 +15,10 @@ public class GameController : MonoBehaviour
 
     [SerializeField] GameObject pauseScreen;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClipMenuChangeSelection;
+    [SerializeField] AudioClip audioClipMenuBack;
+
     static GameState state;
     public static GameController Instance;
     public static GameState State => state;
@@ -45,6 +49,33 @@ public class GameController : MonoBehaviour
         };
 
         pauseScreen.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!pauseScreen.activeInHierarchy)
+            {
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                pauseScreen.SetActive(true);
+            }
+        }
+
+        if (state == GameState.Freeroam)
+        {
+            playerController360.Update();
+        }
+        else if (state == GameState.Battle)
+        {
+            battleSystem.HandleUpdate();
+        }
+        else if (state == GameState.Dialogue)
+        {
+            DialogueManager.Instance.HandleUpdate();
+        }
     }
 
     //start battle state
@@ -100,33 +131,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!pauseScreen.activeInHierarchy)
-            {
-                Time.timeScale = 0f;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                pauseScreen.SetActive(true);
-            }                
-        }
-
-        if( state == GameState.Freeroam)
-        {
-            playerController360.Update();
-        }
-        else if( state == GameState.Battle)
-        {
-            battleSystem.HandleUpdate();
-        }
-        else if( state == GameState.Dialogue)
-        {
-            DialogueManager.Instance.HandleUpdate();
-        }
-    }
-
     public void ResumeGame()
     {
         Time.timeScale = 1f;
@@ -153,5 +157,14 @@ public class GameController : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void MouseOverTeleportLocations()
+    {
+        audioSource.PlayOneShot(audioClipMenuChangeSelection);
+    }
+    public void MouseOverTeleportLocationsBack()
+    {
+        audioSource.PlayOneShot(audioClipMenuBack);
     }
 }

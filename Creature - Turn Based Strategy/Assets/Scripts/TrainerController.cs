@@ -7,7 +7,7 @@ public class TrainerController : MonoBehaviour
     //[SerializeField] Dialogue dialogue;
     [SerializeField] GameObject SeePlayer; 
     [SerializeField] Sprite sprite;
-    [SerializeField] string name;
+    [SerializeField] new string name;
 
     public IEnumerator TriggerTrainerBattle()
     {

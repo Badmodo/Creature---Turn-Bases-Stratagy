@@ -10,18 +10,25 @@ public class TeleporterActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        canTeleport = true;
-        pressZToTeleportText.SetActive(true);
+        if (other.CompareTag("Player"))
+        {
+            canTeleport = true;
+            pressZToTeleportText.SetActive(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        canTeleport = false;
-        pressZToTeleportText.SetActive(false);
+        if (other.CompareTag("Player"))
+        {
+            canTeleport = false;
+            pressZToTeleportText.SetActive(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        canTeleport = true;
+        if (other.CompareTag("Player"))
+            canTeleport = true;
     }
 }
