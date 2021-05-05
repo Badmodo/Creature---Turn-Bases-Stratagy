@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Steel Type
   description: Steel Type
-  frontSprite: {fileID: 21300000, guid: 72f4970cc1ed67640a3a3ca4dd158bc0, type: 3}
-  backSprite: {fileID: 21300000, guid: 070d6b00fb50cd44c9a163fa3052f2c4, type: 3}
+  frontSprite: {fileID: 21300000, guid: d1290aa055f78b14081530c7555065c8, type: 3}
+  backSprite: {fileID: 21300000, guid: de413bc197750f547b16ca3fa13c7efe, type: 3}
   type1: 17
   type2: 0
   maxHp: 50

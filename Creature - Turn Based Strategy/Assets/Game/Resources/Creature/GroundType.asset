@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ground Type
   description: Ground Type
-  frontSprite: {fileID: 21300000, guid: d9426bf0e91e5334b8749ad3b1c88338, type: 3}
-  backSprite: {fileID: 21300000, guid: d34f45a535ada39448c29d0f8c6f0ce5, type: 3}
+  frontSprite: {fileID: 21300000, guid: 5a4c5dc82a4c1564fb1de68a91f4bd43, type: 3}
+  backSprite: {fileID: 21300000, guid: febb7e4fe91e49b4c8e81244854e3e91, type: 3}
   type1: 9
   type2: 0
   maxHp: 50

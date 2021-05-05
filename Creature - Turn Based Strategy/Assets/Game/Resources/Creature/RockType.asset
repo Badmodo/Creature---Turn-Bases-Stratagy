@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Rock Type
   description: Rock Type
-  frontSprite: {fileID: 21300000, guid: becb0c57add9ed24a8024b13b5d5576a, type: 3}
-  backSprite: {fileID: 21300000, guid: 3f4ff92968931684fbddd4624bb5f43c, type: 3}
+  frontSprite: {fileID: 21300000, guid: 34af621783a9c6145a14137d52387d5d, type: 3}
+  backSprite: {fileID: 21300000, guid: 4b5dab4530c900f45b800626f950fe4e, type: 3}
   type1: 13
   type2: 0
   maxHp: 50

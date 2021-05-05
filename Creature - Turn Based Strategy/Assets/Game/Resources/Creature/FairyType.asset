@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Fairy Type
   description: Fairy Type
-  frontSprite: {fileID: 21300000, guid: fbae0d5ff805d3248b971554dc1f8f14, type: 3}
-  backSprite: {fileID: 21300000, guid: d02d5d54223021346985d5e2c5214aaf, type: 3}
+  frontSprite: {fileID: 21300000, guid: 2370061b5839027499c1d673d496fd7f, type: 3}
+  backSprite: {fileID: 21300000, guid: bcbd275636d4ea6409e62b1b35d74221, type: 3}
   type1: 18
   type2: 0
   maxHp: 50

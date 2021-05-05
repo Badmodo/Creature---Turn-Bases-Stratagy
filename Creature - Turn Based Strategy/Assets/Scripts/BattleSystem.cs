@@ -21,6 +21,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
     [SerializeField] MoveSelectionUI moveSelectionUI;
+    [SerializeField] GameObject unlockPlanetScreen;
 
     [SerializeField] bool isTrainerBattle = false;
 
@@ -541,6 +542,34 @@ public class BattleSystem : MonoBehaviour
                 }
                 else
                 {
+                    if (isTrainerBattle)
+                    {
+                        switch (trainer.name)
+                        {
+                            case "GrassTrainerAI":
+                                PlayerController360.ChangeClearanceLevel("Water");
+                                unlockPlanetScreen.GetComponentInChildren<Text>().text = "You have unlocked the Water Planet!";
+                                break;
+                            case "WaterTrainerAI":
+                                PlayerController360.ChangeClearanceLevel("Desert");
+                                unlockPlanetScreen.GetComponentInChildren<Text>().text = "You have unlocked the Desert Planet!";
+                                break;
+                            case "DesertTrainerAI":
+                                PlayerController360.ChangeClearanceLevel("Fire");
+                                unlockPlanetScreen.GetComponentInChildren<Text>().text = "You have unlocked the Fire Planet!";
+                                break;
+                            case "FireTrainerAI":
+                                PlayerController360.ChangeClearanceLevel("WIN");
+                                unlockPlanetScreen.GetComponentInChildren<Text>().text = "You have beaten the game!";
+                                Debug.Log("YOU WIN!!!!");
+                                break;
+                        }
+
+                        unlockPlanetScreen.SetActive(true);
+                    }
+
+                    Destroy(trainer.gameObject);
+
                     BattleOver(true);
                 }
             }

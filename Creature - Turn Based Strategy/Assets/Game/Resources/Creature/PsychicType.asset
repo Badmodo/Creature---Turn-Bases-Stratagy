@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Psychic Type
   description: Psychic Type
-  frontSprite: {fileID: 21300000, guid: 6ddde404572eec14c80354b47698d7a8, type: 3}
-  backSprite: {fileID: 21300000, guid: 7c98a660770b36148a9d95eb5317aea8, type: 3}
+  frontSprite: {fileID: 21300000, guid: 87cdff2c1b5a1284d91d3e4f0d547c67, type: 3}
+  backSprite: {fileID: 21300000, guid: a2c72a89689171a479ae4567a7b7e38d, type: 3}
   type1: 11
   type2: 0
   maxHp: 50

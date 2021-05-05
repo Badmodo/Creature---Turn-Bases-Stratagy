@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: FireType
   description: Fire type creature
-  frontSprite: {fileID: 21300000, guid: 6cb07a81e351fab4d89ceb590ab64875, type: 3}
-  backSprite: {fileID: 21300000, guid: db3739f2e3cadad49ab7aa9249b19bdf, type: 3}
+  frontSprite: {fileID: 21300000, guid: b9432418900c9e14287bd9346a395cbb, type: 3}
+  backSprite: {fileID: 21300000, guid: 8172172d71ae6f840b83f9fff10472e2, type: 3}
   type1: 2
   type2: 0
   maxHp: 50

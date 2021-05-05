@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ghost Type
   description: Ghost Type
-  frontSprite: {fileID: 21300000, guid: 738a9bf53681ffa41aad693800b2a29e, type: 3}
-  backSprite: {fileID: 21300000, guid: 148fd988d2ae71c48a03a09e482b046a, type: 3}
+  frontSprite: {fileID: 21300000, guid: 95aafff4d7657dc4b8d5aa56e6bd2cb1, type: 3}
+  backSprite: {fileID: 21300000, guid: 675c35e2bbc929e499a08a0c23ad5c4e, type: 3}
   type1: 14
   type2: 0
   maxHp: 50

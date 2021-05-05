@@ -56,12 +56,6 @@ public class Teleporter : MonoBehaviour
         pressZToTeleport.SetActive(false);
     }
 
-
-    private void Update()
-    {
-
-    }
-
     public void CancelTeleport()
     {
         TeleportScreen.SetActive(false);

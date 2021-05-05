@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dark Type
   description: ' Dark Type'
-  frontSprite: {fileID: 21300000, guid: 5ee386f774b9ae748a1a27267ebe9e16, type: 3}
-  backSprite: {fileID: 21300000, guid: d7e1108143d528d4cac31c75cb20eae8, type: 3}
+  frontSprite: {fileID: 21300000, guid: 008dd32083bfc0b488a97af07fec0fa7, type: 3}
+  backSprite: {fileID: 21300000, guid: 52b0b06d0550bf94ba91cca7d07f2fb2, type: 3}
   type1: 16
   type2: 0
   maxHp: 50

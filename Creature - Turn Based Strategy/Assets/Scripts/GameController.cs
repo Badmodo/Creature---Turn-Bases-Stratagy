@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject player;
 
     [SerializeField] GameObject pauseScreen;
+    [SerializeField] GameObject unlockedPlanetScreen;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip audioClipMenuChangeSelection;
@@ -129,6 +130,17 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         freeroamCam.gameObject.SetActive(true);
 
+        if (unlockedPlanetScreen.activeInHierarchy)
+        {
+            StartCoroutine(UnlockedPlanetPopUp());
+        }
+    }
+
+    private IEnumerator UnlockedPlanetPopUp()
+    {
+        yield return new WaitForSeconds(3);
+
+        unlockedPlanetScreen.SetActive(false);
     }
 
     public void ResumeGame()

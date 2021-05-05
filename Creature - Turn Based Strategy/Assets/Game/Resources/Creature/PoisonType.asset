@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: PoisonType
   description: PoisonType
-  frontSprite: {fileID: 21300000, guid: 5386aa197825fe240a23b2924dad40b9, type: 3}
-  backSprite: {fileID: 21300000, guid: 9e78ab800e96a9d41a91bdf73cf0c6be, type: 3}
+  frontSprite: {fileID: 21300000, guid: a4ab0c0e24c02d34fbe4b1edc5a71e94, type: 3}
+  backSprite: {fileID: 21300000, guid: 8d129f3883f3dc54a95345d482714978, type: 3}
   type1: 8
   type2: 0
   maxHp: 50

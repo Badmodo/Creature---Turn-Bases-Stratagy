@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyAi : MonoBehaviour
 {
     [SerializeField] GameObject SeePlayer;
     [SerializeField] GameObject TeleportActivation;
+    [SerializeField] GameObject unlockPlanetScreen;
 
     public NavMeshAgent agent;
     public Transform player;
@@ -15,13 +17,7 @@ public class EnemyAi : MonoBehaviour
 
     public static float health;
 
-    public float Health
-    {
-        get
-        {
-            return health;
-        }
-    }
+    public float Health { get { return health; } }
 
     //Patrolling
     public Vector3 walkPoint;
@@ -115,24 +111,6 @@ public class EnemyAi : MonoBehaviour
             
             //has the enemy attacked
             alreadyAttacked = true;
-        }
-        else
-        {
-            DestroyEnemy();
-        }
-    }
-
-    private void DestroyEnemy()
-    {
-        TeleportActivation.SetActive(true);
-        Destroy(gameObject);
-
-        switch (gameObject.name)
-        {
-            case "GrassTrainerAI": PlayerController360.ChangeClearanceLevel("Water"); break;
-            case "WaterTrainerAI": PlayerController360.ChangeClearanceLevel("Desert"); break;
-            case "DesertTrainerAI": PlayerController360.ChangeClearanceLevel("Fire"); break;
-            case "FireTrainerAI": PlayerController360.ChangeClearanceLevel("WIN");  Debug.Log("YOU WIN!!!!"); break;
         }
     }
 
